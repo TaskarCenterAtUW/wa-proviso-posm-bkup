@@ -28,12 +28,20 @@ jobs:
           PGPASSWORD: ${{ secrets.PG_PASSWORD }}
           PGDATABASE: ${{ secrets.PG_DATABASE }}
         run: |
-          TIMESTAMP=$(date +"%Y-%m-%d_%H-%M-%S")
+          TIMESTAMP=$(date +"%Y-%m-%d")
           BACKUP_FILE="backup_$TIMESTAMP.sql"
           pg_dump -h "$PGHOST" -v -U "$PGUSER" -d "$PGDATABASE" -F c -f "$BACKUP_FILE"
           echo "Backup file created: $BACKUP_FILE"
       - name: Check Backup File
         run: ls -lh
+      - name: Upload the file to Azure Blob Storage
+        uses: LanceMcCarthy/Action-AzureBlobUpload@v2
+        with:
+            source_folder: ${{BACKUP_FILE}}
+            connection_string: ${{ secrets.AZURE_STORAGE_CONNECTION }}
+            container_name: 'waposmdbbkup'
+            destination_folder: '.'
+            delete_if_exists: 'true'
 
     #   - name: Upload Backup to Azure Blob Storage
     #     env:
