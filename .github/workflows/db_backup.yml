@@ -12,6 +12,8 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
+      - name: Setup Backup File name
+        run: echo "BACKUP_FILE=backup_$(date +"%Y-%m-%d").sql" >> $GITHUB_ENV
 
       - name: Install PostgreSQL Client
         run: sudo apt-get update && sudo apt-get install -y postgresql-client
@@ -28,8 +30,6 @@ jobs:
           PGPASSWORD: ${{ secrets.PG_PASSWORD }}
           PGDATABASE: ${{ secrets.PG_DATABASE }}
         run: |
-          TIMESTAMP=$(date +"%Y-%m-%d")
-          BACKUP_FILE="backup_$TIMESTAMP.sql"
           pg_dump -h "$PGHOST" -v -U "$PGUSER" -d "$PGDATABASE" -F c -f "$BACKUP_FILE"
           echo "Backup file created: $BACKUP_FILE"
       - name: Check Backup File
@@ -37,7 +37,7 @@ jobs:
       - name: Upload the file to Azure Blob Storage
         uses: LanceMcCarthy/Action-AzureBlobUpload@v2
         with:
-            source_folder: ${{BACKUP_FILE}}
+            source_folder: ${{env.BACKUP_FILE}}
             connection_string: ${{ secrets.AZURE_STORAGE_CONNECTION }}
             container_name: 'waposmdbbkup'
             destination_folder: '.'
