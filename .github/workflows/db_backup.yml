@@ -34,7 +34,7 @@ jobs:
         run: |
           TIMESTAMP=$(date +"%Y-%m-%d_%H-%M-%S")
           BACKUP_FILE="backup_$TIMESTAMP.sql"
-          AZURE_CONTAINER="backups"
+          AZURE_CONTAINER="waposmdbbkup"
 
           # Install Azure CLI if not available
           if ! command -v az &> /dev/null; then
