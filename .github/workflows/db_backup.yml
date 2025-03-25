@@ -1,0 +1,51 @@
+name: PostgreSQL Backup to Azure
+
+on:
+  schedule:
+    - cron: '0 2 * * *' # Runs daily at 2 AM UTC
+  workflow_dispatch:  # Allows manual trigger
+
+jobs:
+  backup:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Install PostgreSQL Client
+        run: sudo apt-get update && sudo apt-get install -y postgresql-client
+
+      - name: Create Backup
+        env:
+          PGHOST: ${{ secrets.PG_HOST }}
+          PGUSER: ${{ secrets.PG_USER }}
+          PGPASSWORD: ${{ secrets.PG_PASSWORD }}
+          PGDATABASE: ${{ secrets.PG_DATABASE }}
+        run: |
+          TIMESTAMP=$(date +"%Y-%m-%d_%H-%M-%S")
+          BACKUP_FILE="backup_$TIMESTAMP.sql"
+          pg_dump -h "$PGHOST" -U "$PGUSER" -d "$PGDATABASE" -F c -f "$BACKUP_FILE"
+          echo "Backup file created: $BACKUP_FILE"
+
+      - name: Upload Backup to Azure Blob Storage
+        env:
+          AZURE_STORAGE_CONNECTION_STRING: ${{ secrets.AZURE_STORAGE_CONNECTION }}
+        run: |
+          TIMESTAMP=$(date +"%Y-%m-%d_%H-%M-%S")
+          BACKUP_FILE="backup_$TIMESTAMP.sql"
+          AZURE_CONTAINER="backups"
+
+          # Install Azure CLI if not available
+          if ! command -v az &> /dev/null; then
+            curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
+          fi
+
+          # Upload to Azure Blob Storage
+          az storage blob upload --connection-string "$AZURE_STORAGE_CONNECTION_STRING" \
+            --container-name "$AZURE_CONTAINER" \
+            --file "$BACKUP_FILE" \
+            --name "$BACKUP_FILE" \
+            --overwrite
+          
+          echo "Backup uploaded to Azure Storage: $BACKUP_FILE"
