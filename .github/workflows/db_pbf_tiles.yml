@@ -15,15 +15,12 @@ jobs:
       - name: Setup Backup File name
         run: echo "BACKUP_FILE=complete_$(date +"%Y-%m-%d").pbf" >> $GITHUB_ENV
 
-      - name: Install Ogr2Ogr
-        run: sudo apt-get update && sudo apt-get install -y gdal-bin
+      - name: Install Osmosis
+        run: sudo apt install osmosis
 
-      - name: Verify ogr2ogr Installation
-        run: ogr2ogr --version
+      - name: Verify osmosis Installation
+        run: osmosis --version
       
-      - name: Ensure PostgreSQL is supported
-        run: ogr2ogr --formats | grep PostgreSQL
-
       - name: Login to Azure
         uses: azure/login@v1
         with:
@@ -35,28 +32,38 @@ jobs:
           echo "PGUSER=${{ secrets.PG_USER }}" >> $GITHUB_ENV
           echo "PGPASSWORD=${{ secrets.PG_PASSWORD }}" >> $GITHUB_ENV
       
-      - name: Create PBF file from Postgresql
+      # - name: Create PBF file from Postgresql
+      #   env:
+      #     PGHOST: ${{ secrets.PG_HOST }}
+      #     PGUSER: ${{ secrets.PG_USER }}
+      #     PGPASSWORD: ${{ secrets.PG_PASSWORD }}
+      #     PGDATABASE: ${{ secrets.PG_DATABASE }}
+      #   run: |
+      #     ogr2ogr -f "OSM" $BACKUP_FILE \
+      #     PG:"host=$PGHOST dbname=$PGDATABASE user=$PGUSER password=$PGPASSWORD" \
+      #     --config OSM_USE_CUSTOM_INDEXING NO
+      # - name: Check Backup File
+      #   run: ls -lh
+
+
+      - name: Create PBF using osmosis and PostgreSQL
         env:
           PGHOST: ${{ secrets.PG_HOST }}
           PGUSER: ${{ secrets.PG_USER }}
           PGPASSWORD: ${{ secrets.PG_PASSWORD }}
           PGDATABASE: ${{ secrets.PG_DATABASE }}
         run: |
-          ogr2ogr -f "OSM" $BACKUP_FILE \
-          PG:"host=$PGHOST dbname=$PGDATABASE user=$PGUSER password=$PGPASSWORD" \
-          --config OSM_USE_CUSTOM_INDEXING NO
-      - name: Check Backup File
-        run: ls -lh
+          osmosis --read-apidb host=$PGHOST database=$PGDATABASE user=$PGUSER password=$PGPASSWORD validateSchemaVersion=no --write-pbf file=$BACKUP_FILE
       
-      - name: Create GeoJSON file from Postgresql
-        env:
-          PGHOST: ${{ secrets.PG_HOST }}
-          PGUSER: ${{ secrets.PG_USER }}
-          PGPASSWORD: ${{ secrets.PG_PASSWORD }}
-          PGDATABASE: ${{ secrets.PG_DATABASE }}
-        run: |
-          ogr2ogr -f "GeoJSON" complete_$(date +"%Y-%m-%d").geojson \
-          PG:"host=$PGHOST dbname=$PGDATABASE user=$PGUSER password=$PGPASSWORD" \
-          --config OSM_USE_CUSTOM_INDEXING NO
+      # - name: Create GeoJSON file from Postgresql
+      #   env:
+      #     PGHOST: ${{ secrets.PG_HOST }}
+      #     PGUSER: ${{ secrets.PG_USER }}
+      #     PGPASSWORD: ${{ secrets.PG_PASSWORD }}
+      #     PGDATABASE: ${{ secrets.PG_DATABASE }}
+      #   run: |
+      #     ogr2ogr -f "GeoJSON" $BACKUP_FILE \
+      #     PG:"host=$PGHOST dbname=$PGDATABASE user=$PGUSER password=$PGPASSWORD" \
+      #     --config OSM_USE_CUSTOM_INDEXING NO
       - name: Check Backup File
         run: ls -lh
