@@ -1,0 +1,53 @@
+name: Export POSM Database to PBF and .pmtiles
+
+on:
+  schedule:
+    - cron: '0 2 * * *' # Runs daily at 2 AM UTC
+  workflow_dispatch:  # Allows manual trigger
+
+jobs:
+  backup:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+      - name: Setup Backup File name
+        run: echo "BACKUP_FILE=complete_$(date +"%Y-%m-%d").pbf" >> $GITHUB_ENV
+
+      - name: Install Ogr2Ogr
+        run: sudo apt-get update && sudo apt-get install -y gdal-bin
+
+      - name: Verify ogr2ogr Installation
+        run: ogr2ogr --version
+
+      - name: Login to Azure
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.TDEI_CORE_AZURE_CREDS }}
+      
+      - name: Create PBF file from Postgresql
+        env:
+          PGHOST: ${{ secrets.PG_HOST }}
+          PGUSER: ${{ secrets.PG_USER }}
+          PGPASSWORD: ${{ secrets.PG_PASSWORD }}
+          PGDATABASE: ${{ secrets.PG_DATABASE }}
+        run: |
+          ogr2ogr -f "OSM" $BACKUP_FILE \
+          PG:"host=$PGHOST dbname=$PGDATABASE user=$PGUSER password=$PGPASSWORD" \
+          --config OSM_USE_CUSTOM_INDEXING NO
+      - name: Check Backup File
+        run: ls -lh
+      
+      - name: Create GeoJSON file from Postgresql
+        env:
+          PGHOST: ${{ secrets.PG_HOST }}
+          PGUSER: ${{ secrets.PG_USER }}
+          PGPASSWORD: ${{ secrets.PG_PASSWORD }}
+          PGDATABASE: ${{ secrets.PG_DATABASE }}
+        run: |
+          ogr2ogr -f "GeoJSON" complete_$(date +"%Y-%m-%d").geojson \
+          PG:"host=$PGHOST dbname=$PGDATABASE user=$PGUSER password=$PGPASSWORD" \
+          --config OSM_USE_CUSTOM_INDEXING NO
+      - name: Check Backup File
+        run: ls -lh
