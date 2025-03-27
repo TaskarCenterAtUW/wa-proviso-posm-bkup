@@ -54,6 +54,12 @@ jobs:
           osmosis --read-apidb host=$PGHOST database=$PGDATABASE user=$PGUSER password=$PGPASSWORD validateSchemaVersion=no --write-pbf file=$BACKUP_FILE
           osmium export -v -o output.geojson $BACKUP_FILE 
 
+      - name: Install Tippecanoe
+        uses: astrosat/tippecanoe-action@master
+      
+      - name: Create .pmtiles using Tippecanoe
+        run: tippecanoe -o output/proviso.pmtiles -Z 7 -z 18 -M 1000000 -l provisodata output.geojson --drop-densest-as-needed --force
+
       - name: Copy the created files into output folder
         run: |
           mkdir -p output
