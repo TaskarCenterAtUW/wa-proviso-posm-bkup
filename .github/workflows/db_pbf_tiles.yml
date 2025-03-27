@@ -37,7 +37,7 @@ jobs:
           PGDATABASE: ${{ secrets.PG_DATABASE }}
         run: |
           ogr2ogr -f "OSM" $BACKUP_FILE \
-          PG:'host=$PGHOST dbname=$PGDATABASE user=$PGUSER password="$PGPASSWORD"' \
+          PG:'host="$PGHOST" dbname="$PGDATABASE" user="$PGUSER" password="$PGPASSWORD"' \
           --config OSM_USE_CUSTOM_INDEXING NO
       - name: Check Backup File
         run: ls -lh
