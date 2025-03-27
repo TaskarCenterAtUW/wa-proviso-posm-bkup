@@ -55,7 +55,12 @@ jobs:
           osmium export -v -o output.geojson $BACKUP_FILE 
 
       - name: Install Tippecanoe
-        uses: astrosat/tippecanoe-action@master
+        run: |
+          git clone --branch master https://github.com/mapbox/tippecanoe.git
+          cd tippecanoe
+          make -j
+          sudo make install
+          tippecanoe --version
       
       - name: Create .pmtiles using Tippecanoe
       #  tippecanoe -z 18 -Z 8 -o proviso-tiles.pmtiles --drop-densest-as-needed --extend-zooms-if-still-dropping proviso-output.geojson
