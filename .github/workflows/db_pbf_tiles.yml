@@ -24,6 +24,9 @@ jobs:
       - name: Setup Backup File name
         run: echo "BACKUP_FILE=complete_$(date +"%Y-%m-%d").pbf" >> $GITHUB_ENV
 
+      - name: Setup Output Folder name
+        run: echo "OUTPUT_FOLDER=$(date +"%Y-%m-%d")" >> $GITHUB_ENV
+
       - name: Install Osmosis
         run: sudo apt install osmosis
       
@@ -65,5 +68,5 @@ jobs:
             source_folder: output
             connection_string: ${{ secrets.AZURE_STORAGE_CONNECTION }}
             container_name: 'waposmdbbkup'
-            destination_folder: '$(date +"%Y-%m-%d")'
+            destination_folder: ${{env.OUTPUT_FOLDER}}
             delete_if_exists: 'true'
