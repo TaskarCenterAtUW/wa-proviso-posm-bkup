@@ -20,6 +20,9 @@ jobs:
 
       - name: Verify ogr2ogr Installation
         run: ogr2ogr --version
+      
+      - name: Ensure PostgreSQL is supported
+        run: ogr2ogr --formats | grep PostgreSQL
 
       - name: Login to Azure
         uses: azure/login@v1
