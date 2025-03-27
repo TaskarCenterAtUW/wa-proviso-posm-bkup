@@ -2,7 +2,7 @@ name: Export POSM Database to PBF and .pmtiles
 
 on:
   schedule:
-    - cron: '0 2 * * *' # Runs daily at 2 AM UTC
+    - cron: '0 2 */2 * *' # Runs daily at 2 AM UTC
   workflow_dispatch:  # Allows manual trigger
 
 jobs:
@@ -58,13 +58,14 @@ jobs:
         uses: astrosat/tippecanoe-action@master
       
       - name: Create .pmtiles using Tippecanoe
-        run: tippecanoe -o output/proviso.pmtiles -Z 7 -z 18 -M 1000000 -l provisodata output.geojson --drop-densest-as-needed --force
+        run: tippecanoe -o proviso.pmtiles -Z 7 -z 18 -M 1000000 -l provisodata output.geojson --drop-densest-as-needed --force
 
       - name: Copy the created files into output folder
         run: |
           mkdir -p output
           cp output.geojson output/output.geojson
           cp $BACKUP_FILE output/$BACKUP_FILE
+          cp proviso.pmtiles output/proviso.pmtiles
       
       - name: Check Backup File
         run: ls -lh
