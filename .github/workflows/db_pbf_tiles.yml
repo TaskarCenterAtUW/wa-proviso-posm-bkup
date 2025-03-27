@@ -28,6 +28,12 @@ jobs:
         uses: azure/login@v1
         with:
           creds: ${{ secrets.TDEI_CORE_AZURE_CREDS }}
+      - name: Set PostgreSQL Environment Variables
+        run: |
+          echo "PGHOST=${{ secrets.PG_HOST }}" >> $GITHUB_ENV
+          echo "PGDATABASE=${{ secrets.PG_DATABASE }}" >> $GITHUB_ENV
+          echo "PGUSER=${{ secrets.PG_USER }}" >> $GITHUB_ENV
+          echo "PGPASSWORD=${{ secrets.PG_PASSWORD }}" >> $GITHUB_ENV
       
       - name: Create PBF file from Postgresql
         env:
@@ -37,7 +43,7 @@ jobs:
           PGDATABASE: ${{ secrets.PG_DATABASE }}
         run: |
           ogr2ogr -f "OSM" $BACKUP_FILE \
-          PG:'host="$PGHOST" dbname="$PGDATABASE" user="$PGUSER" password="$PGPASSWORD"' \
+          PG:"host=$PGHOST dbname=$PGDATABASE user=$PGUSER password=$PGPASSWORD" \
           --config OSM_USE_CUSTOM_INDEXING NO
       - name: Check Backup File
         run: ls -lh
