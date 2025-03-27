@@ -11,7 +11,7 @@ jobs:
     steps:
       - name: Install Tippecanoe
         run: |
-          git clone --branch master https://github.com/mapbox/tippecanoe.git
+          git clone --tag 2.75.1 https://github.com/felt/tippecanoe.git
           cd tippecanoe
           make -j
           sudo make install
