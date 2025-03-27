@@ -19,7 +19,7 @@ jobs:
         run: sudo apt install osmosis
 
       - name: Verify osmosis Installation
-        run: osmosis --version
+        run: osmosis
       
       - name: Login to Azure
         uses: azure/login@v1
