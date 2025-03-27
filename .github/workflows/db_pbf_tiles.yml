@@ -58,7 +58,8 @@ jobs:
         uses: astrosat/tippecanoe-action@master
       
       - name: Create .pmtiles using Tippecanoe
-        run: tippecanoe -o proviso.pmtiles -Z 7 -z 18 -M 1000000 -l provisodata output.geojson --drop-densest-as-needed --force
+      #  tippecanoe -z 18 -Z 8 -o proviso-tiles.pmtiles --drop-densest-as-needed --extend-zooms-if-still-dropping proviso-output.geojson
+        run: tippecanoe -z 18 -Z 8 -o proviso.pmtiles --drop-densest-as-needed --extend-zooms-if-still-dropping -l provisodata output.geojson
 
       - name: Copy the created files into output folder
         run: |
