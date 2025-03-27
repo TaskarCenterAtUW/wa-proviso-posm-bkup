@@ -26,6 +26,9 @@ jobs:
 
       - name: Install Osmosis
         run: sudo apt install osmosis
+      
+      - name: Install Osmium
+        run: sudo apt-get install -y osmium-tool
 
       - name: Login to Azure
         uses: azure/login@v1
@@ -38,20 +41,6 @@ jobs:
           echo "PGUSER=${{ secrets.PG_USER }}" >> $GITHUB_ENV
           echo "PGPASSWORD=${{ secrets.PG_PASSWORD }}" >> $GITHUB_ENV
       
-      # - name: Create PBF file from Postgresql
-      #   env:
-      #     PGHOST: ${{ secrets.PG_HOST }}
-      #     PGUSER: ${{ secrets.PG_USER }}
-      #     PGPASSWORD: ${{ secrets.PG_PASSWORD }}
-      #     PGDATABASE: ${{ secrets.PG_DATABASE }}
-      #   run: |
-      #     ogr2ogr -f "OSM" $BACKUP_FILE \
-      #     PG:"host=$PGHOST dbname=$PGDATABASE user=$PGUSER password=$PGPASSWORD" \
-      #     --config OSM_USE_CUSTOM_INDEXING NO
-      # - name: Check Backup File
-      #   run: ls -lh
-
-
       - name: Create PBF using osmosis and PostgreSQL
         env:
           PGHOST: ${{ secrets.PG_HOST }}
@@ -60,16 +49,21 @@ jobs:
           PGDATABASE: ${{ secrets.PG_DATABASE }}
         run: |
           osmosis --read-apidb host=$PGHOST database=$PGDATABASE user=$PGUSER password=$PGPASSWORD validateSchemaVersion=no --write-pbf file=$BACKUP_FILE
+          osmium export -v -o output.geojson $BACKUP_FILE 
+
+      - name: Copy the created files into output folder
+        run: |
+          mkdir -p output
+          cp output.geojson output/output.geojson
+          cp $BACKUP_FILE output/$BACKUP_FILE
       
-      # - name: Create GeoJSON file from Postgresql
-      #   env:
-      #     PGHOST: ${{ secrets.PG_HOST }}
-      #     PGUSER: ${{ secrets.PG_USER }}
-      #     PGPASSWORD: ${{ secrets.PG_PASSWORD }}
-      #     PGDATABASE: ${{ secrets.PG_DATABASE }}
-      #   run: |
-      #     ogr2ogr -f "GeoJSON" $BACKUP_FILE \
-      #     PG:"host=$PGHOST dbname=$PGDATABASE user=$PGUSER password=$PGPASSWORD" \
-      #     --config OSM_USE_CUSTOM_INDEXING NO
       - name: Check Backup File
         run: ls -lh
+      - name: Upload the file to Azure Blob Storage
+        uses: LanceMcCarthy/Action-AzureBlobUpload@v2
+        with:
+            source_folder: output
+            connection_string: ${{ secrets.AZURE_STORAGE_CONNECTION }}
+            container_name: 'waposmdbbkup'
+            destination_folder: '$(date +"%Y-%m-%d")'
+            delete_if_exists: 'true'
