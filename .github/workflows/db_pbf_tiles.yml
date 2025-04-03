@@ -2,7 +2,7 @@ name: Export POSM Database to PBF and .pmtiles
 
 on:
   schedule:
-    - cron: '0 2 */2 * *' # Runs daily at 2 AM UTC
+    - cron: '0 2 */2 * *' # Runs every 2 days at 2 AM UTC
   workflow_dispatch:  # Allows manual trigger
 
 jobs:
@@ -21,6 +21,7 @@ jobs:
 
       - name: Checkout Repository
         uses: actions/checkout@v3
+
       - name: Setup Backup File name
         run: echo "BACKUP_FILE=complete_$(date +"%Y-%m-%d").pbf" >> $GITHUB_ENV
 
@@ -29,7 +30,7 @@ jobs:
 
       - name: Install Osmosis
         run: sudo apt install osmosis
-      
+
       - name: Install Osmium
         run: sudo apt-get install -y osmium-tool
 
@@ -37,13 +38,14 @@ jobs:
         uses: azure/login@v1
         with:
           creds: ${{ secrets.TDEI_CORE_AZURE_CREDS }}
+
       - name: Set PostgreSQL Environment Variables
         run: |
           echo "PGHOST=${{ secrets.PG_HOST }}" >> $GITHUB_ENV
           echo "PGDATABASE=${{ secrets.PG_DATABASE }}" >> $GITHUB_ENV
           echo "PGUSER=${{ secrets.PG_USER }}" >> $GITHUB_ENV
           echo "PGPASSWORD=${{ secrets.PG_PASSWORD }}" >> $GITHUB_ENV
-      
+
       - name: Create PBF using osmosis and PostgreSQL
         env:
           PGHOST: ${{ secrets.PG_HOST }}
@@ -62,9 +64,8 @@ jobs:
           make -j
           sudo make install
           tippecanoe --version
-      
+
       - name: Create .pmtiles using Tippecanoe
-      #  tippecanoe -z 18 -Z 8 -o proviso-tiles.pmtiles --drop-densest-as-needed --extend-zooms-if-still-dropping proviso-output.geojson
         run: tippecanoe -z 18 -Z 8 -o proviso.pmtiles --drop-densest-as-needed --extend-zooms-if-still-dropping -l provisodata output.geojson
 
       - name: Copy the created files into output folder
@@ -73,14 +74,24 @@ jobs:
           cp output.geojson output/output.geojson
           cp $BACKUP_FILE output/$BACKUP_FILE
           cp proviso.pmtiles output/proviso.pmtiles
-      
+
       - name: Check Backup File
-        run: ls -lh
-      - name: Upload the file to Azure Blob Storage
+        run: ls -lh output
+
+      - name: Upload the file to Azure Blob Storage (dated folder)
         uses: LanceMcCarthy/Action-AzureBlobUpload@v2
         with:
-            source_folder: output
-            connection_string: ${{ secrets.AZURE_STORAGE_CONNECTION }}
-            container_name: 'waposmdbbkup'
-            destination_folder: ${{env.OUTPUT_FOLDER}}
-            delete_if_exists: 'true'
+          source_folder: output
+          connection_string: ${{ secrets.AZURE_STORAGE_CONNECTION }}
+          container_name: 'waposmdbbkup'
+          destination_folder: ${{ env.OUTPUT_FOLDER }}
+          delete_if_exists: 'true'
+
+      - name: Upload the file to Azure Blob Storage (latest folder)
+        uses: LanceMcCarthy/Action-AzureBlobUpload@v2
+        with:
+          source_folder: output
+          connection_string: ${{ secrets.AZURE_STORAGE_CONNECTION }}
+          container_name: 'waposmdbbkup'
+          destination_folder: latest
+          delete_if_exists: 'true'
