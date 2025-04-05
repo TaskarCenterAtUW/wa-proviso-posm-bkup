@@ -57,7 +57,7 @@ jobs:
           PGDATABASE: ${{ secrets.PG_DATABASE }}
         run: |
           osmosis --read-apidb host=$PGHOST database=$PGDATABASE user=$PGUSER password=$PGPASSWORD validateSchemaVersion=no --write-pbf file=$BACKUP_FILE
-          osmium export -v -o output.geojson $BACKUP_FILE 
+          osmium export -v -a id -o output.geojson $BACKUP_FILE 
           jq '.features[] |= (.properties.osm_id = .properties["@id"] | del(.properties["@id"]))' output.geojson > output_with_id.geojson
 
       - name: Install Tippecanoe

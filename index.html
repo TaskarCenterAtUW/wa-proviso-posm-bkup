@@ -369,14 +369,14 @@
 
   let PAINT_RULES = [
     {
-      dataLayer: "provisooutput",
+      dataLayer: "provisodata",
       symbolizer: new FeaturePainter(),
       filter : function (z,feature){
         return feature.geomType != 1;
       }
     },
     {
-      dataLayer: "provisooutput",
+      dataLayer: "provisodata",
       symbolizer: new PointPainter(),
       filter : function (z,feature){
         return feature.geomType === 1;
@@ -402,7 +402,7 @@
   // 		symbolizer: new MyPlaceSymbolizer(),
   // 	}];
   const layer = protomapsL.leafletLayer({
-    url: 'https://provisodevstorage.blob.core.windows.net/waposmdbbkup/2025-03-27/test/proviso-tiles.pmtiles',
+    url: 'https://provisodevstorage.blob.core.windows.net/waposmdbbkup/latest/proviso.pmtiles',
     // maxDataZoom:21,
     maxZoom:22,
     maxDataZoom: 18,
