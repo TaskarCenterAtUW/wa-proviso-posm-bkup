@@ -242,37 +242,6 @@
     maxZoom:22
   }).addTo(map);
 
-  const info = L.control();
-
-  info.onAdd = function (map) {
-    this._div = L.DomUtil.create('div', 'info');
-    this.update();
-    return this._div;
-  };
-
-  info.update = function (props) {
-    if(props) {
-      info._div.classList.remove("noPadding");
-    } else {
-      info._div.classList.add("noPadding");
-    }
-    //console.log(info)
-    let contents = '';
-    if (props) {
-      if (props.County) {
-        contents = `<b>County:</b> ${props.County}<br><b>Sidewalks Count:</b> ${props.sidewalks_count}<br><b>Kerb Count:</b> ${props.kerb_count}<br><b>Crossing Count:</b> ${props.crossing_count}<br><b>Sidewalks Length:</b> ${props.sidewalks_length_m}<br><b>Crossings Length:</b> ${props.crossings_length_m}<br><b>Kerb to Crossing Ratio: </b> ${props.kerb_to_crossing_ratio}`
-      } else if (props.CityName) {
-        contents = `<b>Name:</b>${props.CityName}<br><b>Sidewalks Count:</b> ${props.sidewalks_count}<br><b>Kerb Count:</b> ${props.kerb_count}<br><b>Crossing Count:</b> ${props.crossing_count}<br><b>Sidewalks Length:</b> ${props.sidewalks_length_m}<br><b>Crossing Lenght:</b> ${props.crossings_length_m}<br><b>Kerb to Crossing Ratio:</b> ${props.kerb_to_crossing_ratio}`;
-      }
-      else {
-        contents = `<b>mapping_status:${props.mapping_status}</b><br>sidewalks_count: ${props.sidewalks_count}<br>kerb_count: ${props.kerb_count}<br>crossing_count: ${props.crossing_count}<br>sidewalks_length_m: ${props.sidewalks_length_m}<br>crossings_length_m: ${props.crossings_length_m}<br>links_length_m: ${props.links_length_m}<br>kerb_to_crossing_ratio: ${props.kerb_to_crossing_ratio}`
-      }
-    }
-
-    this._div.innerHTML = `${contents}`;
-  };
-
-  info.addTo(map);
 
   var layers = L.control().layers
 
@@ -285,7 +254,9 @@
   function isCrossing(d){ //FFF07C
     return d['highway'] == 'footway' && d['footway'] == 'crossing';
   }
-
+  function isKerb(d){
+    return d['barrier'] == 'kerb';
+  }
 
 
   const baseLayers = {
@@ -295,36 +266,6 @@
   const position = {
     position: 'topleft',
     collapsed: false,
-  }
-
-  // const layerControl = L.control.layers(baseLayers, overlays, position).addTo(map);
-
-  function resetHighlight(e) {
-    const properties = e.target?.feature?.properties;
-    if (properties?.tile_no) {
-      dowsJson.resetStyle(e.target);
-    } else if (properties?.County) {
-      countyJson.resetStyle(e.target);
-    }
-    else {
-      tractsJson.resetStyle(e.target);
-    }
-
-
-    info.update();
-  }
-
-
-  function zoomToFeature(e) {
-    map.fitBounds(e.target.getBounds());
-  }
-
-  function onEachFeature(feature, layer) {
-    layer.on({
-      mouseover: highlightFeature,
-      mouseout: resetHighlight,
-      click: zoomToFeature
-    });
   }
 
   function getFeatureColor(feature) {
@@ -343,6 +284,34 @@
     }
     // return getColor(props.mapping_status);
   }
+
+  function getPointColor(feature){
+    const props = feature.props || {};
+    if (isKerb(props)) {
+      return getKerbColor(feature);
+    }
+    else   {
+      return '#FF7F50';
+    }
+    
+  }
+
+  function getKerbColor(feature) {
+    const props = feature.props || {};
+    if (props['kerb'] === 'lowered') {
+      return '#885053';
+
+    }
+    if (props['kerb'] === 'raised') {
+      return '#94C9A9';
+    }
+    if (props['kerb'] === 'flush') {
+      return '#320A28';
+    }
+    if (props['kerb'] == null) {
+      return '#777DA7';
+    }
+  }
   
   function getFeatureContent(properties){
     // const props = feature.feature.props || {};
@@ -357,7 +326,7 @@
       const props = feature.props || {};
       let fill =  '#80FF72';// getColor(props.mapping_status);
       context.strokeStyle = '#7EE8FA';
-      context.lineWidth = 2;
+      context.lineWidth = z > 19 ? 5 : 1;
       context.lineJoin = 'round';
       context.lineCap = 'round';
 
@@ -374,14 +343,26 @@
         }
         context.stroke();
       }
-      else if (feature.geomType === 1) {
-        // Draw point
-        context.arc(ring[0].x, ring[0].y, 5, 0, Math.PI * 2);
-        context.fillStyle = fill;
-        context.fill();
-      }
       else {
         console.log("Unknown geomType");
+      }
+    }
+  }
+  class PointPainter {
+    draw(context, geom, z, feature) {
+      const props = feature.props || {};
+      let fill =  getPointColor(feature);
+      if(!isKerb(props)){
+        return;
+      }
+      context.beginPath();
+      const ring = geom[0];
+      if (feature.geomType === 1) {
+        // Draw point
+        const radius = z > 19 ? 6 : 3;
+        context.arc(ring[0].x, ring[0].y, radius, 0, Math.PI * 2);
+        context.fillStyle = fill;
+        context.fill();
       }
     }
   }
@@ -390,6 +371,16 @@
     {
       dataLayer: "provisooutput",
       symbolizer: new FeaturePainter(),
+      filter : function (z,feature){
+        return feature.geomType != 1;
+      }
+    },
+    {
+      dataLayer: "provisooutput",
+      symbolizer: new PointPainter(),
+      filter : function (z,feature){
+        return feature.geomType === 1;
+      }
     }
   ];
 
@@ -434,15 +425,22 @@
       return;
     }
     // console.log(e.latlng);
-    const featuresMap = await layer.queryTileFeaturesDebug(e.latlng.lng,e.latlng.lat, 16);
+    const featuresMap = await layer.queryTileFeaturesDebug(e.latlng.lng,e.latlng.lat, 10);
     // console.log(featuresMap);
     const features = featuresMap.get('');
+    console.log(featuresMap);
     // Get the first feature under cursor
 
 //   const features = await layer.identify(e.latlng, 1); // Identify features at cursor location
 
     if (features.length > 0) {
-      const feature = features[0]; // Get first feature under cursor
+      // If there is a feature with geomType 1, use that
+      const feature = features.find(f => f.feature.geomType === 1) || features[0];
+      if (feature.feature.geomType == 1){
+        console.log("Point feature");
+        console.log(feature.feature.props);
+      }
+      // const feature = features[0]; // Get first feature under cursor
       // Avoid duplicate popups when hovering over the same feature
       if (feature.id !== lastFeatureId) {
         lastFeatureId = feature.id;

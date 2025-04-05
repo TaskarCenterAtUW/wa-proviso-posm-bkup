@@ -34,6 +34,9 @@ jobs:
       - name: Install Osmium
         run: sudo apt-get install -y osmium-tool
 
+      - name: Install jq
+        run: sudo apt-get install -y jq
+
       - name: Login to Azure
         uses: azure/login@v1
         with:
@@ -55,6 +58,7 @@ jobs:
         run: |
           osmosis --read-apidb host=$PGHOST database=$PGDATABASE user=$PGUSER password=$PGPASSWORD validateSchemaVersion=no --write-pbf file=$BACKUP_FILE
           osmium export -v -o output.geojson $BACKUP_FILE 
+          jq '.features[] |= (.properties.osm_id = .properties["@id"] | del(.properties["@id"]))' output.geojson > output_with_id.geojson
 
       - name: Install Tippecanoe
         run: |
@@ -66,12 +70,12 @@ jobs:
           tippecanoe --version
 
       - name: Create .pmtiles using Tippecanoe
-        run: tippecanoe -z 18 -Z 8 -o proviso.pmtiles --drop-densest-as-needed --extend-zooms-if-still-dropping -l provisodata output.geojson
+        run: tippecanoe -z 18 -Z 8 -o proviso.pmtiles --drop-densest-as-needed --extend-zooms-if-still-dropping -l provisodata output_with_id.geojson
 
       - name: Copy the created files into output folder
         run: |
           mkdir -p output
-          cp output.geojson output/output.geojson
+          cp output_with_id.geojson output/output.geojson
           cp $BACKUP_FILE output/$BACKUP_FILE
           cp proviso.pmtiles output/proviso.pmtiles
 
