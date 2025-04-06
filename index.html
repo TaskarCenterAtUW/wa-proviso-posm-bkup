@@ -211,8 +211,30 @@
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary" id="submitIssue">Submit Issue</button>
+            <button type="button" class="btn btn-primary" id="submitIssue">
+             
+              Submit Issue
+            </button>
+            <div class="text-center">
+            <div class="spinner-border text-secondary visually-hidden" id="reportLoader" role="status">
+              <span class="visually-hidden">Loading...</span>
+            </div>
           </div>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Toast for submission-->
+    <div class="toast-container position-fixed bottom-0 start-50 translate-middle-x p-3">
+      <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="true" data-bs-delay="3000">
+        <div class="toast-header text-bg-primary">
+          <strong class="me-auto">Report Issue</strong>
+          <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body">
+          Result of Issue reported.
         </div>
       </div>
     </div>
@@ -386,10 +408,19 @@
 
     function closeTooltip(){
       document.getElementById('mapTooltip').style.display = 'none';
+      
       if (rightClickMarker) {
         map.removeLayer(rightClickMarker);
         rightClickMarker = null;
       }
+    }
+
+    function showToast(message){
+      const toastElement = document.getElementById('liveToast');
+      const toastBody = toastElement.querySelector('.toast-body');
+      toastBody.textContent = message;
+      const toast = new bootstrap.Toast(toastElement);
+      toast.show();
     }
   // let LABEL_RULES = [{
   // 		dataLayer: "provisooutput",
@@ -491,7 +522,7 @@
   let rightClickMarker = null;
 
   document.addEventListener('DOMContentLoaded', function () {
-    let rightClickMarker = null;
+    // let rightClickMarker = null;
     var selectedLat = 0.0;
     var selectedLng = 0.0;
     map.on('contextmenu', function(e) {
@@ -554,7 +585,6 @@
       document.getElementById('longitude').value = selectedLng;
       reportIssueModel.show();
       // Add your logic to handle the report issue action here
-      console.log("Report Issue clicked");
   });
 
     // Submit issue logic
@@ -564,6 +594,8 @@
         alert("Please enter a description.");
         return;
       }
+      const loaderElement = document.getElementById('reportLoader');
+      loaderElement.classList.remove('visually-hidden');
       // Add your logic to handle the submit issue action here
       console.log("Issue submitted:", selectedLat, selectedLng, issueDescription);
       fetch('https://wa-proviso-api-dev.azurewebsites.net/issues/create-issue', {
@@ -581,16 +613,23 @@
         if (response.ok) {
           closeTooltip();
           document.getElementById('issueDescription').value = '';
-          alert("Issue submitted successfully!"); // Do better here.
+          // alert("Issue submitted successfully!"); // Do better here.
+          loaderElement.classList.add('visually-hidden');
           closeModal();
+          showToast("Issue submitted successfully!");
         } else {
-          alert("Error submitting issue. Please try again.");
+          // alert("Error submitting issue. Please try again.");
+          loaderElement.classList.add('visually-hidden');
           closeModal();
+          showToast("Error submitting issue. Please try again.");
         }
       }).catch(error => {
         console.error('Error:', error);
-        alert("Error submitting issue. Please try again.");
+        
+        loaderElement.classList.add('visually-hidden');
+
         closeModal();
+        showToast("Error submitting issue. Please try again.");
       });
 
 
