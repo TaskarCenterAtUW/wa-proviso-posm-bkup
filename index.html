@@ -422,10 +422,6 @@
       const toast = new bootstrap.Toast(toastElement);
       toast.show();
     }
-  // let LABEL_RULES = [{
-  // 		dataLayer: "provisooutput",
-  // 		symbolizer: new MyPlaceSymbolizer(),
-  // 	}];
   const layer = protomapsL.leafletLayer({
     url: 'https://provisodevstorage.blob.core.windows.net/waposmdbbkup/latest/proviso.pmtiles',
     // maxDataZoom:21,
@@ -455,15 +451,10 @@
     const features = featuresMap.get('');
     // Get the first feature under cursor
 
-//   const features = await layer.identify(e.latlng, 1); // Identify features at cursor location
 
     if (features.length > 0) {
       // If there is a feature with geomType 1, use that
       const feature = features.find(f => f.feature.geomType === 1) || features[0];
-      // if (feature.feature.geomType == 1){
-      //   console.log("Point feature");
-      //   console.log(feature.feature.props);
-      // }
       const currentFeatureId = feature.feature.props['osm_id'];
       // const feature = features[0]; // Get first feature under cursor
       // Avoid duplicate popups when hovering over the same feature
@@ -631,11 +622,6 @@
         closeModal();
         showToast("Error submitting issue. Please try again.");
       });
-
-
-      // alert("Issue submitted successfully!");
-     
-      // document.getElementById('reportIssueModel').modal('hide');
     });
 
 
