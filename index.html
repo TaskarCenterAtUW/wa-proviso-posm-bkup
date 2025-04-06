@@ -221,11 +221,6 @@
 
   const map = L.map('map').setView([47.22740460889729, -120.72253275530806], 7);
 
-  // var CartoDB_DarkMatter = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-  //   attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
-  //   subdomains: 'abcd',
-  //   maxZoom: 22
-  // }).addTo(map);
 
   var CartoDB_Positron = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
 	attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
@@ -329,19 +324,18 @@
       context.lineWidth = z > 19 ? 5 : 1;
       context.lineJoin = 'round';
       context.lineCap = 'round';
-
-
       context.beginPath();
-      // console.log(geom);
       const ring = geom[0];
-      // console.log(feature.geomType);
+
       if (feature.geomType === 2 || feature.geomType === 3) {
-        context.strokeStyle = getFeatureColor(feature);
-        context.moveTo(ring[0].x, ring[0].y);
-        for (const pt of ring.slice(1)) {
-          context.lineTo(pt.x, pt.y);
+        for (const singleGeom of geom) {
+          context.strokeStyle = getFeatureColor(feature);
+          context.moveTo(singleGeom[0].x, singleGeom[0].y);
+          for (const pt of singleGeom.slice(1)) {
+            context.lineTo(pt.x, pt.y);
+          }
+          context.stroke();
         }
-        context.stroke();
       }
       else {
         console.log("Unknown geomType");
@@ -428,7 +422,6 @@
     const featuresMap = await layer.queryTileFeaturesDebug(e.latlng.lng,e.latlng.lat, 10);
     // console.log(featuresMap);
     const features = featuresMap.get('');
-    console.log(featuresMap);
     // Get the first feature under cursor
 
 //   const features = await layer.identify(e.latlng, 1); // Identify features at cursor location
@@ -436,14 +429,15 @@
     if (features.length > 0) {
       // If there is a feature with geomType 1, use that
       const feature = features.find(f => f.feature.geomType === 1) || features[0];
-      if (feature.feature.geomType == 1){
-        console.log("Point feature");
-        console.log(feature.feature.props);
-      }
+      // if (feature.feature.geomType == 1){
+      //   console.log("Point feature");
+      //   console.log(feature.feature.props);
+      // }
+      const currentFeatureId = feature.feature.props['osm_id'];
       // const feature = features[0]; // Get first feature under cursor
       // Avoid duplicate popups when hovering over the same feature
-      if (feature.id !== lastFeatureId) {
-        lastFeatureId = feature.id;
+      if (currentFeatureId !== lastFeatureId) {
+        lastFeatureId = currentFeatureId;
         const content = getFeatureContent(feature.feature.props);
         popup
           .setLatLng(e.latlng)
