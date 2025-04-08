@@ -23,7 +23,7 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Setup Backup File name
-        run: echo "BACKUP_FILE=complete_$(date +"%Y-%m-%d").pbf" >> $GITHUB_ENV
+        run: echo "BACKUP_FILE=complete.pbf" >> $GITHUB_ENV
 
       - name: Setup Output Folder name
         run: echo "OUTPUT_FOLDER=$(date +"%Y-%m-%d")" >> $GITHUB_ENV
