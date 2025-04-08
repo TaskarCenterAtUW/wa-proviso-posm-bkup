@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -84,9 +85,9 @@
         }
         .container2 {
             height: 100%;
-            display: flex;
-            flex-direction: column;
-            padding: 0px 5%;
+            /* display: flex;
+            flex-direction: column; */
+            padding: 0px;
             /* width: 90%; */
             /* max-width: min-content; */
         }
@@ -172,6 +173,80 @@
             background-color: #0000ff;
             color: white;
         }
+
+        .mapActionWindow {
+          display: none;
+          position: fixed;
+          top: 20px;
+          left: 50%;
+          transform: translateX(-50%);
+          z-index: 1000;
+          width: 500px;
+          background: white;
+          box-shadow: 0px 0.5rem 1rem 0px #00000026;
+          border: 1px solid #0000002d;
+          border-radius: 8px;
+          padding: 15px;
+        }
+        .actionWindowHeader {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          border-bottom: 1px solid #0000002d;
+          padding-bottom: 10px;
+        }
+        .actionWindowBody {
+          padding-top: 15px;
+          display: flex;
+          justify-content: space-between;
+          align-items: flex-end;
+        }
+        .awAction {
+          /* align-content: flex-end; */
+        }
+        .awContent .title {
+          color: #838383;
+          font-size: 10px;
+          font-weight: 400;
+          margin-bottom: 0px;
+          letter-spacing: 1px;
+        }
+        .awContent .value {
+          color: #333;
+          font-size: 18px;
+          font-weight: 400;
+        }
+        /* .leaflet-popup-content-wrapper, .leaflet-popup-tip {
+          background: #ffffff;
+          color: #333;
+          box-shadow: 0 3px 14px rgba(0, 0, 0, 0.4);
+          border-radius: 0px;
+        } */
+        .leaflet-popup-content-wrapper, .leaflet-popup-tip {
+          background: #29323c;
+          color: #ffffff;
+          box-shadow: 0 3px 14px rgba(0, 0, 0, 0.4);
+          border-radius: 0px;
+        }
+        .leaflet-popup-content {
+            margin: 20px 15px 25px 15px;
+        }
+        .infoBlock {
+          display: flex;
+          justify-content: space-between;
+          margin-bottom: -10px;
+        }
+        .infoBlock .key {
+          text-transform: capitalize;
+          margin-right: 8px;
+          /* color: #838383; */
+          color: #a0a7b4;
+        }
+        .infoBlock .value {
+          font-weight: 500;
+          text-transform: capitalize;
+          margin-right: 5px;
+        }
     </style>
 </head>
 <body>
@@ -201,7 +276,7 @@
               <input type="text" disabled class="form-control" id="longitude" placeholder="Longitude">
             </div>
           </div>
-          <div class="row">
+          <div class="row mt-3">
             <div class="col-md-12">
               <label for="issueDescription" class="form-label">Issue Description</label>
               <textarea class="form-control" id="issueDescription" rows="3" placeholder="Enter description here."></textarea>
@@ -275,6 +350,18 @@
     return d['barrier'] == 'kerb';
   }
 
+  function getCrossingColor(d){
+    if (d['crossing'] == 'marked') {
+      return '#FFD166';
+    }
+    else if (d['crossing'] == 'unmarked') {
+      return '#dda15e';
+    }
+    else {
+      return '#FFD166';
+    }
+  }
+
 
   const baseLayers = {
     'Carto': CartoDB_Positron,
@@ -288,16 +375,16 @@
   function getFeatureColor(feature) {
     const props = feature.props || {};
     if (isCrossing(props)) {
-      return '#FFF07C';
+      return getCrossingColor(props);// '#ffd166';
     }
     else if (isSidewalk(props)) {
-      return '#7EE8FA';
+      return '#4cc9f0';
     }
     else if (isFootpath(props)) {
-      return '#E58C8A';
+      return '#ee6c4d';
     }
     else {
-      return '#cccccc';
+      return '#8093f1';
     }
     // return getColor(props.mapping_status);
   }
@@ -316,26 +403,65 @@
   function getKerbColor(feature) {
     const props = feature.props || {};
     if (props['kerb'] === 'lowered') {
-      return '#885053';
-
+      return '#06d6a0';
     }
     if (props['kerb'] === 'raised') {
-      return '#94C9A9';
+      return '#8cb369';
     }
     if (props['kerb'] === 'flush') {
-      return '#320A28';
+      return '#006d77';
     }
     if (props['kerb'] == null) {
-      return '#777DA7';
+      return '#588157';
     }
   }
   
   function getFeatureContent(properties){
     // const props = feature.feature.props || {};
     const pairs = Object.entries(properties);
-    const content = pairs.map(([key, value]) => `<b>${key}:</b> ${value}`).join('<br>');
+    const content = pairs.map(([key, value]) => `<div class="infoBlock"><div class="key">${key}</div><div class="value">${value}</div></div>`).join('<br>');
     return content;
   }
+
+  // Legend
+	function getLegendColor(d) {
+		switch (d) {
+			case 'Sidewalk':
+				return '#4cc9f0';
+			case 'Crossing Marked':
+				return '#ffd166';
+      case 'Crossing Unmarked':
+				return '#dda15e';
+			case 'Footway':
+				return '#ee6c4d';
+			case 'Kerb Lowered':
+				return '#06d6a0';
+      case 'Kerb Flushed':
+				return '#006d77';
+      case 'Kerb Raised':
+				return '#8cb369';
+			case 'Traffic Island':
+				return '#8093f1';
+		}
+	}
+  
+  const legend = L.control({ position: 'bottomleft' });
+
+	legend.onAdd = function (map) {
+		const div = L.DomUtil.create('div', 'info legend');
+		const status = ['Sidewalk', 'Crossing Marked', 'Crossing Unmarked', 'Footway', 'Kerb Lowered', 'Kerb Flushed', 'Kerb Raised', 'Traffic Island'];
+		const labels = [];
+
+		for (let i = 0; i < status.length; i++) {
+
+			labels.push(`<i style="background:${getLegendColor(status[i])}"></i> ${status[i]}`);
+		}
+
+		div.innerHTML = labels.join('<br>');
+		return div;
+	};
+
+	legend.addTo(map);
 
 
   class FeaturePainter {
@@ -343,7 +469,7 @@
       const props = feature.props || {};
       let fill =  '#80FF72';// getColor(props.mapping_status);
       context.strokeStyle = '#7EE8FA';
-      context.lineWidth = z > 19 ? 5 : 1;
+      context.lineWidth = z > 19 ? 5 : 1.5;
       context.lineJoin = 'round';
       context.lineCap = 'round';
       context.beginPath();
@@ -632,31 +758,27 @@
   // control.addTo(map);
 
 </script>
-<div id="mapTooltip" style="
-  display: none;
-  position: fixed;
-  bottom: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 1000;
-  width: 500px;
-  height: 64px;
-  background: white;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-  padding: 12px;
-  font-family: Roboto, sans-serif;
-  font-size: 16px;
-  color: rgba(0,0,0,.87);
-  margin-bottom: 0;
-  transition-duration: .15s;
-  transition-property: tranform;
-">
-    <div style="display: flex; justify-content: space-between; align-items: center;">
+<div id="mapTooltip" class="mapActionWindow">
+    <div class="actionWindowHeader">
+      <div class="actionWindowTitle">Inspect</div>
+      <button id="closeTooltip" type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+    </div>
+    <div class="actionWindowBody">
+      <div class="awContent">
+        <div class="title">LATITUDE & LONGITUDE</div>
+        <div id="latlngDisplay" class="value">41.33332, -112.383839</div>
+      </div>
+      <div class="awAction">
+        <button type="button" id="openInPosm" class="btn btn-outline-primary btn-sm">Open in Posm</button>
+        <button type="button" id="reportIssue" class="btn btn-outline-danger btn-sm">Report Issue</button>
+      </div>
+    </div>
+    <!-- <div style="display: flex; justify-content: space-between; align-items: center;">
         <strong id="latlngDisplay" style="margin-left: 26px; line-height: 64px;">41.33332, -112.383839</strong>
         <p id="openInPosm" style="margin-right: 26px; line-height: 64px; cursor: pointer; color: #007bff;">Open in Posm</p>
         <p id="reportIssue" style="margin-right: 26px; line-height: 64px; cursor: pointer; color: #007bff;" >Report Issue</p>
         <span id="closeTooltip" style="cursor: pointer; font-size: 18px;">&times;</span>
-    </div>
+    </div> -->
 </div>
 </body>
 </html>
