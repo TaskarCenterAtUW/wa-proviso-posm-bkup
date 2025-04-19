@@ -26,4 +26,4 @@ jobs:
           echo "MC_PASSWORD=${{ secrets.MC_PASSWORD }}" >> $GITHUB_ENV
       - name: Run Script
         run: |
-          python -c delta_datasets.py
+          python delta_datasets.py
