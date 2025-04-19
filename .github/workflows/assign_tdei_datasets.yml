@@ -1,0 +1,29 @@
+name: Assign TDEI Datasets
+on:
+  workflow_dispatch: # Allows manual trigger
+  schedule:
+    - cron: '0 2 * * *' # Runs daily at 2 AM UTC
+jobs:
+  assign_tdei_datasets:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+      - name: Install Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r tdei-req.txt
+      
+      - name: Setup Environment Variables
+        run: |
+          echo "MONGO_DB_CONNECTION=${{ secrets.MONGO_DB_CONNECTION }}" >> $GITHUB_ENV
+          echo "BASE_URL=${{ secrets.BASE_URL }}" >> $GITHUB_ENV
+          echo "MC_USERNAME=${{ secrets.MC_USERNAME }}" >> $GITHUB_ENV
+          echo "MC_PASSWORD=${{ secrets.MC_PASSWORD }}" >> $GITHUB_ENV
+      - name: Run Script
+        run: |
+          python -c delta_datasets.py"
