@@ -691,16 +691,7 @@
     });
 
     // Open in Posm logic
-    document.getElementById('openInPosm').addEventListener('click', function () {
-      const zoom = map.getZoom();
-      if (zoom < 16) {
-        alert("Please zoom in to at least level 16 to open in Posm.");
-        return;
-      }
-      const latlngDetail = '' + selectedLat + ', ' + selectedLng;
-      const posmUrl = `https://waprovisoposm.westus.cloudapp.azure.com/edit#map=${zoom}/${selectedLat}/${selectedLng}`;
-      window.open(posmUrl, '_blank');
-    });
+   
 
     // Report issue logic
     document.getElementById('reportIssue').addEventListener('click', function () {
