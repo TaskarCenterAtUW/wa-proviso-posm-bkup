@@ -315,8 +315,8 @@
 </div>
 <script type="text/javascript">
 
-  const map = L.map('map').setView([42.886551,-78.875052], 15.79);
-
+  const map = L.map('map').setView([42.886551,-78.875052], 17);
+  
   var CartoDB_Positron = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
 	attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
 	subdomains: 'abcd',
@@ -324,10 +324,11 @@
 }).addTo(map);
 
   var hexagonWMS = L.tileLayer.wms('https://orthos.its.ny.gov/arcgis/services/wms/Latest/MapServer/WMSServer',{
-    layers:'1,2,3',
+    layers:'0,1,2,3',
     format:'image/png',
     transparent:true,
-    attribution:' NYSDOT',
+    attribution:'NYSDOT',
+    version:'1.3.0',
     maxZoom: 22
   });
 
@@ -555,7 +556,7 @@
       toast.show();
     }
   const layer = protomapsL.leafletLayer({
-    url: 'https://raw.githubusercontent.com/vindagollc/kepler-map-styles/refs/heads/main/buffalony.pmtiles',
+    url: 'https://raw.githubusercontent.com/vindagollc/kepler-map-styles/refs/heads/main/buffalony-pt.pmtiles',
     // maxDataZoom:21,
     maxZoom:22,
     maxDataZoom: 18,
@@ -612,26 +613,34 @@
   }
 
   // URL query parameter to get the project ID
-  const urlParams = new URLSearchParams(window.location.search);
-  const projectId = urlParams.get('id'); // 'id' query parameter
+  // const urlParams = new URLSearchParams(window.location.search);
+  // const projectId = urlParams.get('id'); // 'id' query parameter
+  const projectId = '22'
   if (projectId) {
     // API URL
-    const apiUrl = `https://wa-proviso-api-dev.azurewebsites.net/projects/${projectId}/min`;
+    const apiUrl = `https://raw.githubusercontent.com/vindagollc/kepler-map-styles/refs/heads/main/buffalo_ny_downtown.geojson`;
 
     // Fetch API data and dynamically create overlays
     fetch(apiUrl)
       .then(response => response.json())
       .then(data => {
-        if (data.geometry) {
-          const geoJsonLayer = L.geoJSON(data.geometry);
+        if (data) {
+          const geoJsonLayer = L.geoJSON(data,{ style: function (feature) {
+    return {
+      color: 'blue',       // boundary line color
+      weight: 2,           // line thickness
+      fill: 'light-blue',         // prevents fill
+      fillOpacity: 0.05       // make sure fill is transparent if present
+    };
+  }});
 
-          const layerName = data.name || 'Unknown Layer'; // Fallback if no name
+          const layerName = 'Buffalo Downtown';// data.name || 'Unknown Layer'; // Fallback if no name
           overlays[layerName] = geoJsonLayer;
 
           geoJsonLayer.addTo(map); // Add the GeoJSON layer to the map
 
           // Optional: Fit map to the bounds of the new geometry layer
-          map.fitBounds(geoJsonLayer.getBounds());
+          // map.fitBounds(geoJsonLayer.getBounds());
         } else {
           alert(`No geometry found for ${projectId}`);
         }
@@ -761,6 +770,7 @@
 
   });
 
+  map.setMinZoom(15);
 
   // var control = new L.Control.Button()
   // control.addTo(map);
