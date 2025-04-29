@@ -349,10 +349,10 @@
   }
 
   function getCrossingColor(d){
-    if (d['crossing'] == 'marked') {
+    if (d['crossing'] == 'marked' || d['crossing:markings'] == 'yes') {
       return '#FFD166';
     }
-    else if (d['crossing'] == 'unmarked') {
+    else if (d['crossing'] == 'unmarked' || d['crossing:markings'] == 'no') {
       return '#dda15e';
     }
     else {
