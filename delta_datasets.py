@@ -17,6 +17,9 @@ db_collection = db['tdei_datasets']
 
 pipeline = [
     {
+        '$match': {
+            'environment': 'prod'
+        },
         '$group': {
             '_id': '$project_id', 
             'datasets': {
