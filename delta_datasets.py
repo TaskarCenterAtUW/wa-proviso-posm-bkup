@@ -83,7 +83,7 @@ def get_datasets_from_search(name, token):
     }
     params = {
         'query': name,
-        'env': 'stage'
+        'env': 'prod'
     }
     response = requests.get(url, headers=headers, params=params)
     if response.status_code != 200:
