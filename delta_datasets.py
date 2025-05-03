@@ -19,7 +19,10 @@ pipeline = [
     {
         '$match': {
             'environment': 'prod'
-        },
+        }
+    },
+    {
+        
         '$group': {
             '_id': '$project_id', 
             'datasets': {
@@ -173,7 +176,7 @@ def get_delta_dataset(filtered_datasets, linked_versions, project_id):
             'tdei_dataset_id': ds['tdei_dataset_id'],
             'version': ds['metadata']['dataset_detail']['version'],
             'mc_project_id': project_id,
-            'environment': 'stage'
+            'environment': 'prod'
             
         })
         except (KeyError, TypeError) as e:
