@@ -51,15 +51,14 @@ jobs:
         with:
           creds: ${{ secrets.TDEI_CORE_AZURE_CREDS }}
         
-      - name: Change the working directory
-        run: cd tdei-complete-set
-    
       - name: Fetch , download and extract all the projects
+        working-directory: ./tdei-complete-set
         run: | 
             python fetch_all_projects.py
             python extract_downloaded_projects.py
     
       - name: Combine all the geojson files
+        working-directory: ./tdei-complete-set
         run: |
             jq '{"type": "FeatureCollection", "features": [.[] | .features[]]}' --slurp ./downloads/*/*/*.geojson > washington_output.geojson
       - name: Install Tippecanoe
@@ -72,6 +71,7 @@ jobs:
           tippecanoe --version
 
       - name: Create .pmtiles using Tippecanoe
+        working-directory: ./tdei-complete-set
         run: tippecanoe -z 18 -Z 8 -o washington_complete.pmtiles --drop-densest-as-needed --extend-zooms-if-still-dropping -l wa-proviso-data washington_output.geojson
 
       - name: Copy the created files into output folder
