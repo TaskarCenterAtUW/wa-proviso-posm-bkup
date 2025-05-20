@@ -50,7 +50,8 @@ jobs:
         env:
             TDEI_USERNAME: ${{ secrets.TDEI_USERNAME }}
             TDEI_PASSWORD: ${{ secrets.TDEI_PASSWORD }}
-        run: | 
+        run: |
+            mkdir -p downloads
             python fetch_all_projects.py
             python extract_downloaded_projects.py
     
