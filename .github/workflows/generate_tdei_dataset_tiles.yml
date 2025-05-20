@@ -75,8 +75,8 @@ jobs:
       - name: Copy the created files into output folder
         run: |
           mkdir -p output
-          cp washington_output.geojson output/washington_output.geojson
-          cp washington_complete.pmtiles output/washington_complete.pmtiles
+          cp tdei-complete-set/washington_output.geojson output/washington_output.geojson
+          cp tdei-complete-set/washington_complete.pmtiles output/washington_complete.pmtiles
 
       - name: Check Backup File
         run: ls -lh output
@@ -96,5 +96,5 @@ jobs:
           source_folder: output
           connection_string: ${{ secrets.AZURE_STORAGE_CONNECTION }}
           container_name: 'waposmdbbkup'
-          destination_folder: latest
+          destination_folder: wa-tdei-latest
           delete_if_exists: 'true'
