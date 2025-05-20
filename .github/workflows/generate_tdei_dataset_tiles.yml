@@ -37,12 +37,6 @@ jobs:
       - name: Setup Output Folder name
         run: echo "OUTPUT_FOLDER=wa-tdei-$(date +"%Y-%m-%d")" >> $GITHUB_ENV
 
-      - name: Install Osmosis
-        run: sudo apt install osmosis
-
-      - name: Install Osmium
-        run: sudo apt-get install -y osmium-tool
-
       - name: Install jq
         run: sudo apt-get install -y jq
 
