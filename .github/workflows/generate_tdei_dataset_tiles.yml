@@ -1,0 +1,102 @@
+name: Export POSM Database to PBF and .pmtiles
+
+on:
+  schedule:
+    - cron: '0 2 */2 * *' # Runs every 2 days at 2 AM UTC
+  workflow_dispatch:  # Allows manual trigger
+
+jobs:
+  backup:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Set up Java 21
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'  # Use 'zulu' or 'adopt' if needed
+          java-version: '21'
+
+      - name: Verify Java Version
+        run: java -version
+
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+    
+      - name: Install Python
+        uses: actions/setup-python@v4
+        with:
+            python-version: '3.11'
+      - name: Install Dependencies
+        run: |
+            python -m pip install --upgrade pip
+            pip install -r tdei-dataset.txt
+
+      - name: Setup Backup File name
+        run: echo "BACKUP_FILE=washington_complete.pbf" >> $GITHUB_ENV
+
+      - name: Setup Output Folder name
+        run: echo "OUTPUT_FOLDER=wa-tdei-$(date +"%Y-%m-%d")" >> $GITHUB_ENV
+
+      - name: Install Osmosis
+        run: sudo apt install osmosis
+
+      - name: Install Osmium
+        run: sudo apt-get install -y osmium-tool
+
+      - name: Install jq
+        run: sudo apt-get install -y jq
+
+      - name: Login to Azure
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.TDEI_CORE_AZURE_CREDS }}
+        
+      - name: Change the working directory
+        run: cd tdei-complete-set
+    
+      - name: Fetch , download and extract all the projects
+        run: | 
+            python fetch_all_projects.py
+            python extract_downloaded_projects.py
+    
+      - name: Combine all the geojson files
+        run: |
+            jq '{"type": "FeatureCollection", "features": [.[] | .features[]]}' --slurp ./downloads/*/*/*.geojson > washington_output.geojson
+      - name: Install Tippecanoe
+        run: |
+          git clone https://github.com/felt/tippecanoe.git
+          cd tippecanoe
+          git checkout tags/2.75.1
+          make -j
+          sudo make install
+          tippecanoe --version
+
+      - name: Create .pmtiles using Tippecanoe
+        run: tippecanoe -z 18 -Z 8 -o washington_complete.pmtiles --drop-densest-as-needed --extend-zooms-if-still-dropping -l wa-proviso-data washington_output.geojson
+
+      - name: Copy the created files into output folder
+        run: |
+          mkdir -p output
+          cp washington_output.geojson output/washington_output.geojson
+          cp washington_complete.pmtiles output/washington_complete.pmtiles
+
+      - name: Check Backup File
+        run: ls -lh output
+
+      - name: Upload the file to Azure Blob Storage (dated folder)
+        uses: LanceMcCarthy/Action-AzureBlobUpload@v2
+        with:
+          source_folder: output
+          connection_string: ${{ secrets.AZURE_STORAGE_CONNECTION }}
+          container_name: 'waposmdbbkup'
+          destination_folder: ${{ env.OUTPUT_FOLDER }}
+          delete_if_exists: 'true'
+
+      - name: Upload the file to Azure Blob Storage (latest folder)
+        uses: LanceMcCarthy/Action-AzureBlobUpload@v2
+        with:
+          source_folder: output
+          connection_string: ${{ secrets.AZURE_STORAGE_CONNECTION }}
+          container_name: 'waposmdbbkup'
+          destination_folder: latest
+          delete_if_exists: 'true'
