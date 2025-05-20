@@ -37,11 +37,6 @@ jobs:
       - name: Setup Output Folder name
         run: echo "OUTPUT_FOLDER=wa-tdei-$(date +"%Y-%m-%d")" >> $GITHUB_ENV
     
-      - name: Setup TDEI Credentials
-        run: |
-         echo "TDEI_USERNAME=${{ secrets.TDEI_USERNAME }}" >> $GITHUB_ENV
-         echo "TDEI_PASSWORD=${{ secrets.TDEI_PASSWORD }}" >> $GITHUB_ENV
-
       - name: Install jq
         run: sudo apt-get install -y jq
 
@@ -52,6 +47,9 @@ jobs:
         
       - name: Fetch , download and extract all the projects
         working-directory: ./tdei-complete-set
+        env:
+            TDEI_USERNAME: ${{ secrets.TDEI_USERNAME }}
+            TDEI_PASSWORD: ${{ secrets.TDEI_PASSWORD }}
         run: | 
             python fetch_all_projects.py
             python extract_downloaded_projects.py
