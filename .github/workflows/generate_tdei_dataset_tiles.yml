@@ -1,4 +1,4 @@
-name: Export POSM Database to PBF and .pmtiles
+name: Export TDEI Datasets to PMTiles
 
 on:
   schedule:
