@@ -85,6 +85,8 @@ class TDEIDatasetDownloader :
         if not self.access_token:
             print(f'No access token found. Please authenticate first.')
             return []
+        if not os.path.exists(download_folder):
+            os.makedirs(download_folder)
         # api/v1/osw/d3134df9-be46-4453-876c-ca77fd98e89e?format=osw&file_version=latest
         download_url = f'{self.base_url}/api/v1/osw/{dataset_id}?format=osw&file_version=latest'
         headers = {
