@@ -247,6 +247,32 @@
           text-transform: capitalize;
           margin-right: 5px;
         }
+        /*
+        Search bar styles
+        */
+        #search-container {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            z-index: 1000;
+            background-color: white;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.2);
+        }
+        #search-input {
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
+        #search-button {
+            padding: 5px 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
@@ -254,6 +280,12 @@
     <div class="mapContainer">
         <div id='map'></div>
     </div>
+    <!-- Search container-->
+    <div id="search-container">
+      <input type="text" id="search-input" placeholder="Search For Dataset">
+      <button id="search-button">Search</button>
+    </div>
+
     <!-- Modal element for Report -->
     <div class="modal fade" id="reportIssueModel" tabindex="-1" aria-labelledby="reportIssueModel" aria-hidden="true">
       <div class="modal-dialog">
@@ -623,39 +655,77 @@
   let overlays = {
     'Data': layer,
   }
+  // Add boundaries overlay
+  const boundariesLayerUrl = 'https://provisodevstorage.blob.core.windows.net/waposmdbbkup/wa-tdei-latest/washington_dataset_boundaries.geojson';
+  // const boundariesLayer = L.geoJSON.ajax(boundariesLayerUrl, {
+  //   style: function (feature) {
+  //     return {
+  //       color: '#000',
+  //       weight: 2,
+  //       fillOpacity: 0.1
+  //     };
+  //   },
+  //   onEachFeature: function (feature, layer) {
+  //     layer.bindPopup(feature.properties.dataset_name || 'Unnamed');
+  //   }
+  // });
+  // overlays['Boundaries'] = boundariesLayer;
+  fetch(boundariesLayerUrl)
+    .then(response => response.json())
+    .then(data => {
+      const boundariesLayer = L.geoJSON(data, {
+        style: function (feature) {
+          return {
+            color: '#000',
+            weight: 2,
+            fillOpacity: 0.1
+          };
+        },
+        onEachFeature: function (feature, layer) {
+          const layerDescription = feature.properties.dataset_name +' ' + feature.properties.dataset_version;
+          layer.bindPopup(layerDescription || 'Unnamed');
+        }
+      });
+      overlays['Boundaries'] = boundariesLayer;
+      boundariesLayer.addTo(map);
+      L.control.layers(baseLayers, overlays, position).addTo(map);
+      // Add the layer to the control
+    })
+    .catch(error => console.error('Error loading boundaries:', error));
+  // L.control.layers(baseLayers, overlays, position).addTo(map);
 
   // URL query parameter to get the project ID
   const urlParams = new URLSearchParams(window.location.search);
-  const projectId = urlParams.get('id'); // 'id' query parameter
-  if (projectId) {
-    // API URL
-    const apiUrl = `https://wa-proviso-api-dev.azurewebsites.net/projects/${projectId}/min`;
+  // const projectId = urlParams.get('id'); // 'id' query parameter
+  // if (projectId) {
+  //   // API URL
+  //   const apiUrl = `https://wa-proviso-api-dev.azurewebsites.net/projects/${projectId}/min`;
 
-    // Fetch API data and dynamically create overlays
-    fetch(apiUrl)
-      .then(response => response.json())
-      .then(data => {
-        if (data.geometry) {
-          const geoJsonLayer = L.geoJSON(data.geometry);
+  //   // Fetch API data and dynamically create overlays
+  //   fetch(apiUrl)
+  //     .then(response => response.json())
+  //     .then(data => {
+  //       if (data.geometry) {
+  //         const geoJsonLayer = L.geoJSON(data.geometry);
 
-          const layerName = data.name || 'Unknown Layer'; // Fallback if no name
-          overlays[layerName] = geoJsonLayer;
+  //         const layerName = data.name || 'Unknown Layer'; // Fallback if no name
+  //         overlays[layerName] = geoJsonLayer;
 
-          geoJsonLayer.addTo(map); // Add the GeoJSON layer to the map
+  //         geoJsonLayer.addTo(map); // Add the GeoJSON layer to the map
 
-          // Optional: Fit map to the bounds of the new geometry layer
-          map.fitBounds(geoJsonLayer.getBounds());
-        } else {
-          alert(`No geometry found for ${projectId}`);
-        }
-        L.control.layers(baseLayers, overlays, position).addTo(map);
-      })
-      .catch(error => {
-        console.error('Error fetching data:', error);
-      });
-  } else {
-    L.control.layers(baseLayers, overlays, position).addTo(map);
-  }
+  //         // Optional: Fit map to the bounds of the new geometry layer
+  //         map.fitBounds(geoJsonLayer.getBounds());
+  //       } else {
+  //         alert(`No geometry found for ${projectId}`);
+  //       }
+  //       L.control.layers(baseLayers, overlays, position).addTo(map);
+  //     })
+  //     .catch(error => {
+  //       console.error('Error fetching data:', error);
+  //     });
+  // } else {
+  //   L.control.layers(baseLayers, overlays, position).addTo(map);
+  // }
 
   let rightClickMarker = null;
 
@@ -807,5 +877,7 @@
         <span id="closeTooltip" style="cursor: pointer; font-size: 18px;">&times;</span>
     </div> -->
 </div>
+
+
 </body>
 </html>
