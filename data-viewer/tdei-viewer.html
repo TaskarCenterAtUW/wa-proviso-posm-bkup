@@ -1,259 +1,376 @@
-
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WA Proviso Data Viewer</title>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-          integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-            integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
-    <script src="https://unpkg.com/protomaps-leaflet@4.0.1/dist/protomaps-leaflet.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OSConnect Data Viewer</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <script src="https://unpkg.com/protomaps-leaflet@4.0.1/dist/protomaps-leaflet.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+    rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+    integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"
+    integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy"
+    crossorigin="anonymous"></script>
 
-    <style>
-        html,
-        body {
-            height: 100%;
-            margin: 0;
-            font-family: "Roboto", sans-serif;
-            color: #0d0c22;
-        }
+  <style>
+    html,
+    body {
+      height: 100%;
+      margin: 0;
+      font-family: "Roboto", sans-serif;
+      color: #0d0c22;
+    }
 
-        .leaflet-container {
-            height: 400px;
-            width: 600px;
-            max-width: 100%;
-            max-height: 100%;
-        }
-    </style>
+    .leaflet-container {
+      height: 400px;
+      width: 600px;
+      max-width: 100%;
+      max-height: 100%;
+    }
+  </style>
 
-    <style>
-        #map {
-            width: 100%;
-            height: 100%;
-            /* border-radius: 20px; */
-            /* box-shadow: 0 0px 12px 1px #6666664d; */
-        }
+  <style>
+    #map {
+      width: 100%;
+      height: 100%;
+      /* border-radius: 20px; */
+      /* box-shadow: 0 0px 12px 1px #6666664d; */
+    }
 
-        .info {
-            padding: 6px 8px;
-            font: 14px/16px Arial, Helvetica, sans-serif;
-            background: white;
-            background: rgba(255, 255, 255, 0.8);
-            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
-            border-radius: 5px;
-        }
+    .info {
+      padding: 6px 8px;
+      font: 14px/16px Arial, Helvetica, sans-serif;
+      background: white;
+      background: rgba(255, 255, 255, 0.8);
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+      border-radius: 5px;
+    }
 
-        .info h4 {
-            margin: 0 0 5px;
-            color: #777;
-        }
+    .info h4 {
+      margin: 0 0 5px;
+      color: #777;
+    }
 
-        .legend {
-            text-align: left;
-            line-height: 18px;
-            color: #555;
-        }
+    .legend {
+      text-align: left;
+      line-height: 18px;
+      color: #555;
+    }
 
-        .legend i {
-            width: 18px;
-            height: 18px;
-            float: left;
-            margin-right: 8px;
-            opacity: 0.95;
-        }
+    .legend i {
+      width: 18px;
+      height: 18px;
+      float: left;
+      margin-right: 8px;
+      opacity: 0.95;
+    }
 
-        .leaflet-control-button {
-            cursor: pointer;
-            width: 83px !important;
-            font-size: 14px;
-        }
-        .leaflet-control-layers label {
-            font-size: 14px !important;
-        }
-        .noPadding {
-            padding: 0 !important;
-        }
-        .container2 {
-            height: 100%;
-            /* display: flex;
+    .leaflet-control-button {
+      cursor: pointer;
+      width: 83px !important;
+      font-size: 14px;
+    }
+
+    .leaflet-control-layers label {
+      font-size: 14px !important;
+    }
+
+    .noPadding {
+      padding: 0 !important;
+    }
+
+    .container2 {
+      height: 100%;
+      /* display: flex;
             flex-direction: column; */
-            padding: 0px;
-            /* width: 90%; */
-            /* max-width: min-content; */
-        }
-        .mapContainer {
-            height: 100%;
-            margin-bottom: 20px;
-        }
-        .inforContainer {
-            border: 1px solid #dbe6e8;
-            background-color: #fbfdff;
-            padding: 15px 15px;
-            border-radius: 15px;
-            box-shadow: 0 0px 8px 2px #66666617;
-            margin: 10px 0px;
-        }
-        .statsContainer {
-            display: flex;
-            justify-content: space-between;
-        }
-        .itemTitle {
-            font-size: 12px;
-            color: #83879b;
-            font-weight: 400;
-            margin-bottom: 8px;
-            letter-spacing: 1px;
-        }
-        .itemValue {
-            font-weight: 700;
-            font-size: 16px;
-        }
-        .projectTitle {
-            font-size: 18px;
-            font-weight: 300;
-            /* margin-bottom: 15px;
-            border-bottom: 1px dashed #ddd; */
-        }
+      padding: 0px;
+      /* width: 90%; */
+      /* max-width: min-content; */
+    }
 
-        .projectSubTitle {
-            margin-top:10px;
-            font-size: 16px;
-            font-weight: 300;
-        }
-        .reportDate {
-            font-size: 14px;
-            color: #7a7a7a;
-        }
-        .flexHeader {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 10px;
-        }
-        table {
-            font-size: 12px;
-            border-collapse: collapse;
-            width: 100%;
-        }
-        td, th {
-            border: 1px solid #dddddd;
-            text-align: left;
-            padding: 6px;
-        }
-        tr:nth-child(1) {
-            background-color: #ecf3f7;
-        }
-        /* td:nth-child(1) {
+    .mapContainer {
+      height: 100%;
+      margin-bottom: 20px;
+    }
+
+    .inforContainer {
+      border: 1px solid #dbe6e8;
+      background-color: #fbfdff;
+      padding: 15px 15px;
+      border-radius: 15px;
+      box-shadow: 0 0px 8px 2px #66666617;
+      margin: 10px 0px;
+    }
+
+    .statsContainer {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .itemTitle {
+      font-size: 12px;
+      color: #83879b;
+      font-weight: 400;
+      margin-bottom: 8px;
+      letter-spacing: 1px;
+    }
+
+    .itemValue {
+      font-weight: 700;
+      font-size: 16px;
+    }
+
+    .projectTitle {
+      font-size: 18px;
+      font-weight: 300;
+      /* margin-bottom: 15px;
+            border-bottom: 1px dashed #ddd; */
+    }
+
+    .projectSubTitle {
+      margin-top: 10px;
+      font-size: 16px;
+      font-weight: 300;
+    }
+
+    .reportDate {
+      font-size: 14px;
+      color: #7a7a7a;
+    }
+
+    .flexHeader {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    table {
+      font-size: 12px;
+      border-collapse: collapse;
+      width: 100%;
+    }
+
+    td,
+    th {
+      border: 1px solid #dddddd;
+      text-align: left;
+      padding: 6px;
+    }
+
+    tr:nth-child(1) {
+      background-color: #ecf3f7;
+    }
+
+    /* td:nth-child(1) {
             background-color: #f5f5f5;
         } */
-        .statusReadytoRelease {
-            background-color: #ff7f50;
-        }
-        .statusValidationInProgress {
-            background-color: #ffff00;
-        }
-        .statusScheduled {
-            background-color: #9c27b0;
-            color:white;
-        }
-        .statusPending {
-            background-color: #808080;
-        }
-        .statusReleased{
-            background-color: #0000ff;
-            color: white;
-        }
+    .statusReadytoRelease {
+      background-color: #ff7f50;
+    }
 
-        .mapActionWindow {
-          display: none;
-          position: fixed;
-          top: 20px;
-          left: 50%;
-          transform: translateX(-50%);
-          z-index: 1000;
-          width: 500px;
-          background: white;
-          box-shadow: 0px 0.5rem 1rem 0px #00000026;
-          border: 1px solid #0000002d;
-          border-radius: 8px;
-          padding: 15px;
-        }
-        .actionWindowHeader {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          border-bottom: 1px solid #0000002d;
-          padding-bottom: 10px;
-        }
-        .actionWindowBody {
-          padding-top: 15px;
-          display: flex;
-          justify-content: space-between;
-          align-items: flex-end;
-        }
-        .awAction {
-          /* align-content: flex-end; */
-        }
-        .awContent .title {
-          color: #838383;
-          font-size: 10px;
-          font-weight: 400;
-          margin-bottom: 0px;
-          letter-spacing: 1px;
-        }
-        .awContent .value {
-          color: #333;
-          font-size: 18px;
-          font-weight: 400;
-        }
-        /* .leaflet-popup-content-wrapper, .leaflet-popup-tip {
+    .statusValidationInProgress {
+      background-color: #ffff00;
+    }
+
+    .statusScheduled {
+      background-color: #9c27b0;
+      color: white;
+    }
+
+    .statusPending {
+      background-color: #808080;
+    }
+
+    .statusReleased {
+      background-color: #0000ff;
+      color: white;
+    }
+
+    .mapActionWindow {
+      display: none;
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 1000;
+      width: 500px;
+      background: white;
+      box-shadow: 0px 0.5rem 1rem 0px #00000026;
+      border: 1px solid #0000002d;
+      border-radius: 8px;
+      padding: 15px;
+    }
+
+    .actionWindowHeader {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #0000002d;
+      padding-bottom: 10px;
+    }
+
+    .actionWindowBody {
+      padding-top: 15px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+    }
+
+    .awAction {
+      /* align-content: flex-end; */
+    }
+
+    .awContent .title {
+      color: #838383;
+      font-size: 10px;
+      font-weight: 400;
+      margin-bottom: 0px;
+      letter-spacing: 1px;
+    }
+
+    .awContent .value {
+      color: #333;
+      font-size: 18px;
+      font-weight: 400;
+    }
+
+    /* .leaflet-popup-content-wrapper, .leaflet-popup-tip {
           background: #ffffff;
           color: #333;
           box-shadow: 0 3px 14px rgba(0, 0, 0, 0.4);
           border-radius: 0px;
         } */
-        .leaflet-popup-content-wrapper, .leaflet-popup-tip {
-          background: #29323c;
-          color: #ffffff;
-          box-shadow: 0 3px 14px rgba(0, 0, 0, 0.4);
-          border-radius: 0px;
-        }
-        .leaflet-popup-content {
-            margin: 20px 15px 25px 15px;
-        }
-        .infoBlock {
-          display: flex;
-          justify-content: space-between;
-          margin-bottom: -10px;
-        }
-        .infoBlock .key {
-          text-transform: capitalize;
-          margin-right: 8px;
-          /* color: #838383; */
-          color: #a0a7b4;
-        }
-        .infoBlock .value {
-          font-weight: 500;
-          text-transform: capitalize;
-          margin-right: 5px;
-        }
-    </style>
+    .leaflet-popup-content-wrapper,
+    .leaflet-popup-tip {
+      background: #29323c;
+      color: #ffffff;
+      box-shadow: 0 3px 14px rgba(0, 0, 0, 0.4);
+      border-radius: 0px;
+    }
+
+    .leaflet-popup-content {
+      margin: 20px 15px 25px 15px;
+    }
+
+    .infoBlock {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: -10px;
+    }
+
+    .infoBlock .key {
+      text-transform: capitalize;
+      margin-right: 8px;
+      /* color: #838383; */
+      color: #a0a7b4;
+    }
+
+    .infoBlock .value {
+      font-weight: 500;
+      text-transform: capitalize;
+      margin-right: 5px;
+    }
+
+    /*
+        Search bar styles
+        */
+
+    #search-wrapper {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      background: #fff;
+      padding: 6px 12px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+      z-index: 1000;
+    }
+
+    #search-container {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: transparent;
+      border: none;
+      padding: 0;
+      position: static;
+    }
+
+
+    #search-input {
+      flex: 1;
+      height: 32px;
+      padding: 0 8px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 14px;
+    }
+
+    #search-button {
+      height: 32px;
+      padding: 0 12px;
+      background: linear-gradient(135deg, #17a2b8 0%, #138496 100%);
+      color: white;
+      border: none;
+      border-radius: 3px;
+      cursor: pointer;
+    }
+
+    #info-button {
+      width: 23px;
+      height: 23px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #17a2b8, #138496);
+      border: none;
+      border-radius: 50%;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+      color: #fff;
+      cursor: pointer;
+      transition: transform .1s, box-shadow .2s;
+    }
+  </style>
 </head>
+
 <body>
-<div class="container2">
+  <div class="container2">
     <div class="mapContainer">
-        <div id='map'></div>
+      <div id='map'></div>
     </div>
+    <!-- Search container-->
+    <div id="search-wrapper">
+      <div id="search-container">
+        <input type="text" id="search-input" placeholder="Search For Dataset">
+        <button id="search-button">Search</button>
+      </div>
+      <button type="button" id="info-button" title="About this viewer">
+        <i class="bi bi-info-lg"></i>
+      </button>
+    </div>
+
     <!-- Modal element for Report -->
     <div class="modal fade" id="reportIssueModel" tabindex="-1" aria-labelledby="reportIssueModel" aria-hidden="true">
       <div class="modal-dialog">
@@ -265,55 +382,81 @@
           <div class="modal-body">
             <p>Please confirm the details below</p>
             <div class="row">
-            <div class="col-md-6">
-              <label for="latitude" class="form-label">Latitude</label>
-              <input type="text" disabled class="form-control" id="latitude" placeholder="Latitude">
-            </div>
-    
-            <!-- Second Input Field -->
-            <div class="col-md-6">
-              <label for="longitude" class="form-label">Longitude </label>
-              <input type="text" disabled class="form-control" id="longitude" placeholder="Longitude">
-            </div>
-          </div>
-          <div class="row mt-3">
-            <div class="col-md-12">
-              <label for="issueDescription" class="form-label">Issue Description</label>
-              <textarea class="form-control" id="issueDescription" rows="3" placeholder="Enter description here."></textarea>
-            </div>
-          </div>
-          <div class="row mt-3">
-            <div class="col-md-6">
-              <label for="issueReporterEmail" class="form-label">Email ID</label>
-              <input type="email" class="form-control" id="issueReporterEmail" placeholder="Email ID">
-            </div>
-            <div class="col-md-6">
-                <label for="issueReporterName" class="form-label">Name</label>
-                <input type="text" class="form-control" id="issueReporterName" placeholder="Name">
-            </div>
-          </div>
+              <div class="col-md-6">
+                <label for="latitude" class="form-label">Latitude</label>
+                <input type="text" disabled class="form-control" id="latitude" placeholder="Latitude">
+              </div>
 
+              <!-- Second Input Field -->
+              <div class="col-md-6">
+                <label for="longitude" class="form-label">Longitude </label>
+                <input type="text" disabled class="form-control" id="longitude" placeholder="Longitude">
+              </div>
+            </div>
+            <div class="row mt-3">
+              <div class="col-md-12">
+                <label for="issueDescription" class="form-label">Issue Description*</label>
+                <textarea class="form-control" id="issueDescription" rows="3"
+                  placeholder="Enter description here."></textarea>
+              </div>
+            </div>
+            <div class="row mt-3">
+              <div class="col-md-6">
+                <label for="issueReporterEmail" class="form-label">Email ID*</label>
+                <input type="email" class="form-control" id="issueReporterEmail" placeholder="Email ID">
+              </div>
+              <div class="col-md-6">
+                <label for="issueReporterName" class="form-label">Name</label>
+                <input type="text" class="form-control" id="issueReporterName" placeholder="Name (optional)">
+              </div>
+            </div>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
             <button type="button" class="btn btn-primary" id="submitIssue">
-             
+
               Submit Issue
             </button>
             <div class="text-center">
-            <div class="spinner-border text-secondary visually-hidden" id="reportLoader" role="status">
-              <span class="visually-hidden">Loading...</span>
+              <div class="spinner-border text-secondary visually-hidden" id="reportLoader" role="status">
+                <span class="visually-hidden">Loading...</span>
+              </div>
             </div>
+
           </div>
-            
+        </div>
+      </div>
+    </div>
+    <!-- Info Modal -->
+    <div class="modal fade" id="infoModal" tabindex="-1" aria-labelledby="infoModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="infoModalLabel">OSConnect Dataset Viewer</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <p>This page shows the consolidated data from all the released OSW datasets from
+              <strong>TCAT_WSP_PG</strong> Project group.
+            </p>
+            <ul>
+              <li>Hover over the elements to see their details.</li>
+              <li>Click on the map to know the underlying dataset name and version.</li>
+              <li>Right click to submit an issue you may have found.</li>
+            </ul>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
           </div>
         </div>
       </div>
     </div>
 
+
     <!-- Toast for submission-->
     <div class="toast-container position-fixed bottom-0 start-50 translate-middle-x p-3">
-      <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="true" data-bs-delay="3000">
+      <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="true"
+        data-bs-delay="3000">
         <div class="toast-header text-bg-primary">
           <strong class="me-auto">Report Issue</strong>
           <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
@@ -323,26 +466,26 @@
         </div>
       </div>
     </div>
-</div>
-<script type="text/javascript">
+  </div>
+  <script type="text/javascript">
 
-  const map = L.map('map').setView([47.61163, -122.31332], 15);
-
-
-  var CartoDB_Positron = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
-	attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
-	subdomains: 'abcd',
-	maxZoom: 22
-}).addTo(map);
+    const map = L.map('map').setView([47.61163, -122.31332], 15);
 
 
-  var hexagonWMS = L.tileLayer.wms('https://waprovisoimg.centralindia.cloudapp.azure.com/streaming/wms',{
-    layers:'HxGN_Imagery',
-    format:'image/png',
-    transparent:true,
-    attribution:' Hexagon WMS',
-    maxZoom:22
-  });
+    var CartoDB_Positron = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+      subdomains: 'abcd',
+      maxZoom: 22
+    }).addTo(map);
+
+
+    var hexagonWMS = L.tileLayer.wms('https://waprovisoimg.centralindia.cloudapp.azure.com/streaming/wms', {
+      layers: 'HxGN_Imagery',
+      format: 'image/png',
+      transparent: true,
+      attribution: ' Hexagon WMS',
+      maxZoom: 22
+    });
 
 
   var layers = L.control().layers
@@ -360,432 +503,539 @@
     return d['barrier'] == 'kerb';
   }
 
-  function getCrossingColor(d){
-    if (d['crossing'] == 'marked') {
-      return '#FFD166';
-    }
-    else if (d['crossing'] == 'unmarked') {
-      return '#dda15e';
-    }
-    else {
-      return '#FFD166';
-    }
-  }
-
-
-  const baseLayers = {
-    'Raster': CartoDB_Positron,
-    "Imagery": hexagonWMS
-  };
-  const position = {
-    position: 'topleft',
-    collapsed: false,
-  }
-
-  function getFeatureColor(feature) {
-    const props = feature.props || {};
-    if (isCrossing(props)) {
-      return getCrossingColor(props);// '#ffd166';
-    }
-    else if (isSidewalk(props)) {
-      return '#4cc9f0';
-    }
-    else if (isFootpath(props)) {
-      return '#ee6c4d';
-    }
-    else {
-      return '#8093f1';
-    }
-    // return getColor(props.mapping_status);
-  }
-
-  function getPointColor(feature){
-    const props = feature.props || {};
-    if (isKerb(props)) {
-      return getKerbColor(feature);
-    }
-    else   {
-      return '#FF7F50';
-    }
-    
-  }
-
-  function getKerbColor(feature) {
-    const props = feature.props || {};
-    if (props['kerb'] === 'lowered') {
-      return '#06d6a0';
-    }
-    if (props['kerb'] === 'raised') {
-      return '#8cb369';
-    }
-    if (props['kerb'] === 'flush') {
-      return '#006d77';
-    }
-    if (props['kerb'] == null) {
-      return '#588157';
-    }
-  }
-  
-  function getFeatureContent(properties){
-    // const props = feature.feature.props || {};
-    const keystToShow = ['highway', 'footway', 'crossing', 'kerb', 'barrier','incline','width','length','foot','width','surface','ext:width_confidence'];
-    const pairs = Object.entries(properties);
-    const requiredPairs = pairs.filter(([key, value]) => keystToShow.includes(key) && value != null && value != 'NaN' && value != 'null');
-    const content = requiredPairs.map(([key, value]) => {
-      if (keystToShow.includes(key)) {
-        return `<div class="infoBlock"><div class="key">${key}</div><div class="value">${value}</div></div>`;
+    function getCrossingColor(d) {
+      if (d['crossing'] == 'marked') {
+        return '#FFD166';
+      }
+      else if (d['crossing'] == 'unmarked') {
+        return '#dda15e';
       }
       else {
-        return ``;
+        return '#FFD166';
       }
-    }).join('<br>');
-    return content;
-  }
+    }
+    function clearSearch() {
+      if (!boundariesLayer) return;
+      lastMatches.forEach(layer => {
+        boundariesLayer.resetStyle(layer);
+        layer.closePopup();
+      });
+      lastMatches = [];
+    }
+    function showErrorToast(message) {
+      const toastEl = document.getElementById('errorToast');
+      const bodyEl = document.getElementById('errorToastBody');
 
-  // Legend
-	function getLegendColor(d) {
-		switch (d) {
-			case 'Sidewalk':
-				return '#4cc9f0';
-			case 'Crossing Marked':
-				return '#ffd166';
-      case 'Crossing Unmarked':
-				return '#dda15e';
-			case 'Footway':
-				return '#ee6c4d';
-			case 'Kerb Lowered':
-				return '#06d6a0';
-      case 'Kerb Flushed':
-				return '#006d77';
-      case 'Kerb Raised':
-				return '#8cb369';
-			case 'Traffic Island':
-				return '#8093f1';
-		}
-	}
-  
-  const legend = L.control({ position: 'bottomleft' });
-
-	legend.onAdd = function (map) {
-		const div = L.DomUtil.create('div', 'info legend');
-		const status = ['Sidewalk', 'Crossing Marked', 'Crossing Unmarked', 'Footway', 'Kerb Lowered', 'Kerb Flushed', 'Kerb Raised', 'Traffic Island'];
-		const labels = [];
-
-		for (let i = 0; i < status.length; i++) {
-
-			labels.push(`<i style="background:${getLegendColor(status[i])}"></i> ${status[i]}`);
-		}
-
-		div.innerHTML = labels.join('<br>');
-		return div;
-	};
-
-	legend.addTo(map);
+      bodyEl.textContent = message;
+      new bootstrap.Toast(toastEl).show();
+    }
 
 
-  class FeaturePainter {
-    draw(context, geom, z, feature) {
+
+
+    const baseLayers = {
+      'Raster': CartoDB_Positron,
+      "Imagery": hexagonWMS
+    };
+    const position = {
+      position: 'topleft',
+      collapsed: false,
+    }
+
+    function getFeatureColor(feature) {
       const props = feature.props || {};
-      let fill =  '#80FF72';// getColor(props.mapping_status);
-      context.strokeStyle = '#7EE8FA';
-      context.lineWidth = z > 19 ? 5 : 2.5;
-      context.lineJoin = 'round';
-      context.lineCap = 'round';
-      context.beginPath();
-      const ring = geom[0];
+      if (isCrossing(props)) {
+        return getCrossingColor(props);
+      }
+      else if (isSidewalk(props)) {
+        return '#4cc9f0';
+      }
+      else if (isFootpath(props)) {
+        return '#ee6c4d';
+      }
+      else {
+        return '#8093f1';
+      }
+      // return getColor(props.mapping_status);
+    }
 
-      if (feature.geomType === 2 || feature.geomType === 3) {
-        for (const singleGeom of geom) {
-          context.strokeStyle = getFeatureColor(feature);
-          context.moveTo(singleGeom[0].x, singleGeom[0].y);
-          for (const pt of singleGeom.slice(1)) {
-            context.lineTo(pt.x, pt.y);
+    function getPointColor(feature) {
+      const props = feature.props || {};
+      if (isKerb(props)) {
+        return getKerbColor(feature);
+      }
+      else {
+        return '#FF7F50';
+      }
+
+    }
+
+    function getKerbColor(feature) {
+      const props = feature.props || {};
+      if (props['kerb'] === 'lowered') {
+        return '#06d6a0';
+      }
+      if (props['kerb'] === 'raised') {
+        return '#8cb369';
+      }
+      if (props['kerb'] === 'flush') {
+        return '#006d77';
+      }
+      if (props['kerb'] == null) {
+        return '#588157';
+      }
+    }
+
+    function getFeatureContent(properties) {
+      // const props = feature.feature.props || {};
+      const keystToShow = ['highway', 'footway', 'crossing', 'kerb', 'barrier', 'incline', 'width', 'length', 'foot', 'width', 'surface', 'ext:width_confidence'];
+      const pairs = Object.entries(properties);
+      const requiredPairs = pairs.filter(([key, value]) => keystToShow.includes(key) && value != null && value != 'NaN' && value != 'null');
+      const content = requiredPairs.map(([key, value]) => {
+        if (keystToShow.includes(key)) {
+          return `<div class="infoBlock"><div class="key">${key}</div><div class="value">${value}</div></div>`;
+        }
+        else {
+          return ``;
+        }
+      }).join('<br>');
+      return content;
+    }
+
+    // Legend
+    function getLegendColor(d) {
+      switch (d) {
+        case 'Sidewalk':
+          return '#4cc9f0';
+        case 'Crossing Marked':
+          return '#ffd166';
+        case 'Crossing Unmarked':
+          return '#dda15e';
+        case 'Footway':
+          return '#ee6c4d';
+        case 'Kerb Lowered':
+          return '#06d6a0';
+        case 'Kerb Flushed':
+          return '#006d77';
+        case 'Kerb Raised':
+          return '#8cb369';
+        case 'Traffic Island':
+          return '#8093f1';
+      }
+    }
+
+    const legend = L.control({ position: 'bottomleft' });
+
+    legend.onAdd = function (map) {
+      const div = L.DomUtil.create('div', 'info legend');
+      const status = ['Sidewalk', 'Crossing Marked', 'Crossing Unmarked', 'Footway', 'Kerb Lowered', 'Kerb Flushed', 'Kerb Raised', 'Traffic Island'];
+      const labels = [];
+
+      for (let i = 0; i < status.length; i++) {
+
+        labels.push(`<i style="background:${getLegendColor(status[i])}"></i> ${status[i]}`);
+      }
+
+      div.innerHTML = labels.join('<br>');
+      return div;
+    };
+
+    legend.addTo(map);
+
+
+    class FeaturePainter {
+      draw(context, geom, z, feature) {
+        const props = feature.props || {};
+        let fill = '#80FF72';// getColor(props.mapping_status);
+        context.strokeStyle = '#7EE8FA';
+        context.lineWidth = z > 19 ? 5 : 2.5;
+        context.lineJoin = 'round';
+        context.lineCap = 'round';
+        context.beginPath();
+        const ring = geom[0];
+
+        if (feature.geomType === 2 || feature.geomType === 3) {
+          for (const singleGeom of geom) {
+            context.strokeStyle = getFeatureColor(feature);
+            context.moveTo(singleGeom[0].x, singleGeom[0].y);
+            for (const pt of singleGeom.slice(1)) {
+              context.lineTo(pt.x, pt.y);
+            }
+            context.stroke();
           }
-          context.stroke();
+        }
+        else {
+          console.log("Unknown geomType");
         }
       }
-      else {
-        console.log("Unknown geomType");
+    }
+    class PointPainter {
+      draw(context, geom, z, feature) {
+        const props = feature.props || {};
+        let fill = getPointColor(feature);
+        if (!isKerb(props)) {
+          return;
+        }
+        context.beginPath();
+        const ring = geom[0];
+        if (feature.geomType === 1) {
+          // Draw point
+          const radius = z > 19 ? 6 : 3;
+          context.arc(ring[0].x, ring[0].y, radius, 0, Math.PI * 2);
+          context.fillStyle = fill;
+          context.fill();
+        }
       }
     }
-  }
-  class PointPainter {
-    draw(context, geom, z, feature) {
-      const props = feature.props || {};
-      let fill =  getPointColor(feature);
-      if(!isKerb(props)){
-        return;
-      }
-      context.beginPath();
-      const ring = geom[0];
-      if (feature.geomType === 1) {
-        // Draw point
-        const radius = z > 19 ? 6 : 3;
-        context.arc(ring[0].x, ring[0].y, radius, 0, Math.PI * 2);
-        context.fillStyle = fill;
-        context.fill();
-      }
-    }
-  }
 
-  let PAINT_RULES = [
-    {
-      dataLayer: "wa-proviso-data",
-      symbolizer: new FeaturePainter(),
-      filter : function (z,feature){
-        return feature.geomType != 1;
+    let PAINT_RULES = [
+      {
+        dataLayer: "wa-proviso-data",
+        symbolizer: new FeaturePainter(),
+        filter: function (z, feature) {
+          return feature.geomType != 1;
+        }
+      },
+      {
+        dataLayer: "wa-proviso-data",
+        symbolizer: new PointPainter(),
+        filter: function (z, feature) {
+          return feature.geomType === 1;
+        }
       }
-    },
-    {
-      dataLayer: "wa-proviso-data",
-      symbolizer: new PointPainter(),
-      filter : function (z,feature){
-        return feature.geomType === 1;
-      }
-    }
-  ];
+    ];
 
-    function closeModal(){
+    function closeModal() {
       var myModalEl = document.getElementById('reportIssueModel');
       var modalInstance = bootstrap.Modal.getInstance(myModalEl);
       modalInstance.hide();
     }
 
-    function closeTooltip(){
+    function closeTooltip() {
       document.getElementById('mapTooltip').style.display = 'none';
-      
+
       if (rightClickMarker) {
         map.removeLayer(rightClickMarker);
         rightClickMarker = null;
       }
     }
 
-    function showToast(message){
+    function showToast(message) {
       const toastElement = document.getElementById('liveToast');
       const toastBody = toastElement.querySelector('.toast-body');
       toastBody.textContent = message;
       const toast = new bootstrap.Toast(toastElement);
       toast.show();
     }
-  const layer = protomapsL.leafletLayer({
-    url: 'https://provisodevstorage.blob.core.windows.net/waposmdbbkup/wa-tdei-latest/washington_complete.pmtiles',
-    // maxDataZoom:21,
-    maxZoom:22,
-    maxDataZoom: 18,
-    maxNativeZoom:21,
-    interactive: true,
+    const layer = protomapsL.leafletLayer({
+      url: 'https://provisodevstorage.blob.core.windows.net/waposmdbbkup/wa-tdei-latest/washington_complete.pmtiles',
+      // maxDataZoom:21,
+      maxZoom: 22,
+      maxDataZoom: 18,
+      maxNativeZoom: 21,
+      interactive: true,
 
-    paintRules: PAINT_RULES,
-    // labelRules: LABEL_RULES,
-    // theme:'light'
-  });
+      paintRules: PAINT_RULES,
+      // labelRules: LABEL_RULES,
+      // theme:'light'
+    });
 
-  layer.addTo(map);
+    layer.addTo(map);
 
-  const popup = L.popup({
-    autoPan: false
-  });
-  let lastFeatureId = null; // Track the last hovered feature
+    const popup = L.popup({
+      autoPan: false
+    });
+    let lastFeatureId = null; // Track the last hovered feature
 
-  map.on("mousemove", async function (e) {
-    const zoom = map.getZoom();
-    if (zoom < 16) {
-      return;
-    }
-    // console.log(e.latlng);
-    const featuresMap = await layer.queryTileFeaturesDebug(e.latlng.lng,e.latlng.lat, 10);
-    // console.log(featuresMap);
-    const features = featuresMap.get('');
-    // Get the first feature under cursor
-
-
-    if (features.length > 0) {
-      // If there is a feature with geomType 1, use that
-      const feature = features.find(f => f.feature.geomType === 1) || features[0];
-      const currentFeatureId = feature.feature.props['osm_id'];
-      // const feature = features[0]; // Get first feature under cursor
-      // Avoid duplicate popups when hovering over the same feature
-      if (currentFeatureId !== lastFeatureId) {
-        lastFeatureId = currentFeatureId;
-        const content = getFeatureContent(feature.feature.props);
-        popup
-          .setLatLng(e.latlng)
-          .setContent(` ${content || "Unnamed"}`)
-          .openOn(map);
+    map.on("mousemove", async function (e) {
+      const zoom = map.getZoom();
+      if (zoom < 16) {
+        return;
       }
-    } else {
-      map.closePopup();
-      lastFeatureId = null; // Reset last feature
+      // console.log(e.latlng);
+      const featuresMap = await layer.queryTileFeaturesDebug(e.latlng.lng, e.latlng.lat, 10);
+      // console.log(featuresMap);
+      const features = featuresMap.get('');
+      // Get the first feature under cursor
+
+
+      if (features.length > 0) {
+        // If there is a feature with geomType 1, use that
+        const feature = features.find(f => f.feature.geomType === 1) || features[0];
+        const currentFeatureId = feature.feature.props['osm_id'];
+        // const feature = features[0]; // Get first feature under cursor
+        // Avoid duplicate popups when hovering over the same feature
+        if (currentFeatureId !== lastFeatureId) {
+          lastFeatureId = currentFeatureId;
+          const content = getFeatureContent(feature.feature.props);
+          popup
+            .setLatLng(e.latlng)
+            .setContent(` ${content || "Unnamed"}`)
+            .openOn(map);
+        }
+      } else {
+        map.closePopup();
+        lastFeatureId = null; // Reset last feature
+      }
+    });
+
+
+    let overlays = {
+      'Data': layer,
     }
-  });
-  
-
-  let overlays = {
-    'Data': layer,
-  }
-
-  // URL query parameter to get the project ID
-  const urlParams = new URLSearchParams(window.location.search);
-  const projectId = urlParams.get('id'); // 'id' query parameter
-  if (projectId) {
-    // API URL
-    const apiUrl = `https://wa-proviso-api-dev.azurewebsites.net/projects/${projectId}/min`;
-
-    // Fetch API data and dynamically create overlays
-    fetch(apiUrl)
+    // Add boundaries overlay
+    const boundariesLayerUrl = 'https://provisodevstorage.blob.core.windows.net/waposmdbbkup/wa-tdei-latest/washington_dataset_boundaries.geojson';
+    // const boundariesLayer = L.geoJSON.ajax(boundariesLayerUrl, {
+    //   style: function (feature) {
+    //     return {
+    //       color: '#000',
+    //       weight: 2,
+    //       fillOpacity: 0.1
+    //     };
+    //   },
+    //   onEachFeature: function (feature, layer) {
+    //     layer.bindPopup(feature.properties.dataset_name || 'Unnamed');
+    //   }
+    // });
+    // overlays['Boundaries'] = boundariesLayer;
+    let boundariesLayer;
+    let lastMatches = [];
+    fetch(boundariesLayerUrl)
       .then(response => response.json())
       .then(data => {
-        if (data.geometry) {
-          const geoJsonLayer = L.geoJSON(data.geometry);
+        boundariesLayer = L.geoJSON(data, {
+          style: function (feature) {
+            return {
+              color: '#000',
+              weight: 2,
+              fillOpacity: 0.1
+            };
+          },
+          onEachFeature: function (feature, layer) {
+            const layerDescription = feature.properties.dataset_name + ' ' + feature.properties.dataset_version;
+            layer.bindPopup(layerDescription || 'Unnamed');
+          }
+        });
 
-          const layerName = data.name || 'Unknown Layer'; // Fallback if no name
-          overlays[layerName] = geoJsonLayer;
-
-          geoJsonLayer.addTo(map); // Add the GeoJSON layer to the map
-
-          // Optional: Fit map to the bounds of the new geometry layer
-          map.fitBounds(geoJsonLayer.getBounds());
-        } else {
-          alert(`No geometry found for ${projectId}`);
-        }
+        overlays['Boundaries'] = boundariesLayer;
+        boundariesLayer.addTo(map);
         L.control.layers(baseLayers, overlays, position).addTo(map);
+        // Add the layer to the control
       })
-      .catch(error => {
-        console.error('Error fetching data:', error);
+      .catch(error => console.error('Error loading boundaries:', error));
+    // L.control.layers(baseLayers, overlays, position).addTo(map);
+
+    // URL query parameter to get the project ID
+    const urlParams = new URLSearchParams(window.location.search);
+    // const projectId = urlParams.get('id'); // 'id' query parameter
+    // if (projectId) {
+    //   // API URL
+    //   const apiUrl = `https://wa-proviso-api-dev.azurewebsites.net/projects/${projectId}/min`;
+
+    //   // Fetch API data and dynamically create overlays
+    //   fetch(apiUrl)
+    //     .then(response => response.json())
+    //     .then(data => {
+    //       if (data.geometry) {
+    //         const geoJsonLayer = L.geoJSON(data.geometry);
+
+    //         const layerName = data.name || 'Unknown Layer'; // Fallback if no name
+    //         overlays[layerName] = geoJsonLayer;
+
+    //         geoJsonLayer.addTo(map); // Add the GeoJSON layer to the map
+
+    //         // Optional: Fit map to the bounds of the new geometry layer
+    //         map.fitBounds(geoJsonLayer.getBounds());
+    //       } else {
+    //         alert(`No geometry found for ${projectId}`);
+    //       }
+    //       L.control.layers(baseLayers, overlays, position).addTo(map);
+    //     })
+    //     .catch(error => {
+    //       console.error('Error fetching data:', error);
+    //     });
+    // } else {
+    //   L.control.layers(baseLayers, overlays, position).addTo(map);
+    // }
+
+    let rightClickMarker = null;
+
+    document.addEventListener('DOMContentLoaded', function () {
+      // let rightClickMarker = null;
+      var selectedLat = 0.0;
+      var selectedLng = 0.0;
+      map.on('contextmenu', function (e) {
+        const lat = e.latlng.lat.toFixed(5);
+        const lng = e.latlng.lng.toFixed(5);
+        selectedLat = lat;
+        selectedLng = lng;
+
+        // Remove old marker
+        if (rightClickMarker) {
+          map.removeLayer(rightClickMarker);
+        }
+
+        // Add red marker
+        rightClickMarker = L.marker(e.latlng, {
+          icon: L.icon({
+            iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png',
+            iconSize: [25, 41],
+            iconAnchor: [12, 41],
+            popupAnchor: [1, -34],
+            shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png',
+            shadowSize: [41, 41]
+          })
+        }).addTo(map);
+
+        // Show tooltip at bottom
+        document.getElementById('latlngDisplay').innerText = `${lat}, ${lng}`;
+        document.getElementById('mapTooltip').style.display = 'block';
       });
-  } else {
-    L.control.layers(baseLayers, overlays, position).addTo(map);
-  }
 
-  let rightClickMarker = null;
+      // Tooltip close logic
+      document.getElementById('closeTooltip').addEventListener('click', function () {
+        document.getElementById('mapTooltip').style.display = 'none';
+        if (rightClickMarker) {
+          map.removeLayer(rightClickMarker);
+          rightClickMarker = null;
+        }
+      });
+      document.getElementById('info-button').addEventListener('click', function () {
+        var infoModal = new bootstrap.Modal(document.getElementById('infoModal'), {
+          keyboard: false
+        });
+        infoModal.show();
+      });
+      document.getElementById('search-input').addEventListener('input', function () {
+        if (this.value.trim() === '') {
+          clearSearch();
+        }
+      });
 
-  document.addEventListener('DOMContentLoaded', function () {
-    // let rightClickMarker = null;
-    var selectedLat = 0.0;
-    var selectedLng = 0.0;
-    map.on('contextmenu', function(e) {
-      const lat = e.latlng.lat.toFixed(5);
-      const lng = e.latlng.lng.toFixed(5);
-      selectedLat = lat;
-      selectedLng = lng;
+      document
+        .getElementById('search-input')
+        .addEventListener('input', function () {
+          if (this.value.trim() === '') {
+            clearSearch();
+          }
+        });
 
-      // Remove old marker
-      if (rightClickMarker) {
-        map.removeLayer(rightClickMarker);
-      }
+      // Open in Posm logic
 
-      // Add red marker
-      rightClickMarker = L.marker(e.latlng, {
-        icon: L.icon({
-          iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png',
-          iconSize: [25, 41],
-          iconAnchor: [12, 41],
-          popupAnchor: [1, -34],
-          shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png',
-          shadowSize: [41, 41]
-        })
-      }).addTo(map);
 
-      // Show tooltip at bottom
-      document.getElementById('latlngDisplay').innerText = `${lat}, ${lng}`;
-      document.getElementById('mapTooltip').style.display = 'block';
-    });
+      // Report issue logic
+      document.getElementById('reportIssue').addEventListener('click', function () {
+        //reportIssue
+        var reportIssueModel = new bootstrap.Modal(document.getElementById('reportIssueModel'), {
+          keyboard: false
+        });
 
-    // Tooltip close logic
-    document.getElementById('closeTooltip').addEventListener('click', function () {
-      document.getElementById('mapTooltip').style.display = 'none';
-      if (rightClickMarker) {
-        map.removeLayer(rightClickMarker);
-        rightClickMarker = null;
-      }
-    });
+        document.getElementById('latitude').value = selectedLat;
+        document.getElementById('longitude').value = selectedLng;
+        // Get the email from local storage
+        const storedEmail = localStorage.getItem('issueReporterEmail');
+        if (storedEmail) {
+          document.getElementById('issueReporterEmail').value = storedEmail;
+        }
+        reportIssueModel.show();
+        // Add your logic to handle the report issue action here
+      });
 
-    // Open in Posm logic
-   
+      // Submit issue logic
+      document.getElementById('submitIssue').addEventListener('click', function () {
+        const issueDescription = document.getElementById('issueDescription').value;
+        const issueReporterEmail = document.getElementById('issueReporterEmail').value;
+        const issueReporterName = document.getElementById('issueReporterName').value;
 
-    // Report issue logic
-    document.getElementById('reportIssue').addEventListener('click', function () {
-      //reportIssue
-       var reportIssueModel = new bootstrap.Modal(document.getElementById('reportIssueModel'), {
-        keyboard: false
-    });
 
-      document.getElementById('latitude').value = selectedLat;
-      document.getElementById('longitude').value = selectedLng;
-      // Get the email from local storage
-      const storedEmail = localStorage.getItem('issueReporterEmail');
-      if (storedEmail) {
-        document.getElementById('issueReporterEmail').value = storedEmail;
-      }
-      reportIssueModel.show();
-      // Add your logic to handle the report issue action here
-  });
+        if (!issueReporterEmail) {
+          alert("Please enter your email.");
+          return;
+        }
+        if (!issueDescription) {
+          alert("Please enter a description.");
+          return;
+        }
+        // Store the email in local storage
+        localStorage.setItem('issueReporterEmail', issueReporterEmail);
+        const loaderElement = document.getElementById('reportLoader');
+        loaderElement.classList.remove('visually-hidden');
+        // Add your logic to handle the submit issue action here
+        console.log("Issue submitted:", selectedLat, selectedLng, issueDescription);
+        fetch('https://wa-proviso-api-dev.azurewebsites.net/issues/create-issue', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            latitude: parseFloat(parseFloat(selectedLat).toFixed(4)),
+            longitude: parseFloat(parseFloat(selectedLng).toFixed(4)),
+            description: issueDescription,
+            email: issueReporterEmail,
+          })
+        }).then(response => {
+          if (response.ok) {
+            closeTooltip();
+            document.getElementById('issueDescription').value = '';
+            // alert("Issue submitted successfully!"); // Do better here.
+            loaderElement.classList.add('visually-hidden');
+            closeModal();
+            showToast("Issue submitted successfully!");
+          } else {
+            // alert("Error submitting issue. Please try again.");
+            loaderElement.classList.add('visually-hidden');
+            closeModal();
+            showToast("Error submitting issue. Please try again.");
+          }
+        }).catch(error => {
+          console.error('Error:', error);
 
-    // Submit issue logic
-    document.getElementById('submitIssue').addEventListener('click', function () {
-      const issueDescription = document.getElementById('issueDescription').value;
-      const issueReporterEmail = document.getElementById('issueReporterEmail').value;
-      const issueReporterName = document.getElementById('issueReporterName').value;
-     
-
-      if (!issueReporterEmail) {
-        alert("Please enter your email.");
-        return;
-      }
-      if (!issueDescription) {
-        alert("Please enter a description.");
-        return;
-      }
-      // Store the email in local storage
-      localStorage.setItem('issueReporterEmail', issueReporterEmail);
-      const loaderElement = document.getElementById('reportLoader');
-      loaderElement.classList.remove('visually-hidden');
-      // Add your logic to handle the submit issue action here
-      console.log("Issue submitted:", selectedLat, selectedLng, issueDescription);
-      fetch('https://wa-proviso-api-dev.azurewebsites.net/issues/create-issue', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          latitude: parseFloat(parseFloat(selectedLat).toFixed(4)),
-          longitude: parseFloat(parseFloat(selectedLng).toFixed(4)),
-          description: issueDescription,
-          email: issueReporterEmail,
-        })
-      }).then(response => {
-        if (response.ok) {
-          closeTooltip();
-          document.getElementById('issueDescription').value = '';
-          // alert("Issue submitted successfully!"); // Do better here.
           loaderElement.classList.add('visually-hidden');
-          closeModal();
-          showToast("Issue submitted successfully!");
-        } else {
-          // alert("Error submitting issue. Please try again.");
-          loaderElement.classList.add('visually-hidden');
+
           closeModal();
           showToast("Error submitting issue. Please try again.");
-        }
-      }).catch(error => {
-        console.error('Error:', error);
-        
-        loaderElement.classList.add('visually-hidden');
-
-        closeModal();
-        showToast("Error submitting issue. Please try again.");
+        });
       });
+      // ADDED: Search by dataset_name
+      document.getElementById('search-button')
+        .addEventListener('click', function () {
+          const term = document.getElementById('search-input').value.trim().toLowerCase();
+          if (!term) {
+            showErrorToast('Please enter a dataset name');
+            return;
+          }
+          if (!boundariesLayer) {
+            showErrorToast('Dataset boundaries not loaded yet');
+            return;
+          }
+          clearSearch();
+          boundariesLayer.eachLayer(layer => {
+            const name = (layer.feature.properties.dataset_name || '').toLowerCase();
+            if (name.includes(term)) {
+              layer.setStyle({
+                stroke: true,
+                color: '#81C14B',
+                weight: 3,
+                fill: false
+              });
+              layer.openPopup();
+              lastMatches.push(layer);
+            }
+          });
+
+          if (lastMatches.length) {
+            const group = L.featureGroup(lastMatches);
+            map.fitBounds(group.getBounds(), { maxZoom: 16 });
+          } else {
+            showErrorToast('No matching datasets found');
+          }
+        });
     });
+    // var control = new L.Control.Button()
+    // control.addTo(map);
 
-
-  });
-
-
-  // var control = new L.Control.Button()
-  // control.addTo(map);
-
-</script>
-<div id="mapTooltip" class="mapActionWindow">
+  </script>
+  <div id="mapTooltip" class="mapActionWindow">
     <div class="actionWindowHeader">
       <div class="actionWindowTitle">Inspect</div>
       <button id="closeTooltip" type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
@@ -796,7 +1046,7 @@
         <div id="latlngDisplay" class="value">41.33332, -112.383839</div>
       </div>
       <div class="awAction">
-        
+
         <button type="button" id="reportIssue" class="btn btn-outline-danger btn-sm">Report Issue</button>
       </div>
     </div>
@@ -806,6 +1056,18 @@
         <p id="reportIssue" style="margin-right: 26px; line-height: 64px; cursor: pointer; color: #007bff;" >Report Issue</p>
         <span id="closeTooltip" style="cursor: pointer; font-size: 18px;">&times;</span>
     </div> -->
-</div>
+  </div>
+  <div class="toast-container position-fixed top-0 start-50 translate-middle-x p-3" style="z-index:1060;">
+    <div id="errorToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="true"
+      data-bs-delay="3000">
+      <div class="toast-header text-bg-danger">
+        <strong class="me-auto">Error</strong>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Close"></button>
+      </div>
+      <div class="toast-body" id="errorToastBody">
+        <!-- message goes here -->
+      </div>
+    </div>
+  </div>
 </body>
 </html>
