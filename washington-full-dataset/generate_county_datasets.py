@@ -1,62 +1,39 @@
-import osmium
 import sys
 import json
 import asyncio
+import os
 # from osm-convert import Formatter
 # from osm-convert import Formatter
-geojsonfab = osmium.geom.GeoJSONFactory()
+
 from osm_osw_reformatter import Formatter
 
-class NodeHandler(osmium.SimpleHandler):
-    def __init__(self):
-        super(NodeHandler, self).__init__()
-        self.nodes = []
 
-    def node(self, n):
-        self.nodes.append({
-            "type": "Feature",
-            "geometry": {
-                "type": "Point",
-                "coordinates": [n.location.lon, n.location.lat]
-            },
-            "properties": {
-                "id": n.id,
-                "tags": dict(n.tags)
-            }
-        })
 
-class GeoJsonWriter(osmium.SimpleHandler):
-
-    def __init__(self):
-        super().__init__()
-        # write the Geojson header
-        self.ways = []
-        self.nodes = []
-
-    def finish(self):
-        # print(']}')
-        pass
-
-    def node(self, n):
-        if n.tags:
-            # self.print_object(geojsonfab.create_point(n), n.tags)
-            self.nodes.append(geojsonfab.create_point(n))
-            print(n.id)
-
-    def way(self, w):
-        if w.tags and not w.is_closed():
-            # self.print_object(geojsonfab.create_linestring(w), w.tags)
-            self.ways.append(geojsonfab.create_linestring(w))
-
-    def area(self, a):
-      pass
-
+def download_osm_file(file_path, dataset_name):
+    working_dir = os.path.join("../output/county-datasets", dataset_name)
+    f = Formatter(workdir=working_dir, file_path=file_path)
+    asyncio.run(f.osm2osw())
     
 
 def main(osmfile):
-
-    f = Formatter(workdir="../output/county-datasets", file_path=osmfile)
-    asyncio.run(f.osm2osw())
+    # Check if its a directory
+    # Get the name from the file based on first [.]
+    files_to_process = []
+    if os.path.isdir(osmfile):
+        # If it is a directory, get all the files in the directory
+        osmfiles = [os.path.join(osmfile, f) for f in os.listdir(osmfile) if f.endswith('.pbf')]
+        for osmfile in osmfiles:
+            files_to_process.append(osmfile)
+    else:
+        files_to_process.append(osmfile)
+    
+    # Loop through the files and process them
+    for osmfile in files_to_process:
+        # Get the name of the file without the extension
+        dataset_name = os.path.basename(osmfile).split('.')[0]
+        print("Processing %s" % osmfile)
+        download_osm_file(osmfile, dataset_name)
+    
     return 0
 
 

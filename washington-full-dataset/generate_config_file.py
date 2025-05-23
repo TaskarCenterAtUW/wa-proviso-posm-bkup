@@ -33,7 +33,7 @@ for file in files:
     name_lower = name.lower()
     name_lower = name_lower.replace('dow-', '')
     extract = {
-        "output": f"{name_lower}.osm.pbf",
+        "output": f"../output/{name_lower}.osm.pbf",
         "description": f"Extract of {name}",
         "polygon": {
             "file_name": file,

@@ -2,7 +2,7 @@
     "directory": "./",
     "extracts": [
         {
-            "output": "pend_oreille.osm.pbf",
+            "output": "../output/pend_oreille.osm.pbf",
             "description": "Extract of dow-Pend_Oreille",
             "polygon": {
                 "file_name": "counties/dow-Pend_Oreille.geojson",
@@ -10,7 +10,7 @@
             }
         },
         {
-            "output": "stevens.osm.pbf",
+            "output": "../output/stevens.osm.pbf",
             "description": "Extract of dow-Stevens",
             "polygon": {
                 "file_name": "counties/dow-Stevens.geojson",
@@ -18,7 +18,7 @@
             }
         },
         {
-            "output": "san_juan.osm.pbf",
+            "output": "../output/san_juan.osm.pbf",
             "description": "Extract of dow-San_Juan",
             "polygon": {
                 "file_name": "counties/dow-San_Juan.geojson",
@@ -26,7 +26,7 @@
             }
         },
         {
-            "output": "thurston.osm.pbf",
+            "output": "../output/thurston.osm.pbf",
             "description": "Extract of dow-Thurston",
             "polygon": {
                 "file_name": "counties/dow-Thurston.geojson",
@@ -34,7 +34,7 @@
             }
         },
         {
-            "output": "pierce.osm.pbf",
+            "output": "../output/pierce.osm.pbf",
             "description": "Extract of dow-Pierce",
             "polygon": {
                 "file_name": "counties/dow-Pierce.geojson",
@@ -42,7 +42,7 @@
             }
         },
         {
-            "output": "yakima.osm.pbf",
+            "output": "../output/yakima.osm.pbf",
             "description": "Extract of dow-Yakima",
             "polygon": {
                 "file_name": "counties/dow-Yakima.geojson",
@@ -50,7 +50,7 @@
             }
         },
         {
-            "output": "lewis.osm.pbf",
+            "output": "../output/lewis.osm.pbf",
             "description": "Extract of dow-Lewis",
             "polygon": {
                 "file_name": "counties/dow-Lewis.geojson",
@@ -58,7 +58,7 @@
             }
         },
         {
-            "output": "clark.osm.pbf",
+            "output": "../output/clark.osm.pbf",
             "description": "Extract of dow-Clark",
             "polygon": {
                 "file_name": "counties/dow-Clark.geojson",
@@ -66,7 +66,7 @@
             }
         },
         {
-            "output": "garfield.osm.pbf",
+            "output": "../output/garfield.osm.pbf",
             "description": "Extract of dow-Garfield",
             "polygon": {
                 "file_name": "counties/dow-Garfield.geojson",
@@ -74,7 +74,7 @@
             }
         },
         {
-            "output": "mason.osm.pbf",
+            "output": "../output/mason.osm.pbf",
             "description": "Extract of dow-Mason",
             "polygon": {
                 "file_name": "counties/dow-Mason.geojson",
@@ -82,7 +82,7 @@
             }
         },
         {
-            "output": "franklin.osm.pbf",
+            "output": "../output/franklin.osm.pbf",
             "description": "Extract of dow-Franklin",
             "polygon": {
                 "file_name": "counties/dow-Franklin.geojson",
@@ -90,7 +90,7 @@
             }
         },
         {
-            "output": "grays_harbor.osm.pbf",
+            "output": "../output/grays_harbor.osm.pbf",
             "description": "Extract of dow-Grays_Harbor",
             "polygon": {
                 "file_name": "counties/dow-Grays_Harbor.geojson",
@@ -98,7 +98,7 @@
             }
         },
         {
-            "output": "asotin.osm.pbf",
+            "output": "../output/asotin.osm.pbf",
             "description": "Extract of dow-Asotin",
             "polygon": {
                 "file_name": "counties/dow-Asotin.geojson",
@@ -106,7 +106,7 @@
             }
         },
         {
-            "output": "klickitat.osm.pbf",
+            "output": "../output/klickitat.osm.pbf",
             "description": "Extract of dow-Klickitat",
             "polygon": {
                 "file_name": "counties/dow-Klickitat.geojson",
@@ -114,7 +114,7 @@
             }
         },
         {
-            "output": "skagit.osm.pbf",
+            "output": "../output/skagit.osm.pbf",
             "description": "Extract of dow-Skagit",
             "polygon": {
                 "file_name": "counties/dow-Skagit.geojson",
@@ -122,7 +122,7 @@
             }
         },
         {
-            "output": "grant.osm.pbf",
+            "output": "../output/grant.osm.pbf",
             "description": "Extract of dow-Grant",
             "polygon": {
                 "file_name": "counties/dow-Grant.geojson",
@@ -130,7 +130,7 @@
             }
         },
         {
-            "output": "spokane.osm.pbf",
+            "output": "../output/spokane.osm.pbf",
             "description": "Extract of dow-Spokane",
             "polygon": {
                 "file_name": "counties/dow-Spokane.geojson",
@@ -138,7 +138,7 @@
             }
         },
         {
-            "output": "king.osm.pbf",
+            "output": "../output/king.osm.pbf",
             "description": "Extract of dow-King",
             "polygon": {
                 "file_name": "counties/dow-King.geojson",
@@ -146,7 +146,7 @@
             }
         },
         {
-            "output": "whatcom.osm.pbf",
+            "output": "../output/whatcom.osm.pbf",
             "description": "Extract of dow-Whatcom",
             "polygon": {
                 "file_name": "counties/dow-Whatcom.geojson",
@@ -154,7 +154,7 @@
             }
         },
         {
-            "output": "pacific.osm.pbf",
+            "output": "../output/pacific.osm.pbf",
             "description": "Extract of dow-Pacific",
             "polygon": {
                 "file_name": "counties/dow-Pacific.geojson",
@@ -162,7 +162,7 @@
             }
         },
         {
-            "output": "cowlitz.osm.pbf",
+            "output": "../output/cowlitz.osm.pbf",
             "description": "Extract of dow-Cowlitz",
             "polygon": {
                 "file_name": "counties/dow-Cowlitz.geojson",
@@ -170,7 +170,7 @@
             }
         },
         {
-            "output": "island.osm.pbf",
+            "output": "../output/island.osm.pbf",
             "description": "Extract of dow-Island",
             "polygon": {
                 "file_name": "counties/dow-Island.geojson",
@@ -178,7 +178,7 @@
             }
         },
         {
-            "output": "walla_walla.osm.pbf",
+            "output": "../output/walla_walla.osm.pbf",
             "description": "Extract of dow-Walla_Walla",
             "polygon": {
                 "file_name": "counties/dow-Walla_Walla.geojson",
@@ -186,7 +186,7 @@
             }
         },
         {
-            "output": "chelan.osm.pbf",
+            "output": "../output/chelan.osm.pbf",
             "description": "Extract of dow-Chelan",
             "polygon": {
                 "file_name": "counties/dow-Chelan.geojson",
@@ -194,7 +194,7 @@
             }
         },
         {
-            "output": "benton.osm.pbf",
+            "output": "../output/benton.osm.pbf",
             "description": "Extract of dow-Benton",
             "polygon": {
                 "file_name": "counties/dow-Benton.geojson",
@@ -202,7 +202,7 @@
             }
         },
         {
-            "output": "douglas.osm.pbf",
+            "output": "../output/douglas.osm.pbf",
             "description": "Extract of dow-Douglas",
             "polygon": {
                 "file_name": "counties/dow-Douglas.geojson",
@@ -210,7 +210,7 @@
             }
         },
         {
-            "output": "skamania.osm.pbf",
+            "output": "../output/skamania.osm.pbf",
             "description": "Extract of dow-Skamania",
             "polygon": {
                 "file_name": "counties/dow-Skamania.geojson",
@@ -218,7 +218,7 @@
             }
         },
         {
-            "output": "clallam.osm.pbf",
+            "output": "../output/clallam.osm.pbf",
             "description": "Extract of dow-Clallam",
             "polygon": {
                 "file_name": "counties/dow-Clallam.geojson",
@@ -226,7 +226,7 @@
             }
         },
         {
-            "output": "wahkiakum.osm.pbf",
+            "output": "../output/wahkiakum.osm.pbf",
             "description": "Extract of dow-Wahkiakum",
             "polygon": {
                 "file_name": "counties/dow-Wahkiakum.geojson",
@@ -234,7 +234,7 @@
             }
         },
         {
-            "output": "okanogan.osm.pbf",
+            "output": "../output/okanogan.osm.pbf",
             "description": "Extract of dow-Okanogan",
             "polygon": {
                 "file_name": "counties/dow-Okanogan.geojson",
@@ -242,7 +242,7 @@
             }
         },
         {
-            "output": "columbia.osm.pbf",
+            "output": "../output/columbia.osm.pbf",
             "description": "Extract of dow-Columbia",
             "polygon": {
                 "file_name": "counties/dow-Columbia.geojson",
@@ -250,7 +250,7 @@
             }
         },
         {
-            "output": "whitman.osm.pbf",
+            "output": "../output/whitman.osm.pbf",
             "description": "Extract of dow-Whitman",
             "polygon": {
                 "file_name": "counties/dow-Whitman.geojson",
@@ -258,7 +258,7 @@
             }
         },
         {
-            "output": "ferry.osm.pbf",
+            "output": "../output/ferry.osm.pbf",
             "description": "Extract of dow-Ferry",
             "polygon": {
                 "file_name": "counties/dow-Ferry.geojson",
@@ -266,7 +266,7 @@
             }
         },
         {
-            "output": "snohomish.osm.pbf",
+            "output": "../output/snohomish.osm.pbf",
             "description": "Extract of dow-Snohomish",
             "polygon": {
                 "file_name": "counties/dow-Snohomish.geojson",
@@ -274,7 +274,7 @@
             }
         },
         {
-            "output": "lincoln.osm.pbf",
+            "output": "../output/lincoln.osm.pbf",
             "description": "Extract of dow-Lincoln",
             "polygon": {
                 "file_name": "counties/dow-Lincoln.geojson",
@@ -282,7 +282,7 @@
             }
         },
         {
-            "output": "kittitas.osm.pbf",
+            "output": "../output/kittitas.osm.pbf",
             "description": "Extract of dow-Kittitas",
             "polygon": {
                 "file_name": "counties/dow-Kittitas.geojson",
@@ -290,7 +290,7 @@
             }
         },
         {
-            "output": "adams.osm.pbf",
+            "output": "../output/adams.osm.pbf",
             "description": "Extract of dow-Adams",
             "polygon": {
                 "file_name": "counties/dow-Adams.geojson",
@@ -298,7 +298,7 @@
             }
         },
         {
-            "output": "jefferson.osm.pbf",
+            "output": "../output/jefferson.osm.pbf",
             "description": "Extract of dow-Jefferson",
             "polygon": {
                 "file_name": "counties/dow-Jefferson.geojson",
@@ -306,7 +306,7 @@
             }
         },
         {
-            "output": "kitsap.osm.pbf",
+            "output": "../output/kitsap.osm.pbf",
             "description": "Extract of dow-Kitsap",
             "polygon": {
                 "file_name": "counties/dow-Kitsap.geojson",
