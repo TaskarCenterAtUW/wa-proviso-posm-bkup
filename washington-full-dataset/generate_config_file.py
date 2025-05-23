@@ -6,7 +6,7 @@ counties_folder = 'counties'
 files = []
 for root, dirs, filenames in os.walk(counties_folder):
     for filename in filenames:
-        if filename.endswith('.geojson'):
+        if filename.endswith('.geojson') and filename.startswith('dow-'):
             files.append(os.path.join(root, filename))
 # create a config file with the files
 config = {
@@ -31,6 +31,7 @@ for file in files:
     name_with_extension = os.path.basename(file)
     # add the file to the config
     name_lower = name.lower()
+    name_lower = name_lower.replace('dow-', '')
     extract = {
         "output": f"{name_lower}.osm.pbf",
         "description": f"Extract of {name}",

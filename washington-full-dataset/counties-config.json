@@ -1,315 +1,315 @@
 {
-    "directory": "../output/county-outputs/",
+    "directory": "./",
     "extracts": [
         {
-            "output": "spokane.osm.pbf",
-            "description": "Extract of Spokane",
-            "polygon": {
-                "file_name": "counties/Spokane.geojson",
-                "type": "geojson"
-            }
-        },
-        {
-            "output": "kittitas.osm.pbf",
-            "description": "Extract of Kittitas",
-            "polygon": {
-                "file_name": "counties/Kittitas.geojson",
-                "type": "geojson"
-            }
-        },
-        {
-            "output": "jefferson.osm.pbf",
-            "description": "Extract of Jefferson",
-            "polygon": {
-                "file_name": "counties/Jefferson.geojson",
-                "type": "geojson"
-            }
-        },
-        {
-            "output": "san_juan.osm.pbf",
-            "description": "Extract of San_Juan",
-            "polygon": {
-                "file_name": "counties/San_Juan.geojson",
-                "type": "geojson"
-            }
-        },
-        {
-            "output": "okanogan.osm.pbf",
-            "description": "Extract of Okanogan",
-            "polygon": {
-                "file_name": "counties/Okanogan.geojson",
-                "type": "geojson"
-            }
-        },
-        {
-            "output": "benton.osm.pbf",
-            "description": "Extract of Benton",
-            "polygon": {
-                "file_name": "counties/Benton.geojson",
-                "type": "geojson"
-            }
-        },
-        {
-            "output": "grant.osm.pbf",
-            "description": "Extract of Grant",
-            "polygon": {
-                "file_name": "counties/Grant.geojson",
-                "type": "geojson"
-            }
-        },
-        {
-            "output": "asotin.osm.pbf",
-            "description": "Extract of Asotin",
-            "polygon": {
-                "file_name": "counties/Asotin.geojson",
-                "type": "geojson"
-            }
-        },
-        {
-            "output": "whitman.osm.pbf",
-            "description": "Extract of Whitman",
-            "polygon": {
-                "file_name": "counties/Whitman.geojson",
-                "type": "geojson"
-            }
-        },
-        {
-            "output": "columbia.osm.pbf",
-            "description": "Extract of Columbia",
-            "polygon": {
-                "file_name": "counties/Columbia.geojson",
-                "type": "geojson"
-            }
-        },
-        {
-            "output": "king.osm.pbf",
-            "description": "Extract of King",
-            "polygon": {
-                "file_name": "counties/King.geojson",
-                "type": "geojson"
-            }
-        },
-        {
-            "output": "cowlitz.osm.pbf",
-            "description": "Extract of Cowlitz",
-            "polygon": {
-                "file_name": "counties/Cowlitz.geojson",
-                "type": "geojson"
-            }
-        },
-        {
             "output": "pend_oreille.osm.pbf",
-            "description": "Extract of Pend_Oreille",
+            "description": "Extract of dow-Pend_Oreille",
             "polygon": {
-                "file_name": "counties/Pend_Oreille.geojson",
-                "type": "geojson"
-            }
-        },
-        {
-            "output": "island.osm.pbf",
-            "description": "Extract of Island",
-            "polygon": {
-                "file_name": "counties/Island.geojson",
-                "type": "geojson"
-            }
-        },
-        {
-            "output": "clark.osm.pbf",
-            "description": "Extract of Clark",
-            "polygon": {
-                "file_name": "counties/Clark.geojson",
-                "type": "geojson"
-            }
-        },
-        {
-            "output": "adams.osm.pbf",
-            "description": "Extract of Adams",
-            "polygon": {
-                "file_name": "counties/Adams.geojson",
-                "type": "geojson"
-            }
-        },
-        {
-            "output": "thurston.osm.pbf",
-            "description": "Extract of Thurston",
-            "polygon": {
-                "file_name": "counties/Thurston.geojson",
-                "type": "geojson"
-            }
-        },
-        {
-            "output": "clallam.osm.pbf",
-            "description": "Extract of Clallam",
-            "polygon": {
-                "file_name": "counties/Clallam.geojson",
-                "type": "geojson"
-            }
-        },
-        {
-            "output": "ferry.osm.pbf",
-            "description": "Extract of Ferry",
-            "polygon": {
-                "file_name": "counties/Ferry.geojson",
-                "type": "geojson"
-            }
-        },
-        {
-            "output": "pacific.osm.pbf",
-            "description": "Extract of Pacific",
-            "polygon": {
-                "file_name": "counties/Pacific.geojson",
-                "type": "geojson"
-            }
-        },
-        {
-            "output": "lewis.osm.pbf",
-            "description": "Extract of Lewis",
-            "polygon": {
-                "file_name": "counties/Lewis.geojson",
-                "type": "geojson"
-            }
-        },
-        {
-            "output": "snohomish.osm.pbf",
-            "description": "Extract of Snohomish",
-            "polygon": {
-                "file_name": "counties/Snohomish.geojson",
-                "type": "geojson"
-            }
-        },
-        {
-            "output": "franklin.osm.pbf",
-            "description": "Extract of Franklin",
-            "polygon": {
-                "file_name": "counties/Franklin.geojson",
-                "type": "geojson"
-            }
-        },
-        {
-            "output": "grays_harbor.osm.pbf",
-            "description": "Extract of Grays_Harbor",
-            "polygon": {
-                "file_name": "counties/Grays_Harbor.geojson",
-                "type": "geojson"
-            }
-        },
-        {
-            "output": "yakima.osm.pbf",
-            "description": "Extract of Yakima",
-            "polygon": {
-                "file_name": "counties/Yakima.geojson",
-                "type": "geojson"
-            }
-        },
-        {
-            "output": "pierce.osm.pbf",
-            "description": "Extract of Pierce",
-            "polygon": {
-                "file_name": "counties/Pierce.geojson",
-                "type": "geojson"
-            }
-        },
-        {
-            "output": "mason.osm.pbf",
-            "description": "Extract of Mason",
-            "polygon": {
-                "file_name": "counties/Mason.geojson",
-                "type": "geojson"
-            }
-        },
-        {
-            "output": "walla_walla.osm.pbf",
-            "description": "Extract of Walla_Walla",
-            "polygon": {
-                "file_name": "counties/Walla_Walla.geojson",
-                "type": "geojson"
-            }
-        },
-        {
-            "output": "chelan.osm.pbf",
-            "description": "Extract of Chelan",
-            "polygon": {
-                "file_name": "counties/Chelan.geojson",
+                "file_name": "counties/dow-Pend_Oreille.geojson",
                 "type": "geojson"
             }
         },
         {
             "output": "stevens.osm.pbf",
-            "description": "Extract of Stevens",
+            "description": "Extract of dow-Stevens",
             "polygon": {
-                "file_name": "counties/Stevens.geojson",
+                "file_name": "counties/dow-Stevens.geojson",
                 "type": "geojson"
             }
         },
         {
-            "output": "lincoln.osm.pbf",
-            "description": "Extract of Lincoln",
+            "output": "san_juan.osm.pbf",
+            "description": "Extract of dow-San_Juan",
             "polygon": {
-                "file_name": "counties/Lincoln.geojson",
+                "file_name": "counties/dow-San_Juan.geojson",
                 "type": "geojson"
             }
         },
         {
-            "output": "douglas.osm.pbf",
-            "description": "Extract of Douglas",
+            "output": "thurston.osm.pbf",
+            "description": "Extract of dow-Thurston",
             "polygon": {
-                "file_name": "counties/Douglas.geojson",
+                "file_name": "counties/dow-Thurston.geojson",
                 "type": "geojson"
             }
         },
         {
-            "output": "kitsap.osm.pbf",
-            "description": "Extract of Kitsap",
+            "output": "pierce.osm.pbf",
+            "description": "Extract of dow-Pierce",
             "polygon": {
-                "file_name": "counties/Kitsap.geojson",
+                "file_name": "counties/dow-Pierce.geojson",
                 "type": "geojson"
             }
         },
         {
-            "output": "skamania.osm.pbf",
-            "description": "Extract of Skamania",
+            "output": "yakima.osm.pbf",
+            "description": "Extract of dow-Yakima",
             "polygon": {
-                "file_name": "counties/Skamania.geojson",
+                "file_name": "counties/dow-Yakima.geojson",
                 "type": "geojson"
             }
         },
         {
-            "output": "klickitat.osm.pbf",
-            "description": "Extract of Klickitat",
+            "output": "lewis.osm.pbf",
+            "description": "Extract of dow-Lewis",
             "polygon": {
-                "file_name": "counties/Klickitat.geojson",
+                "file_name": "counties/dow-Lewis.geojson",
                 "type": "geojson"
             }
         },
         {
-            "output": "wahkiakum.osm.pbf",
-            "description": "Extract of Wahkiakum",
+            "output": "clark.osm.pbf",
+            "description": "Extract of dow-Clark",
             "polygon": {
-                "file_name": "counties/Wahkiakum.geojson",
-                "type": "geojson"
-            }
-        },
-        {
-            "output": "skagit.osm.pbf",
-            "description": "Extract of Skagit",
-            "polygon": {
-                "file_name": "counties/Skagit.geojson",
+                "file_name": "counties/dow-Clark.geojson",
                 "type": "geojson"
             }
         },
         {
             "output": "garfield.osm.pbf",
-            "description": "Extract of Garfield",
+            "description": "Extract of dow-Garfield",
             "polygon": {
-                "file_name": "counties/Garfield.geojson",
+                "file_name": "counties/dow-Garfield.geojson",
+                "type": "geojson"
+            }
+        },
+        {
+            "output": "mason.osm.pbf",
+            "description": "Extract of dow-Mason",
+            "polygon": {
+                "file_name": "counties/dow-Mason.geojson",
+                "type": "geojson"
+            }
+        },
+        {
+            "output": "franklin.osm.pbf",
+            "description": "Extract of dow-Franklin",
+            "polygon": {
+                "file_name": "counties/dow-Franklin.geojson",
+                "type": "geojson"
+            }
+        },
+        {
+            "output": "grays_harbor.osm.pbf",
+            "description": "Extract of dow-Grays_Harbor",
+            "polygon": {
+                "file_name": "counties/dow-Grays_Harbor.geojson",
+                "type": "geojson"
+            }
+        },
+        {
+            "output": "asotin.osm.pbf",
+            "description": "Extract of dow-Asotin",
+            "polygon": {
+                "file_name": "counties/dow-Asotin.geojson",
+                "type": "geojson"
+            }
+        },
+        {
+            "output": "klickitat.osm.pbf",
+            "description": "Extract of dow-Klickitat",
+            "polygon": {
+                "file_name": "counties/dow-Klickitat.geojson",
+                "type": "geojson"
+            }
+        },
+        {
+            "output": "skagit.osm.pbf",
+            "description": "Extract of dow-Skagit",
+            "polygon": {
+                "file_name": "counties/dow-Skagit.geojson",
+                "type": "geojson"
+            }
+        },
+        {
+            "output": "grant.osm.pbf",
+            "description": "Extract of dow-Grant",
+            "polygon": {
+                "file_name": "counties/dow-Grant.geojson",
+                "type": "geojson"
+            }
+        },
+        {
+            "output": "spokane.osm.pbf",
+            "description": "Extract of dow-Spokane",
+            "polygon": {
+                "file_name": "counties/dow-Spokane.geojson",
+                "type": "geojson"
+            }
+        },
+        {
+            "output": "king.osm.pbf",
+            "description": "Extract of dow-King",
+            "polygon": {
+                "file_name": "counties/dow-King.geojson",
                 "type": "geojson"
             }
         },
         {
             "output": "whatcom.osm.pbf",
-            "description": "Extract of Whatcom",
+            "description": "Extract of dow-Whatcom",
             "polygon": {
-                "file_name": "counties/Whatcom.geojson",
+                "file_name": "counties/dow-Whatcom.geojson",
+                "type": "geojson"
+            }
+        },
+        {
+            "output": "pacific.osm.pbf",
+            "description": "Extract of dow-Pacific",
+            "polygon": {
+                "file_name": "counties/dow-Pacific.geojson",
+                "type": "geojson"
+            }
+        },
+        {
+            "output": "cowlitz.osm.pbf",
+            "description": "Extract of dow-Cowlitz",
+            "polygon": {
+                "file_name": "counties/dow-Cowlitz.geojson",
+                "type": "geojson"
+            }
+        },
+        {
+            "output": "island.osm.pbf",
+            "description": "Extract of dow-Island",
+            "polygon": {
+                "file_name": "counties/dow-Island.geojson",
+                "type": "geojson"
+            }
+        },
+        {
+            "output": "walla_walla.osm.pbf",
+            "description": "Extract of dow-Walla_Walla",
+            "polygon": {
+                "file_name": "counties/dow-Walla_Walla.geojson",
+                "type": "geojson"
+            }
+        },
+        {
+            "output": "chelan.osm.pbf",
+            "description": "Extract of dow-Chelan",
+            "polygon": {
+                "file_name": "counties/dow-Chelan.geojson",
+                "type": "geojson"
+            }
+        },
+        {
+            "output": "benton.osm.pbf",
+            "description": "Extract of dow-Benton",
+            "polygon": {
+                "file_name": "counties/dow-Benton.geojson",
+                "type": "geojson"
+            }
+        },
+        {
+            "output": "douglas.osm.pbf",
+            "description": "Extract of dow-Douglas",
+            "polygon": {
+                "file_name": "counties/dow-Douglas.geojson",
+                "type": "geojson"
+            }
+        },
+        {
+            "output": "skamania.osm.pbf",
+            "description": "Extract of dow-Skamania",
+            "polygon": {
+                "file_name": "counties/dow-Skamania.geojson",
+                "type": "geojson"
+            }
+        },
+        {
+            "output": "clallam.osm.pbf",
+            "description": "Extract of dow-Clallam",
+            "polygon": {
+                "file_name": "counties/dow-Clallam.geojson",
+                "type": "geojson"
+            }
+        },
+        {
+            "output": "wahkiakum.osm.pbf",
+            "description": "Extract of dow-Wahkiakum",
+            "polygon": {
+                "file_name": "counties/dow-Wahkiakum.geojson",
+                "type": "geojson"
+            }
+        },
+        {
+            "output": "okanogan.osm.pbf",
+            "description": "Extract of dow-Okanogan",
+            "polygon": {
+                "file_name": "counties/dow-Okanogan.geojson",
+                "type": "geojson"
+            }
+        },
+        {
+            "output": "columbia.osm.pbf",
+            "description": "Extract of dow-Columbia",
+            "polygon": {
+                "file_name": "counties/dow-Columbia.geojson",
+                "type": "geojson"
+            }
+        },
+        {
+            "output": "whitman.osm.pbf",
+            "description": "Extract of dow-Whitman",
+            "polygon": {
+                "file_name": "counties/dow-Whitman.geojson",
+                "type": "geojson"
+            }
+        },
+        {
+            "output": "ferry.osm.pbf",
+            "description": "Extract of dow-Ferry",
+            "polygon": {
+                "file_name": "counties/dow-Ferry.geojson",
+                "type": "geojson"
+            }
+        },
+        {
+            "output": "snohomish.osm.pbf",
+            "description": "Extract of dow-Snohomish",
+            "polygon": {
+                "file_name": "counties/dow-Snohomish.geojson",
+                "type": "geojson"
+            }
+        },
+        {
+            "output": "lincoln.osm.pbf",
+            "description": "Extract of dow-Lincoln",
+            "polygon": {
+                "file_name": "counties/dow-Lincoln.geojson",
+                "type": "geojson"
+            }
+        },
+        {
+            "output": "kittitas.osm.pbf",
+            "description": "Extract of dow-Kittitas",
+            "polygon": {
+                "file_name": "counties/dow-Kittitas.geojson",
+                "type": "geojson"
+            }
+        },
+        {
+            "output": "adams.osm.pbf",
+            "description": "Extract of dow-Adams",
+            "polygon": {
+                "file_name": "counties/dow-Adams.geojson",
+                "type": "geojson"
+            }
+        },
+        {
+            "output": "jefferson.osm.pbf",
+            "description": "Extract of dow-Jefferson",
+            "polygon": {
+                "file_name": "counties/dow-Jefferson.geojson",
+                "type": "geojson"
+            }
+        },
+        {
+            "output": "kitsap.osm.pbf",
+            "description": "Extract of dow-Kitsap",
+            "polygon": {
+                "file_name": "counties/dow-Kitsap.geojson",
                 "type": "geojson"
             }
         }
