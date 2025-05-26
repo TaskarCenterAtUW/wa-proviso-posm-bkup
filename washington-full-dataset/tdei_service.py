@@ -109,10 +109,12 @@ class TDEIService:
                     datasets.append({'name':data['metadata']['dataset_detail']['name'],'upload_date':data['uploaded_timestamp'],'version':data['metadata']['dataset_detail']['version'],'tdei_dataset_id':data['tdei_dataset_id']})
                 break
             print(f'Found {len(datasets)} datasets for {dataset_name}')
-            if not datasets:
-                print(f'No datasets found for {dataset_name}.')
-                return None
-            return datasets
+         if not datasets:
+            print(f'No datasets found for {dataset_name}.')
+            return None
+         # Get the dataset version maximum
+         latest_version = max(float(dataset['version']) for dataset in datasets)
+         return latest_version
     
     def check_access_token_validity(self,token:str,environment:str):
          '''

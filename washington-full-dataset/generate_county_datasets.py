@@ -46,7 +46,14 @@ def generate_metadata_file(boundary_file_path,dow_file_path ,dataset_name, servi
     latest_version = 1.0
     full_dataset_name = f'GS_{dataset_name_without_space}_County'
     if service:
-        latest_version = service.get_current_version(full_dataset_name)
+        latest_version = service.get_current_version('prod',full_dataset_name)
+        print(f'Latest version for {full_dataset_name} is {latest_version}')
+        if latest_version is not None:
+            print(latest_version)
+            latest_version += 0.1
+    else:
+        print(f'Service is not provided. Using default version {latest_version}')
+
 
     release_notes = f'Dataset covering all the incoprorated areas of {dataset_name} county. The dataset area is based on incorporated areas. The `area` tag in custom_metadata is the complete county boundary.'
     current_date = datetime.now()
@@ -117,7 +124,7 @@ def main(osmfile):
         if not os.path.exists(boundary_path):
             print(f'Boundary file {boundary_path} does not exist. Skipping {dataset_name.title()}')
             continue
-        metadata_content = generate_metadata_file(boundary_path, dow_path, dataset_name.title())
+        metadata_content = generate_metadata_file(boundary_path, dow_path, dataset_name.title(),tdei_service)
         # Get the dataset version if already exists
         metadata_file_path =  os.path.join("../output/county-datasets", dataset_name,
                                            f'{dataset_name}-metadata.json')
