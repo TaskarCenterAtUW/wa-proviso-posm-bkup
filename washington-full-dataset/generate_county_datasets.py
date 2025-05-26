@@ -11,6 +11,7 @@ from osm_osw_reformatter import Formatter
 
 import zipfile
 
+
 def download_osm_file(file_path, dataset_name):
     working_dir = os.path.join("../output/county-datasets", dataset_name)
     zip_file_path = os.path.join(working_dir, f'{dataset_name}.zip')
@@ -34,7 +35,7 @@ def download_osm_file(file_path, dataset_name):
 
 
 
-def generate_metadata_file(boundary_file_path,dow_file_path ,dataset_name, service: TDEIService = None):
+def generate_metadata_file(boundary_file_path,dow_file_path ,dataset_name, service: TDEIService = None, environment:str = 'prod'):
 
     with open(boundary_file_path, 'r') as file:
         boundary_data = json.load(file)
@@ -46,11 +47,11 @@ def generate_metadata_file(boundary_file_path,dow_file_path ,dataset_name, servi
     latest_version = 1.0
     full_dataset_name = f'GS_{dataset_name_without_space}_County'
     if service:
-        latest_version = service.get_current_version('prod',full_dataset_name)
+        latest_version = service.get_current_version(environment,full_dataset_name)
         print(f'Latest version for {full_dataset_name} is {latest_version}')
         if latest_version is not None:
             print(latest_version)
-            latest_version += 0.1
+            latest_version += 0.01
     else:
         print(f'Service is not provided. Using default version {latest_version}')
 

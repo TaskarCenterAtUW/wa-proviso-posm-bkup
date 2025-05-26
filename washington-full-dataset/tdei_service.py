@@ -76,6 +76,7 @@ class TDEIService:
     
     def get_current_version(self, environment: str, dataset_name: str):
          project_group_id = '1dd7c38e-c7a6-4e3a-be8b-379f823a7ad7'
+         #TODO: Hardcoded project group ID
          query_params = {
             'page_no': 1,
             'page_size': 50,

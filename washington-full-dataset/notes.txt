@@ -14,4 +14,6 @@ Trying to get multiple extracts from single .pbf file using configuration file
 - Extract all the county pbf files from washington_full.pbf using config option
 - Config file is there in counties-config.json file
 - Once the PBF is got, use OSM-OSW converter library to generate the datasets
-- Once the datasets are prepared, use script to upload the new datasets to TDEI. 
+- Once the datasets are prepared, use script to upload the new datasets to TDEI.
+
+
