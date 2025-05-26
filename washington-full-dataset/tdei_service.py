@@ -168,8 +168,11 @@ def main():
          processed_jobs_count += 1
          jobId = tdei_service.upload_tdei_dataset(access_token,environment,dataset_file,metadata_file,project_group_id,service_id)
          print(f'Job ID for {county}: {jobId}')
+         processed_job_ids.append({'county':county, 'jobId': jobId})
         #  break
      print(f'Processed {processed_jobs_count} counties.')
+     with open('../output/processed_jobs.json', 'w') as f:
+         json.dump(processed_job_ids, f, indent=4)
 
 if __name__ == '__main__':
     main()

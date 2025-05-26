@@ -25,6 +25,8 @@
 - At the end of the above script, we have individual folders with datasets and metadata ready
 - Use `tdei_service.py` to upload the dataset to the TDEI system
 - `python tdei_service.py`
+- The script uploads the datasets to GS_WSP_PG production project group under service Proviso_Unions
+- The jobID and county name are stored in `outputs/processed_jobs.json` file.
 
 ## Environment variables
 - TDEI_USERNAME = username for TDEI System
