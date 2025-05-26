@@ -47,11 +47,11 @@ def generate_metadata_file(boundary_file_path,dow_file_path ,dataset_name, servi
     latest_version = 1.0
     full_dataset_name = f'GS_{dataset_name_without_space}_County'
     if service:
-        latest_version = service.get_current_version(environment,full_dataset_name)
-        print(f'Latest version for {full_dataset_name} is {latest_version}')
-        if latest_version is not None:
-            print(latest_version)
-            latest_version += 0.01
+        online_latest_version = service.get_current_version(environment,full_dataset_name)
+        print(f'Latest version for {full_dataset_name} is {online_latest_version}')
+        if online_latest_version is not None:
+            print(online_latest_version)
+            latest_version = online_latest_version + 0.01
     else:
         print(f'Service is not provided. Using default version {latest_version}')
 
@@ -67,7 +67,7 @@ def generate_metadata_file(boundary_file_path,dow_file_path ,dataset_name, servi
     json_dict['data_provenance']['allow_crowd_contributions'] = True
     json_dict['dataset_detail']['name'] = full_dataset_name
     json_dict['dataset_detail']['description'] = f'''OSW v0.2 compliant dataset for {dataset_name}'''
-    json_dict['dataset_detail']['version'] = f'{latest_version:.1f}'
+    json_dict['dataset_detail']['version'] = f'{latest_version:.2f}'
     json_dict['dataset_detail']['collected_by'] = "GS and UW"
     json_dict['dataset_detail']['collection_date'] = current_date.isoformat()
     json_dict['dataset_detail']['valid_from'] = current_date.isoformat()
