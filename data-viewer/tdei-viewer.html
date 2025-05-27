@@ -814,7 +814,7 @@
             };
           },
           onEachFeature: function (feature, layer) {
-            const layerDescription = feature.properties.dataset_name + ' ' + feature.properties.dataset_version;
+            const layerDescription = feature.properties.dataset_name + ' ' + feature.properties.dataset_version+' '+feature.properties.tdei_dataset_id;
             layer.bindPopup(layerDescription || 'Unnamed');
           }
         });
@@ -849,7 +849,7 @@
         });
 
         overlays['Counties'] = countiesLayer;
-        countiesLayer.addTo(map);
+        // countiesLayer.addTo(map);
         // L.control.layers(baseLayers, overlays, position).addTo(map);
       })
       .catch(error => console.error('Error loading counties:', error));
@@ -871,15 +871,17 @@
             };
           },
           onEachFeature: function (feature, layer) {
-            layer.bindPopup(feature.properties.JURISDICT_NM || 'Unnamed');
+            layer.bindPopup(feature.properties.CityName || 'Unnamed');
           }
         });
 
         overlays['Cities'] = citiesLayer;
-        citiesLayer.addTo(map);
+        // citiesLayer.addTo(map);
         // L.control.layers(baseLayers, overlays, position).addTo(map);
       })
       .catch(error => console.error('Error loading counties:', error));
+    
+    L.control.layers(baseLayers, overlays, position).addTo(map);
 
     // URL query parameter to get the project ID
     const urlParams = new URLSearchParams(window.location.search);
