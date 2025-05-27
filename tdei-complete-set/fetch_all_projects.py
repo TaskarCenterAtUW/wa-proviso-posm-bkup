@@ -116,7 +116,8 @@ if __name__ == '__main__':
         'data_type':'osw',
         'sort_field':'uploaded_timestamp',
         'sort_order':'asc',
-        'status':'Publish'
+        'status':'Publish',
+        'tdei_service_id':'f24b624c-8253-48d4-ae92-34e4395213e1'
     }
     datasets = downloader.get_latest_datasets(query_params)
     for index, row in tqdm(datasets.iterrows(), total=len(datasets), desc='Downloading datasets'):

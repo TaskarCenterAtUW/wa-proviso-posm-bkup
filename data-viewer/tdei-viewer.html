@@ -782,6 +782,7 @@
 
     let overlays = {
       'Data': layer,
+      'Counties': {}
     }
     // Add boundaries overlay
     const boundariesLayerUrl = 'https://provisodevstorage.blob.core.windows.net/waposmdbbkup/wa-tdei-latest/washington_dataset_boundaries.geojson';
@@ -824,6 +825,33 @@
       })
       .catch(error => console.error('Error loading boundaries:', error));
     // L.control.layers(baseLayers, overlays, position).addTo(map);
+
+    // Add Counties layer
+    const countiesLayerUrl = 'https://raw.githubusercontent.com/TaskarCenterAtUW/wa-proviso-posm-bkup/refs/heads/main/washington-full-dataset/state_county_boundaries_with_area_reduced.geojson'
+    fetch(countiesLayerUrl)
+      .then(response => response.json())
+      .then(data => {
+        const countiesLayer = L.geoJSON(data, {
+          style: function (feature) {
+            return {
+              color: '#000',
+              weight: 2,
+              fillOpacity: 0.1,
+              stroke:true,
+              strokeStyle:'blue',
+              strokeWidth:2
+            };
+          },
+          onEachFeature: function (feature, layer) {
+            layer.bindPopup(feature.properties.JURISDICT_NM || 'Unnamed');
+          }
+        });
+
+        overlays['Counties'] = countiesLayer;
+        countiesLayer.addTo(map);
+        // L.control.layers(baseLayers, overlays, position).addTo(map);
+      })
+      .catch(error => console.error('Error loading counties:', error));
 
     // URL query parameter to get the project ID
     const urlParams = new URLSearchParams(window.location.search);
