@@ -782,7 +782,8 @@
 
     let overlays = {
       'Data': layer,
-      'Counties': {}
+      'Counties': {},
+      'Cities': {}
     }
     // Add boundaries overlay
     const boundariesLayerUrl = 'https://provisodevstorage.blob.core.windows.net/waposmdbbkup/wa-tdei-latest/washington_dataset_boundaries.geojson';
@@ -849,6 +850,33 @@
 
         overlays['Counties'] = countiesLayer;
         countiesLayer.addTo(map);
+        // L.control.layers(baseLayers, overlays, position).addTo(map);
+      })
+      .catch(error => console.error('Error loading counties:', error));
+
+    const citiesLayerUrl = 'https://raw.githubusercontent.com/TaskarCenterAtUW/wa-proviso-posm-bkup/refs/heads/main/washington-full-dataset/state_city_boundaries_reduced_with_areakm2.geojson'
+
+    fetch(citiesLayerUrl)
+      .then(response => response.json())
+      .then(data => {
+        const citiesLayer = L.geoJSON(data, {
+          style: function (feature) {
+            return {
+              color: '#000',
+              weight: 2,
+              fillOpacity: 0.1,
+              stroke:true,
+              strokeStyle:'blue',
+              strokeWidth:2
+            };
+          },
+          onEachFeature: function (feature, layer) {
+            layer.bindPopup(feature.properties.JURISDICT_NM || 'Unnamed');
+          }
+        });
+
+        overlays['Cities'] = citiesLayer;
+        citiesLayer.addTo(map);
         // L.control.layers(baseLayers, overlays, position).addTo(map);
       })
       .catch(error => console.error('Error loading counties:', error));
