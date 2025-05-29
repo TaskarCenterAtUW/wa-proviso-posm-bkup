@@ -6,6 +6,7 @@ import os
 # from osm-convert import Formatter
 from datetime import datetime, timedelta
 from tdei_service import TDEIService
+from osmium_converter import OsmiumOSWConverter
 
 from osm_osw_reformatter import Formatter
 
@@ -18,8 +19,11 @@ def download_osm_file(file_path, dataset_name):
     if os.path.exists(zip_file_path):
         print(f'Zip file {zip_file_path} already exists. Skipping download and processing for {dataset_name}')
         return 
-    f = Formatter(workdir=working_dir, file_path=file_path)
-    result = asyncio.run(f.osm2osw())
+    # f = Formatter(workdir=working_dir, file_path=file_path)
+    # result = asyncio.run(f.osm2osw())
+
+    f = OsmiumOSWConverter(workdir=working_dir, file_path=file_path)
+    result = f.convert()
     # zip them 
     
     with zipfile.ZipFile(zip_file_path, 'w') as zipf:
