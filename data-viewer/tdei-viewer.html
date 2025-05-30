@@ -352,6 +352,9 @@
       cursor: pointer;
       transition: transform .1s, box-shadow .2s;
     }
+    .leaflet-popup-content .popup-content h5 {
+    white-space: nowrap;
+  }
   </style>
 </head>
 
@@ -443,6 +446,13 @@
               <li>Hover over the elements to see their details.</li>
               <li>Click on the map to know the underlying dataset name and version.</li>
               <li>Right click to submit an issue you may have found.</li>
+              <li>To view the quality report of a dataset, click on the <strong>Quality Report</strong> link shown on the popup.
+              </li>
+              <li>To download a dataset, copy the ID, go to
+                <a href="https://portal.tdei.us/" target="_blank" rel="noopener">portal.tdei.us</a> &rsaquo; Datasets &rsaquo; All
+                Released Datasets and paste the ID in the Dataset ID field
+                <em>(requires login to the portal)</em>
+              </li>
             </ul>
           </div>
           <div class="modal-footer">
@@ -813,8 +823,72 @@
             };
           },
           onEachFeature: function (feature, layer) {
-            const layerDescription = feature.properties.dataset_name + ' ' + feature.properties.dataset_version;
-            layer.bindPopup(layerDescription || 'Unnamed');
+            const props = feature.properties;
+            const uploadDate = new Date(props.upload_date).toLocaleDateString('en-US', {
+              year: 'numeric', month: 'short', day: 'numeric'
+            });
+            let html = `
+            <div class="popup-content">
+            <h5>${props.name}</h5>
+            <p><strong>Uploaded:</strong> ${uploadDate}</p>
+            <p><strong>Version:</strong> ${props.version}</p>
+              <p>
+                <strong>ID:</strong>
+                <span id="tdei-id">${props.tdei_dataset_id}</span>
+                <button
+                class="copy-btn btn btn-outline-secondary btn-sm"
+                data-id="${props.tdei_dataset_id}"
+                  aria-label="Copy TDEI ID"
+                >
+                <i class="bi bi-clipboard"></i>
+                </button>
+                 <span class="copy-msg small text-success" style="display:none; margin-left:6px;">
+                  Copied!
+                </span>
+              </p>`;
+            if (props.tcat_quality_report_url) {
+              html += `
+                <p>
+                  <strong>Quality Report:</strong>
+                  <a href="${props.tcat_quality_report_url}" target="_blank" rel="noopener">
+                    View Report
+                  </a>
+                </p>
+                `;
+            } else {
+              html += `
+                <p>
+                  <strong>Quality Report:</strong>
+                    Not Available
+                </p>
+                `;
+            }
+            html += `</div>`;
+            layer.bindPopup(html);
+            layer.on('popupopen', () => {
+
+              const container = document.querySelector('.leaflet-popup .popup-content');
+              const btn = container.querySelector('.copy-btn');
+              const msg = container.querySelector('.copy-msg');
+
+              btn.addEventListener('click', () => {
+                navigator.clipboard.writeText(btn.dataset.id)
+                  .then(() => {
+                    msg.style.display = 'inline';
+                    setTimeout(() => msg.style.display = 'none', 1500);
+                  })
+                  .catch(() => {
+                    msg.innerText = 'Copy failed';
+                    msg.style.color = 'red';
+                    msg.style.display = 'inline';
+                    setTimeout(() => {
+                      msg.style.display = 'none';
+                      msg.style.color = '';
+                      msg.innerText = 'Copied!';
+                    }, 1500);
+                  });
+              });
+            });
           }
         });
 
@@ -1067,7 +1141,7 @@
           }
           clearSearch();
           boundariesLayer.eachLayer(layer => {
-            const name = (layer.feature.properties.dataset_name || '').toLowerCase();
+            const name = (layer.feature.properties.name || '').toLowerCase();
             if (name.includes(term)) {
               layer.setStyle({
                 stroke: true,
