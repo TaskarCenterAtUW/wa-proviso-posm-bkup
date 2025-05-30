@@ -58,13 +58,33 @@ class TDEIDatasetDownloader :
             if len(response.json()) >= page_size:
                 print(f'Fetching page {page_no}')
                 for data in response.json():
-                    datasets.append({'name':data['metadata']['dataset_detail']['name'],'upload_date':data['uploaded_timestamp'],'version':data['metadata']['dataset_detail']['version'],'tdei_dataset_id':data['tdei_dataset_id']})
+                    feature = {}
+                    features = data['metadata']['dataset_detail']['dataset_area'].get('features', [])
+                    if len(features) > 0:
+                        feature = features[0]
+                    datasets.append({'name':data['metadata']['dataset_detail']['name'],
+                    'upload_date':data['uploaded_timestamp'],
+                    'version':data['metadata']['dataset_detail']['version'],
+                    'tdei_dataset_id':data['tdei_dataset_id'],
+                    'custom_metadata':data['metadata']['dataset_detail'].get('custom_metadata', {}),
+                    'geometry': feature.get('geometry', {}) if feature else {}
+                    })
                 page_no += 1
                 query_params['page_no'] = page_no
                 response = requests.get(datasets_url,params=query_params, headers=headers)
             else:
                 for data in response.json():
-                    datasets.append({'name':data['metadata']['dataset_detail']['name'],'upload_date':data['uploaded_timestamp'],'version':data['metadata']['dataset_detail']['version'],'tdei_dataset_id':data['tdei_dataset_id']})
+                    feature = {}
+                    features = data['metadata']['dataset_detail']['dataset_area'].get('features', [])
+                    if len(features) > 0:
+                        feature = features[0]
+                    datasets.append({'name':data['metadata']['dataset_detail']['name'],
+                    'upload_date':data['uploaded_timestamp'],
+                    'version':data['metadata']['dataset_detail']['version'],
+                    'tdei_dataset_id':data['tdei_dataset_id'],
+                    'custom_metadata':data['metadata']['dataset_detail'].get('custom_metadata', {}),
+                    'geometry': feature.get('geometry', {}) if feature else {}})
+                print(f'Fetching page {page_no}')
                 break
 
         return datasets
@@ -123,4 +143,21 @@ if __name__ == '__main__':
     for index, row in tqdm(datasets.iterrows(), total=len(datasets), desc='Downloading datasets'):
         dataset_id = row['tdei_dataset_id']
         downloader.download_dataset(dataset_id)
+    datasets.to_json('tdei_datasets.json', orient='records', indent=4)
+    '''
+    Command to generate GeoJSON from the dataset JSON file:
+    jq '{
+  type: "FeatureCollection",
+  features: map({
+    type: "Feature",
+    geometry: .geometry,
+    properties: (
+      del(.geometry) 
+      | .custom_metadata as $custom
+      | del(.custom_metadata)
+      | . + $custom
+    )
+  })
+}' tdei_datasets.json > washington_dataset_boundaries.geojson
+'''
      

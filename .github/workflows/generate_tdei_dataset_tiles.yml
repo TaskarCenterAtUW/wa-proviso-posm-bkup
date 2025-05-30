@@ -59,10 +59,10 @@ jobs:
         working-directory: ./tdei-complete-set
         run: |
             jq '{"type": "FeatureCollection", "features": [.[] | .features[]]}' --slurp ./downloads/*/*/*.geojson > washington_output.geojson
-      - name: Combine all metadata files
+      - name: Generate Dataset Boundaries GeoJSON
         working-directory: ./tdei-complete-set
         run: |
-            jq '{"type": "FeatureCollection", "features": [.[] | .dataset_detail as $detail |  .dataset_detail.dataset_area.features[] | .properties.dataset_name = $detail.name | .properties.dataset_version = $detail.version]}' --slurp ./downloads/*/metadata.json > washington_dataset_boundaries.geojson
+            jq '{type: "FeatureCollection",features: map({type: "Feature",geometry: .geometry,properties: (del(.geometry) | .custom_metadata as $custom | del(.custom_metadata) | . + $custom)})}' tdei_datasets.json > washington_dataset_boundaries.geojson
       - name: Install Tippecanoe
         run: |
           git clone https://github.com/felt/tippecanoe.git
