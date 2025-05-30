@@ -352,9 +352,33 @@
       cursor: pointer;
       transition: transform .1s, box-shadow .2s;
     }
+
     .leaflet-popup-content .popup-content h5 {
-    white-space: nowrap;
-  }
+      white-space: nowrap;
+    }
+
+    .leaflet-popup-content .popup-content .copy-btn {
+      font-size: 0.85em;
+      padding: 0px 2px 0px 2px;
+    }
+
+    .leaflet-popup-content .popup-content .copy-btn i {
+      font-size: 1em;
+    }
+
+    .leaflet-popup-content .popup-content p {
+      margin: 10px 0;
+    }
+
+    .leaflet-popup-content .copy-btn {
+
+      padding: 0;
+      font-size: 0.9em;
+    }
+
+    .leaflet-popup-content .copy-btn i {
+      color: #fff;
+    }
   </style>
 </head>
 
@@ -445,13 +469,15 @@
             <ul>
               <li>Hover over the elements to see their details.</li>
               <li>Click on the map to know the underlying dataset name and version.</li>
-              <li>Right click to submit an issue you may have found.</li>
-              <li>To view the quality report of a dataset, click on the <strong>Quality Report</strong> link shown on the popup.
-              </li>
               <li>To download a dataset, copy the ID, go to
-                <a href="https://portal.tdei.us/" target="_blank" rel="noopener">portal.tdei.us</a> &rsaquo; Datasets &rsaquo; All
+                <a href="https://portal.tdei.us/" target="_blank" rel="noopener">portal.tdei.us</a> &rsaquo; Datasets
+                &rsaquo; All
                 Released Datasets and paste the ID in the Dataset ID field
                 <em>(requires login to the portal)</em>
+              <li>To view the quality report of a dataset, click on the <strong>Quality Report</strong> link shown on
+                the popup.
+              </li>
+              <li>Right click to submit an issue you may have found.</li>
               </li>
             </ul>
           </div>
@@ -498,20 +524,20 @@
     });
 
 
-  var layers = L.control().layers
+    var layers = L.control().layers
 
-  function isFootpath(d){ // E58C8A
-    return d['highway'] == 'footway' && d['footway'] == null;
-  }
-  function isSidewalk(d){ // 7EE8FA
-    return d['highway'] == 'footway' && d['footway'] == 'sidewalk';
-  }
-  function isCrossing(d){ //FFF07C
-    return d['highway'] == 'footway' && d['footway'] == 'crossing';
-  }
-  function isKerb(d){
-    return d['barrier'] == 'kerb';
-  }
+    function isFootpath(d) { // E58C8A
+      return d['highway'] == 'footway' && d['footway'] == null;
+    }
+    function isSidewalk(d) { // 7EE8FA
+      return d['highway'] == 'footway' && d['footway'] == 'sidewalk';
+    }
+    function isCrossing(d) { //FFF07C
+      return d['highway'] == 'footway' && d['footway'] == 'crossing';
+    }
+    function isKerb(d) {
+      return d['barrier'] == 'kerb';
+    }
 
     function getCrossingColor(d) {
       if (d['crossing'] == 'marked') {
@@ -751,10 +777,11 @@
     });
 
     layer.addTo(map);
-
-    const popup = L.popup({
-      autoPan: false
-    });
+    const hoverPopup = L.popup({ autoPan: false, closeOnClick: false, autoClose: false });
+    const clickPopup = L.popup({ autoPan: false });
+    // const popup = L.popup({
+    //   autoPan: false
+    // });
     let lastFeatureId = null; // Track the last hovered feature
 
     map.on("mousemove", async function (e) {
@@ -778,16 +805,36 @@
         if (currentFeatureId !== lastFeatureId) {
           lastFeatureId = currentFeatureId;
           const content = getFeatureContent(feature.feature.props);
-          popup
+          hoverPopup
             .setLatLng(e.latlng)
             .setContent(` ${content || "Unnamed"}`)
             .openOn(map);
         }
       } else {
-        map.closePopup();
+        hoverPopup.closePopup();
         lastFeatureId = null; // Reset last feature
       }
     });
+    map.on('popupopen', (e) => {
+      const btn = e.popup._container.querySelector('.copy-btn');
+      if (!btn) return;
+      const original = btn.innerHTML;
+      btn.replaceWith(btn.cloneNode(true));
+      const fresh = e.popup._container.querySelector('.copy-btn');
+
+      fresh.addEventListener('click', () => {
+        navigator.clipboard.writeText(fresh.dataset.id)
+          .then(() => {
+            fresh.innerHTML = '<i class="bi bi-clipboard-check-fill text-white"></i>';
+            setTimeout(() => fresh.innerHTML = original, 1500);
+          })
+          .catch(() => {
+            fresh.innerHTML = '<i class="bi bi-clipboard-x-fill text-danger"></i>';
+            setTimeout(() => fresh.innerHTML = original, 1500);
+          });
+      });
+    });
+
 
 
     let overlays = {
@@ -836,15 +883,12 @@
                 <strong>ID:</strong>
                 <span id="tdei-id">${props.tdei_dataset_id}</span>
                 <button
-                class="copy-btn btn btn-outline-secondary btn-sm"
+                class="copy-btn btn-outline-secondary btn"
                 data-id="${props.tdei_dataset_id}"
                   aria-label="Copy TDEI ID"
                 >
-                <i class="bi bi-clipboard"></i>
+               <i class="bi bi-clipboard text-white"></i>
                 </button>
-                 <span class="copy-msg small text-success" style="display:none; margin-left:6px;">
-                  Copied!
-                </span>
               </p>`;
             if (props.tcat_quality_report_url) {
               html += `
@@ -864,31 +908,7 @@
                 `;
             }
             html += `</div>`;
-            layer.bindPopup(html);
-            layer.on('popupopen', () => {
-
-              const container = document.querySelector('.leaflet-popup .popup-content');
-              const btn = container.querySelector('.copy-btn');
-              const msg = container.querySelector('.copy-msg');
-
-              btn.addEventListener('click', () => {
-                navigator.clipboard.writeText(btn.dataset.id)
-                  .then(() => {
-                    msg.style.display = 'inline';
-                    setTimeout(() => msg.style.display = 'none', 1500);
-                  })
-                  .catch(() => {
-                    msg.innerText = 'Copy failed';
-                    msg.style.color = 'red';
-                    msg.style.display = 'inline';
-                    setTimeout(() => {
-                      msg.style.display = 'none';
-                      msg.style.color = '';
-                      msg.innerText = 'Copied!';
-                    }, 1500);
-                  });
-              });
-            });
+            layer.bindPopup(html, { popup: clickPopup });
           }
         });
 
@@ -899,7 +919,6 @@
       })
       .catch(error => console.error('Error loading boundaries:', error));
     // L.control.layers(baseLayers, overlays, position).addTo(map);
-   
     // Add Counties layer
     // const countiesLayerUrl = 'https://raw.githubusercontent.com/TaskarCenterAtUW/wa-proviso-posm-bkup/refs/heads/main/washington-full-dataset/state_county_boundaries_with_area_reduced.geojson'
     // fetch(countiesLayerUrl)
@@ -953,7 +972,7 @@
     //     // L.control.layers(baseLayers, overlays, position).addTo(map);
     //   })
     //   .catch(error => console.error('Error loading counties:', error));
-    
+
     // L.control.layers(baseLayers, overlays, position).addTo(map);
 
     // URL query parameter to get the project ID
@@ -1201,4 +1220,5 @@
     </div>
   </div>
 </body>
+
 </html>
