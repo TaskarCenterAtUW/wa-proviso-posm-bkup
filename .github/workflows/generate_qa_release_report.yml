@@ -37,7 +37,7 @@ jobs:
             - name: Upload Reports to Azure Blob Storage
               uses: LanceMcCarthy/Action-AzureBlobUpload@v2
               with:
-                source_folder: tdei-complete-set/report-downlods
+                source_folder: tdei-complete-set/report-downloads
                 connection_string: ${{ secrets.AZURE_STORAGE_CONNECTION }}
                 container_name: 'tdei-qa-reports'
                 destination_folder: latest
@@ -45,7 +45,7 @@ jobs:
             - name: Upload Reports to Azure Blob Storage
               uses: LanceMcCarthy/Action-AzureBlobUpload@v2
               with:
-                source_folder: tdei-complete-set/report-downlods
+                source_folder: tdei-complete-set/report-downloads
                 connection_string: ${{ secrets.AZURE_STORAGE_CONNECTION }}
                 container_name: 'tdei-qa-reports'
                 destination_folder: ${{ env.OUTPUT_FOLDER }}
