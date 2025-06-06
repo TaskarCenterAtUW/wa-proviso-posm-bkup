@@ -5,6 +5,8 @@ import os
 from tqdm import tqdm
 load_dotenv()
 import pandas as pd
+import json
+import io
 
 class TDEIDatasetDownloader : 
 
@@ -32,6 +34,37 @@ class TDEIDatasetDownloader :
         access_token = response.json()['access_token']
         self.access_token = access_token
         return access_token
+    
+    def fetch_quality_metric(self, dataset_id):
+        try:
+            url = self.base_url+'/api/v1/osw/quality-metric/tag/'+dataset_id
+            headers = {'Authorization': f'Bearer {self.access_token}'}
+            tag_quality_payload = [
+            {
+                "entity_type": "Sidewalk",
+                "tags": [
+                    "surface",
+                    "width",
+                    "incline",
+                    "length",
+                    "description",
+                    "name",
+                    "foot"
+                ]
+            }
+        ]
+            tag_quality_bytes = json.dumps(tag_quality_payload).encode('utf-8')
+            files = {"file": ('tag_quality_payload.json', io.BytesIO(tag_quality_bytes), 'application/json')}
+            data = {'tdei_dataset_id': dataset_id}
+            response = requests.post(url, headers=headers, files=files, data=data)
+            response.raise_for_status()
+            result = response.json()[0]
+            metrics = result.get('metric_details', {})
+            return metrics
+        except Exception as e:
+            print(f"[ERROR] Quality metric for {dataset_id}: {e}")
+            return {}
+
 
     def search_datasets(self, query_params):
         if not self.access_token:
@@ -65,6 +98,7 @@ class TDEIDatasetDownloader :
                     datasets.append({'name':data['metadata']['dataset_detail']['name'],
                     'upload_date':data['uploaded_timestamp'],
                     'version':data['metadata']['dataset_detail']['version'],
+                    'service': data['service']['name'],
                     'tdei_dataset_id':data['tdei_dataset_id'],
                     'custom_metadata':data['metadata']['dataset_detail'].get('custom_metadata', {}),
                     'geometry': feature.get('geometry', {}) if feature else {}
@@ -81,6 +115,7 @@ class TDEIDatasetDownloader :
                     datasets.append({'name':data['metadata']['dataset_detail']['name'],
                     'upload_date':data['uploaded_timestamp'],
                     'version':data['metadata']['dataset_detail']['version'],
+                    'service': data['service']['name'],
                     'tdei_dataset_id':data['tdei_dataset_id'],
                     'custom_metadata':data['metadata']['dataset_detail'].get('custom_metadata', {}),
                     'geometry': feature.get('geometry', {}) if feature else {}})
@@ -95,7 +130,7 @@ class TDEIDatasetDownloader :
         print(f' Found {len(datasets)} datasets')
         if not datasets:
             print(f'No datasets found.')
-            return []
+            return pd.DataFrame()
         df = pd.DataFrame(datasets)
         df_sorted = df.sort_values(by=['name', 'version'], ascending=[True, False])
         df_deduplicated = df_sorted.groupby('name').first().reset_index()
