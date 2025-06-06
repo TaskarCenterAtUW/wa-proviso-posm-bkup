@@ -29,6 +29,9 @@ jobs:
                     echo "TDEI_PASSWORD=${{ secrets.TDEI_PASSWORD }}" >> $GITHUB_ENV
             - name: Run Report Generation Script
               working-directory: tdei-complete-set
+              env:
+                TDEI_USERNAME: ${{ secrets.TDEI_USERNAME }}
+                TDEI_PASSWORD: ${{ secrets.TDEI_PASSWORD }}
               run: |
                   python download_both_project_groups.py
             - name: Upload Reports to Azure Blob Storage
