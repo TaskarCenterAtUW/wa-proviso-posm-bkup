@@ -196,7 +196,7 @@
 
         async function loadBoundary(pg) {
             if (boundariesLayer) map.removeLayer(boundariesLayer);
-            const url = pg === "GS" ? "../tdei-complete-set/GS_WSP_PG_datasets.json" : "../tdei-complete-set/TCAT_WSP_PG_datasets.json";
+            const url = pg === "GS" ? "https://provisodevstorage.blob.core.windows.net/tdei-qa-reports/latest/GS_WSP_PG_datasets.json" : "https://provisodevstorage.blob.core.windows.net/tdei-qa-reports/latest/TCAT_WSP_PG_datasets.json";
             const data = await fetch(url).then(res => res.json());
             const geojson = convertToGeoJSON(data);
 
@@ -230,31 +230,28 @@
         loadBoundary("TCAT");
 
         async function updateLastUpdated() {
-            const response = await fetch('../tdei-complete-set/last_updated.txt');
+            const response = await fetch('https://provisodevstorage.blob.core.windows.net/tdei-qa-reports/latest/last_updated.txt');
             const text = await response.text();
             const trimmed = text.trim();
+            const utcDateString = trimmed.replace(' ', 'T') + 'Z';
 
-            const parts = trimmed.split(" ");
-            if (parts.length === 2) {
-                const [datePart, timePart] = parts;
-                const fullDateString = datePart + "T" + timePart;
+            const date = new Date(utcDateString);
 
-                const date = new Date(fullDateString);
-                if (!isNaN(date)) {
-                    const formatted = date.toLocaleString('en-US', {
-                        year: 'numeric',
-                        month: 'short',
-                        day: 'numeric',
-                        hour: '2-digit',
-                        minute: '2-digit',
-                        second: '2-digit'
-                    });
-                    document.getElementById('last-updated').innerText = `Last Updated: ${formatted}`;
-                    return;
-                }
+            if (!isNaN(date)) {
+                const formatted = date.toLocaleString(undefined, {
+                    year: 'numeric',
+                    month: 'short',
+                    day: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    second: '2-digit'
+                });
+                document.getElementById('last-updated').innerText = `Last Updated: ${formatted}`;
+            } else {
+                document.getElementById('last-updated').innerText = `Last Updated: ${trimmed}`;
             }
-            document.getElementById('last-updated').innerText = `Last Updated: ${trimmed}`;
         }
+
         updateLastUpdated();
 
         document.getElementById("infoButton").addEventListener("click", () => {
