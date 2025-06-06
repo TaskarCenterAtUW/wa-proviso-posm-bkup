@@ -3,6 +3,7 @@ from fetch_all_projects import TDEIDatasetDownloader
 from tqdm import tqdm
 from dotenv import load_dotenv
 import pandas as pd
+from datetime import datetime
 
 load_dotenv()
 
@@ -39,17 +40,24 @@ project_groups = {
         }
     }
 }
-
+tqdm.pandas()
 for pg_name, pg_data in project_groups.items():
     print(f"Processing project group: {pg_name}")
     
     datasets = downloader.get_latest_datasets(pg_data['query_params'])
     output_json = f'{pg_name}_datasets.json'
-
+    datasets['project_group'] = pg_name
+    datasets['qm'] = datasets['tdei_dataset_id'].progress_apply(downloader.fetch_quality_metric)
     if datasets is not None and not datasets.empty:
         datasets.to_json(output_json, orient='records', indent=4)
         print(f"Saved {output_json}")
     else:
         print(f"No datasets found for {pg_name}. Skipping file creation.")
+    
+    timestamp_file = 'last_updated.txt'
+    now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    with open(timestamp_file, 'w') as f:
+        f.write(now)
+    print(f"Updated timestamp written: {now}")
 
     print(f"Completed for {pg_name}\n")

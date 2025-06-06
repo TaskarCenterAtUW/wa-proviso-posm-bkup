@@ -58,11 +58,8 @@ class TDEIDatasetDownloader :
             data = {'tdei_dataset_id': dataset_id}
             response = requests.post(url, headers=headers, files=files, data=data)
             response.raise_for_status()
-            print(f"Response status for {dataset_id}: {response.status_code}")
-            print(f"Response JSON for {dataset_id}: {response.json()}")
             result = response.json()[0]
             metrics = result.get('metric_details', {})
-            print(f"Extracted metrics for {dataset_id}: {metrics}")
 
             return metrics
         except Exception as e:
@@ -95,31 +92,18 @@ class TDEIDatasetDownloader :
             if len(response.json()) >= page_size:
                 print(f'Fetching page {page_no}')
                 for data in response.json():
-                    dataset_area = data['metadata']['dataset_detail'].get('dataset_area')
-                    if dataset_area and 'features' in dataset_area:
-                        features = dataset_area.get('features', [])
-                    else:
-                        features = []
-
-                feature = features[0] if features else {}
-
-                dataset_id = data['tdei_dataset_id']
-                metrics = self.fetch_quality_metric(dataset_id)
-    
-                datasets.append({
-                'name': data['metadata']['dataset_detail']['name'],
-                'upload_date': data['uploaded_timestamp'],
-                'version': data['metadata']['dataset_detail']['version'],
-                'service': data['service']['name'],
-                'project_group': data['project_group']['name'],
-                'tdei_dataset_id': data['tdei_dataset_id'],
-                'custom_metadata': data['metadata']['dataset_detail'].get('custom_metadata', {}),
-                'geometry': feature.get('geometry', {}) if feature else {},
-                'surface_percentage': metrics.get('surface_percentage'),
-                'width_percentage': metrics.get('width_percentage'),
-                'incline_percentage': metrics.get('incline_percentage'),
-                })
-
+                    feature = {}
+                    features = data['metadata']['dataset_detail']['dataset_area'].get('features', [])
+                    if len(features) > 0:
+                        feature = features[0]
+                    datasets.append({'name':data['metadata']['dataset_detail']['name'],
+                    'upload_date':data['uploaded_timestamp'],
+                    'version':data['metadata']['dataset_detail']['version'],
+                    'service': data['service']['name'],
+                    'tdei_dataset_id':data['tdei_dataset_id'],
+                    'custom_metadata':data['metadata']['dataset_detail'].get('custom_metadata', {}),
+                    'geometry': feature.get('geometry', {}) if feature else {}
+                    })
                 page_no += 1
                 query_params['page_no'] = page_no
                 response = requests.get(datasets_url,params=query_params, headers=headers)
@@ -132,6 +116,7 @@ class TDEIDatasetDownloader :
                     datasets.append({'name':data['metadata']['dataset_detail']['name'],
                     'upload_date':data['uploaded_timestamp'],
                     'version':data['metadata']['dataset_detail']['version'],
+                    'service': data['service']['name'],
                     'tdei_dataset_id':data['tdei_dataset_id'],
                     'custom_metadata':data['metadata']['dataset_detail'].get('custom_metadata', {}),
                     'geometry': feature.get('geometry', {}) if feature else {}})
