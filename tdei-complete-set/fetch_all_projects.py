@@ -60,7 +60,6 @@ class TDEIDatasetDownloader :
             response.raise_for_status()
             result = response.json()[0]
             metrics = result.get('metric_details', {})
-
             return metrics
         except Exception as e:
             print(f"[ERROR] Quality metric for {dataset_id}: {e}")

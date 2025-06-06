@@ -136,3 +136,4 @@ __azurite_db*__.json
 .vscode
 output
 .DS_Store
+report-downloads/
