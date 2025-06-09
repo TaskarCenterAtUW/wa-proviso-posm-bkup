@@ -82,12 +82,30 @@
         .leaflet-bottom {
             z-index: 1000 !important;
         }
+
+        .loading-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            display: none;
+        }
     </style>
 </head>
 
 <body>
     <div id="map"></div>
-
+    <div id="loader" class="loading-overlay">
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
     <div class="header-bar">
         <span id="last-updated">Last Updated: --</span>
         <button class="info-button" id="infoButton"><i class="bi bi-info-circle-fill"></i></button>
@@ -195,32 +213,48 @@
         }
 
         async function loadBoundary(pg) {
-            if (boundariesLayer) map.removeLayer(boundariesLayer);
-            const url = pg === "GS" ? "https://provisodevstorage.blob.core.windows.net/tdei-qa-reports/latest/GS_WSP_PG_datasets.json" : "https://provisodevstorage.blob.core.windows.net/tdei-qa-reports/latest/TCAT_WSP_PG_datasets.json";
-            const data = await fetch(url).then(res => res.json());
-            const geojson = convertToGeoJSON(data);
+            showLoader();
+            if (boundariesLayer) {
+                map.removeLayer(boundariesLayer);
+                boundariesLayer = null;
+            }
+            try {
+                const url = pg === "GS"
+                    ? "https://provisodevstorage.blob.core.windows.net/tdei-qa-reports/latest/GS_WSP_PG_datasets.json"
+                    : "https://provisodevstorage.blob.core.windows.net/tdei-qa-reports/latest/TCAT_WSP_PG_datasets.json";
 
-            boundariesLayer = L.geoJSON(geojson, {
-                style: feature => {
-                    const p = feature.properties;
-                    const level = getQualityLevel(p);
-                    return { color: getColor(level), weight: 2, fillOpacity: 0.3 };
-                },
-                onEachFeature: (feature, layer) => {
-                    const p = feature.properties;
-                    const content = `
-                        <b>Dataset Name:</b> ${p.name}<br/>
-                        <b>Version:</b> ${p.version}<br/>
-                        <b>Uploaded:</b> ${new Date(p.upload_date).toLocaleDateString()}<br/>
-                        <b>Width Completion:</b> ${p.width_percentage}%<br/>
-                        <b>Incline Completion:</b> ${p.incline_percentage}%<br/>
-                        <b>Surface Completion:</b> ${p.surface_percentage}%<br/>
-                        <b>PG:</b> ${p.project_group}<br/>
-                        <b>Service:</b> ${p.service || '-'}
-                    `;
-                    layer.bindPopup(content);
-                }
-            }).addTo(map);
+                const response = await fetch(url);
+                const data = await response.json();
+                const geojson = convertToGeoJSON(data);
+
+                boundariesLayer = L.geoJSON(geojson, {
+                    style: feature => {
+                        const p = feature.properties;
+                        const level = getQualityLevel(p);
+                        return { color: getColor(level), weight: 2, fillOpacity: 0.3 };
+                    },
+                    onEachFeature: (feature, layer) => {
+                        const p = feature.properties;
+                        const content = `
+                    <b>Dataset Name:</b> ${p.name}<br/>
+                    <b>Version:</b> ${p.version}<br/>
+                    <b>Uploaded:</b> ${new Date(p.upload_date).toLocaleDateString()}<br/>
+                    <b>Width Completion:</b> ${p.width_percentage}%<br/>
+                    <b>Incline Completion:</b> ${p.incline_percentage}%<br/>
+                    <b>Surface Completion:</b> ${p.surface_percentage}%<br/>
+                    <b>PG:</b> ${p.project_group}<br/>
+                    <b>Service:</b> ${p.service || '-'}
+                `;
+                        layer.bindPopup(content);
+                    }
+                }).addTo(map);
+
+            } catch (err) {
+                console.error("Error loading data:", err);
+                alert("Failed to load data for " + pg);
+            } finally {
+                hideLoader();
+            }
         }
 
         document.querySelectorAll("input[name='pg']").forEach(radio => {
@@ -258,6 +292,14 @@
             const myModal = new bootstrap.Modal(document.getElementById('infoModal'));
             myModal.show();
         });
+        function showLoader() {
+            document.getElementById('loader').style.display = 'flex';
+        }
+
+        function hideLoader() {
+            document.getElementById('loader').style.display = 'none';
+        }
+
 
     </script>
 </body>
