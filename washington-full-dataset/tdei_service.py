@@ -4,6 +4,7 @@ import json
 import os
 from dotenv import load_dotenv
 load_dotenv()
+import time
 
 class TDEIService:
     
@@ -136,10 +137,39 @@ class TDEIService:
                   raise ValueError(f'Invalid access token. Received response code {response.status_code}')
               else:
                    return True
-              
+    def wait_for_job_completion(self,token:str,environment:str,job_id:str, tdei_project_group_id:str='1dd7c38e-c7a6-4e3a-be8b-379f823a7ad7'):
+         '''
+         Waits for the job to complete and returns the job status.
+         '''
+         base_url = self.base_urls.get(environment,None)
+         if base_url is None:
+             raise ValueError(f'Invalid environment: {environment}')
+         else:
+              query_params = {'job_id': job_id,'tdei_project_group_id':tdei_project_group_id}
+              job_status_url = f'{base_url}/api/v1/jobs'
+              headers = {
+                'Authorization': f'Bearer {token}'
+              }
+              while True:
+                   response = requests.get(job_status_url, headers=headers, params=query_params)
+                   if response.status_code == 200:
+                        job_status = response.json()[0] if response.json() else None
+                        if job_status is None:
+                            print(f'Job {job_id} not found. It may have been deleted or not started yet.')
+                            return None
+                        # Check if the job is completed or failed
+                        if job_status['status'] in ['COMPLETED', 'FAILED']:
+                            return job_status
+                   elif response.status_code == 404:
+                        print(f'Job {job_id} not found. It may have been deleted.')
+                        return None
+                   else:
+                        print(f'Error fetching job status: {response.text}')
+                   time.sleep(5)
           
 
-def main():
+def main(action:str='upload'):
+    # All the config here.
      project_group_id = '1dd7c38e-c7a6-4e3a-be8b-379f823a7ad7'
      tdei_service =  TDEIService()
      username = os.getenv('TDEI_USERNAME')
@@ -147,32 +177,60 @@ def main():
      environment = os.getenv('TDEI_ENVIRONMENT','prod')
      service_id = os.getenv('TDEI_SERVICE_ID','d1199d1a-495b-43a0-b7cd-1f941a657356')
      access_token = tdei_service.get_access_token(environment,username,password)
-     print(f'Access token: {access_token}')
-     county_datasets_output_dir = '../output/county-datasets'
-     # Get the zip, metadata file for each county dataset
-     processed_job_ids = []
-     processed_jobs_count = 0
-     
+    #  print(f'Access token: {access_token}')
 
-     for county in os.listdir(county_datasets_output_dir):
-         county_path = os.path.join(county_datasets_output_dir, county)
-         if not os.path.isdir(county_path):
-             continue
-         print(f'Processing county: {county}')
-         metadata_file = os.path.join(county_path, f'{county}-metadata.json')
-         dataset_file = os.path.join(county_path, f'{county}.zip')
-         if not os.path.exists(metadata_file) or not os.path.exists(dataset_file):
-             print(f'Metadata file or dataset file does not exist for {county}. Skipping.')
-             continue
-         print(f'Uploading dataset for {county}')
-         processed_jobs_count += 1
-         jobId = tdei_service.upload_tdei_dataset(access_token,environment,dataset_file,metadata_file,project_group_id,service_id)
-         print(f'Job ID for {county}: {jobId}')
-         processed_job_ids.append({'county':county, 'jobId': jobId})
-        #  break
-     print(f'Processed {processed_jobs_count} counties.')
-     with open('../output/processed_jobs.json', 'w') as f:
-         json.dump(processed_job_ids, f, indent=4)
+     if action == 'upload':
+        county_datasets_output_dir = '../output/county-datasets'
+        # Get the zip, metadata file for each county dataset
+        processed_job_ids = []
+        processed_jobs_count = 0
+        
+
+        for county in os.listdir(county_datasets_output_dir):
+            county_path = os.path.join(county_datasets_output_dir, county)
+            if not os.path.isdir(county_path):
+                continue
+            print(f'Processing county: {county}')
+            metadata_file = os.path.join(county_path, f'{county}-metadata.json')
+            dataset_file = os.path.join(county_path, f'{county}.zip')
+            if not os.path.exists(metadata_file) or not os.path.exists(dataset_file):
+                print(f'Metadata file or dataset file does not exist for {county}. Skipping.')
+                continue
+            print(f'Uploading dataset for {county}')
+            processed_jobs_count += 1
+            jobId = tdei_service.upload_tdei_dataset(access_token,environment,dataset_file,metadata_file,project_group_id,service_id)
+            print(f'Job ID for {county}: {jobId}')
+            processed_job_ids.append({'county':county, 'jobId': jobId})
+            #  break
+        print(f'Processed {processed_jobs_count} counties.')
+        with open('../output/processed_jobs.json', 'w') as f:
+            json.dump(processed_job_ids, f, indent=4)
+     elif action == 'check_jobs':
+        with open('../output/processed_jobs.json', 'r') as f:
+            processed_jobs = json.load(f)
+        failed_jobs = []
+        failed_jobs_count = 0
+        for job in processed_jobs:
+            job_id = job['jobId']
+            county = job['county']
+            print(f'Checking job status for {county} with job ID: {job_id}')
+            job_status = tdei_service.wait_for_job_completion(access_token, environment, job_id, project_group_id)
+            if job_status:
+                print(f'Job {job_id} for {county.title()} completed with status: {job_status["status"]}')
+                if job_status['status'] == 'FAILED':
+                    failed_jobs_count += 1
+                    failed_jobs.append({'county': county, 'jobId': job_id, 'status': job_status['status'], 'error': job_status.get('message', 'No error message')})
+            else:
+                print(f'Job {job_id} for {county} not found or failed.')
+            # break
+        print(f'Checked {len(processed_jobs)} jobs. {failed_jobs_count} jobs failed.')
+        if failed_jobs:
+            print(f'Failed jobs: {failed_jobs}')
+            with open('../output/failed_jobs.json', 'w') as f:
+                json.dump(failed_jobs, f, indent=4)
+        else:
+            print('No failed jobs found.')
 
 if __name__ == '__main__':
-    main()
+    main('check_jobs')
+    # main('upload')
