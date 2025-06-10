@@ -6,10 +6,10 @@ import os
 # from osm-convert import Formatter
 from datetime import datetime, timedelta
 from tdei_service import TDEIService
-from osmium_converter import OsmiumOSWConverter
+# from osmium_converter import OsmiumOSWConverter
 import shutil
 
-from osm_osw_reformatter import Formatter
+# from osm_osw_reformatter import Formatter
 
 import zipfile
 
@@ -131,6 +131,9 @@ def main(osmfile):
             print(f'Boundary file {boundary_path} does not exist. Skipping {dataset_name.title()}')
             continue
         metadata_content = generate_metadata_file(boundary_path, dow_path, dataset_name.title(),tdei_service)
+        output_dir = os.path.join("../output/county-datasets", dataset_name)
+        # Create the output directory if it does not exist
+        os.makedirs(output_dir, exist_ok=True)
         # Get the dataset version if already exists
         metadata_file_path =  os.path.join("../output/county-datasets", dataset_name,
                                            f'{dataset_name}-metadata.json')
