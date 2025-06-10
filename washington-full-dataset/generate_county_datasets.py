@@ -7,6 +7,7 @@ import os
 from datetime import datetime, timedelta
 from tdei_service import TDEIService
 from osmium_converter import OsmiumOSWConverter
+import shutil
 
 from osm_osw_reformatter import Formatter
 
@@ -106,7 +107,7 @@ def main(osmfile):
     username = os.getenv('TDEI_USERNAME')
     password = os.getenv('TDEI_PASSWORD')
     environment = os.getenv('TDEI_ENVIRONMENT','prod')
-    service_id = os.getenv('TDEI_SERVICE_ID','d1199d1a-495b-43a0-b7cd-1f941a657356')
+    service_id = os.getenv('TDEI_SERVICE_ID','d1199d1a-495b-43a0-b7cd-1f941a657356') # Proviso_Unions
     access_token = tdei_service.get_access_token(environment,username,password)
     print(f'Access token: {access_token}')
 
@@ -118,7 +119,7 @@ def main(osmfile):
             print(f'Skipping complete dataset {osmfile}')
             continue
         print("Processing %s" % osmfile)
-        download_osm_file(osmfile, dataset_name)
+        # download_osm_file(osmfile, dataset_name)
         # Generate the metadata file
         # boundary_file_path = os.path.join(os.path.dirname(osmfile), f'{dataset_name}-boundary.geojson')
         print(f'Processing for {dataset_name.title()}')
@@ -136,6 +137,10 @@ def main(osmfile):
         # Write the metadata file
         with open(metadata_file_path, 'w') as metadata_file:
             json.dump(metadata_content, metadata_file, indent=4)
+
+        # copy boundary dow_file name to output directory with dataset_name-boundary.json
+        output_boundary_path = os.path.join("../output/county-datasets", dataset_name, f'{dataset_name}-dow-boundary.geojson')
+        shutil.copy(dow_path, output_boundary_path)
     
     return 0
 
