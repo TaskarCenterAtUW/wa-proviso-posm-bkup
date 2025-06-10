@@ -121,7 +121,7 @@
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">OSConnect Dataset Viewer</h5>
+                    <h5 class="modal-title">Release Quality Report Viewer</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -239,6 +239,7 @@
                     <b>Dataset Name:</b> ${p.name}<br/>
                     <b>Version:</b> ${p.version}<br/>
                     <b>Uploaded:</b> ${new Date(p.upload_date).toLocaleDateString()}<br/>
+                    <b>Length Completion:</b> ${p.length_percentage}%<br/>
                     <b>Width Completion:</b> ${p.width_percentage}%<br/>
                     <b>Incline Completion:</b> ${p.incline_percentage}%<br/>
                     <b>Surface Completion:</b> ${p.surface_percentage}%<br/>
