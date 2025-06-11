@@ -10,7 +10,7 @@ import time
 # Start with generation of boundary and metadata files
 # Start time for reference
 start_time = time.time()
-county_name = 'chelan'
+county_name = 'clallam'
 input_files_folder = 'counties'
 dow_file_name = f'dow-{county_name.title()}.geojson'
 boundary_file_name = f'{county_name.title()}.geojson'
@@ -21,12 +21,13 @@ dow_path = os.path.join('counties', dow_file_name)
 tdei_service = TDEIService()
 username = os.getenv('TDEI_USERNAME')
 password = os.getenv('TDEI_PASSWORD')
-environment = os.getenv('TDEI_ENVIRONMENT','stage')
-project_group_id = os.getenv('TDEI_PROJECT_GROUP_ID','b8098696-7588-4278-beb8-a730d33a71cc') # GS_WSP_PG in Stage
+environment = os.getenv('TDEI_ENVIRONMENT','prod')
+# project_group_id = os.getenv('TDEI_PROJECT_GROUP_ID','b8098696-7588-4278-beb8-a730d33a71cc') # GS_WSP_PG in Stage
+project_group_id = os.getenv('TDEI_PROJECT_GROUP_ID','1dd7c38e-c7a6-4e3a-be8b-379f823a7ad7') # GS_WSP_PG in Stage
 service_id = os.getenv('TDEI_SERVICE_ID','d1199d1a-495b-43a0-b7cd-1f941a657356') # Proviso_Unions
 # print(f' Getting creds for {username} in {environment} environment with password {password}')
 access_token = tdei_service.get_access_token(environment,username,password)
-print(f'Access token: {access_token}')
+print(f'Access token received')
 
 # Generate the metadata and boundary file for the same.
 metadata_content = generate_metadata_file(boundary_path, dow_path, county_name.title(),tdei_service,environment=environment,tdei_project_group_id=project_group_id)
