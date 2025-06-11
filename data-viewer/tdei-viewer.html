@@ -480,6 +480,9 @@
               <li>Right click to submit an issue you may have found.</li>
               </li>
             </ul>
+            <p id="lastUpdated" class="small text-muted">
+              Loading last-updated
+            </p>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -616,7 +619,7 @@
       }
       if (props['kerb'] === 'flush') {
         return '#006d77';
-      } 
+      }
       if (props['kerb'] == null) {
         return '#588157';
       }
@@ -624,7 +627,7 @@
 
     function getFeatureContent(properties) {
       // const props = feature.feature.props || {};
-      const keystToShow = ['highway', 'footway', 'crossing', 'kerb', 'barrier', 'incline', 'width', 'length', 'foot', 'width', 'surface', 'ext:width_confidence','tactile_paving'];
+      const keystToShow = ['highway', 'footway', 'crossing', 'kerb', 'barrier', 'incline', 'width', 'length', 'foot', 'width', 'surface', 'ext:width_confidence', 'tactile_paving'];
       const pairs = Object.entries(properties);
       const requiredPairs = pairs.filter(([key, value]) => keystToShow.includes(key) && value != null && value != 'NaN' && value != 'null');
       const content = requiredPairs.map(([key, value]) => {
@@ -1007,7 +1010,8 @@
     // } else {
     //   L.control.layers(baseLayers, overlays, position).addTo(map);
     // }
-
+    const tsUrl = '../tdei-complete-set/downloads/last_updated.txt'
+    //'https://provisodevstorage.blob.core.windows.net/waposmdbbkup/wa-tdei-latest/last_updated.txt';
     let rightClickMarker = null;
 
     document.addEventListener('DOMContentLoaded', function () {
@@ -1183,6 +1187,23 @@
     });
     // var control = new L.Control.Button()
     // control.addTo(map);
+    fetch(tsUrl)
+    .then(res => {
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      return res.text();
+    })
+    .then(text => {
+      const utcString = text.trim();           
+        const date = new Date(utcString);        
+        const localDate = date.toLocaleDateString();     
+        const localTime = date.toLocaleTimeString();
+        document.getElementById('lastUpdated').textContent =
+          `Last updated: ${localDate} ${localTime}`;   
+    })
+    .catch(err => {
+      console.warn('Couldnt load last_updated.txt:', err);
+      document.getElementById('lastUpdated').textContent = 'Last updated: unavailable';
+    });
 
   </script>
   <div id="mapTooltip" class="mapActionWindow">
