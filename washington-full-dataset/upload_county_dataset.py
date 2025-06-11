@@ -10,7 +10,7 @@ import time
 # Start with generation of boundary and metadata files
 # Start time for reference
 start_time = time.time()
-county_name = 'benton'
+county_name = 'chelan'
 input_files_folder = 'counties'
 dow_file_name = f'dow-{county_name.title()}.geojson'
 boundary_file_name = f'{county_name.title()}.geojson'
