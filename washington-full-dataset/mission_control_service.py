@@ -145,10 +145,10 @@ def main():
     service = MissonControlService(project_group_id=project_group_id, service_id=service_id)
     try:
         result = service.initiate_dataset_upload_job(
-            dataset_name="GS Asotin County",
-            working_dir="../output/county-datasets/asotin",
+            dataset_name="GS Adams County",
+            working_dir="../output/county-datasets/adams",
             access_token="eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICI4bDNEZ2ZrSS03ejJNNFJkMXVIWEEtLWZzdTNsZUxwU2x3TG1JOGJ3RmlRIn0.eyJleHAiOjE3NDk2NTIwOTUsImlhdCI6MTc0OTU2NTY5NSwianRpIjoiNjMxNDk5NTQtNjI1Zi00ZjRmLWJiY2QtYmY1YjcyOGY4MTc0IiwiaXNzIjoiaHR0cHM6Ly9hY2NvdW50LXN0YWdlLnRkZWkudXMvcmVhbG1zL3RkZWkiLCJhdWQiOiJhY2NvdW50Iiwic3ViIjoiMzE3NmI2YjYtNjUyNC00YmZkLTg2ZWQtYzM4MDQ1ZGQ2OTlhIiwidHlwIjoiQmVhcmVyIiwiYXpwIjoidGRlaS1nYXRld2F5Iiwic2lkIjoiMmJhMzI2MDAtMmQ3Yi00MWU0LWI5NTItYzVlZjYyNzU2NGMwIiwiYWNyIjoiMSIsImFsbG93ZWQtb3JpZ2lucyI6WyIiLCIqIl0sInJlYWxtX2FjY2VzcyI6eyJyb2xlcyI6WyJvZmZsaW5lX2FjY2VzcyIsImRlZmF1bHQtcm9sZXMtdGRlaSIsInVtYV9hdXRob3JpemF0aW9uIl19LCJyZXNvdXJjZV9hY2Nlc3MiOnsiYWNjb3VudCI6eyJyb2xlcyI6WyJtYW5hZ2UtYWNjb3VudCIsIm1hbmFnZS1hY2NvdW50LWxpbmtzIiwidmlldy1wcm9maWxlIl19fSwic2NvcGUiOiJlbWFpbCBwcm9maWxlIG9wZW5pZCIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJuYW1lIjoiTmFyZXNoIEt1bWFyIiwicHJlZmVycmVkX3VzZXJuYW1lIjoibmFyZXNoZEBnYXVzc2lhbnNvbHV0aW9ucy5jb20iLCJnaXZlbl9uYW1lIjoiTmFyZXNoIEt1bWFyIiwiZW1haWwiOiJuYXJlc2hkQGdhdXNzaWFuc29sdXRpb25zLmNvbSJ9.eO396Ys2BUNI8RjanhDEzKxyTS7O5LXq1TNoySfuKRLB_j9GLMs5zjkedFe8YswU-VayICfcqhw0UAuvivboubIDy2AGMlAFca82mP0nhPJw89rxTgLlb7pP1Yjni2gr7HL9GZKzUjeCU1JlOPLuIDqsClQFUWtuQHd-WYKOIwRsP7GpmQKzDxQpu2eEJ9cnSiPlmHTACWsUDNB3X9rol-qWO5eULZSeOqCPgtpCOxXGpiqJOJTQmJY8sEq8aiDPV3zIvo5ACQ9-xiuR2imx3s4_5Ygi91r9tvl64qjkPiC0Sjc4I-RJWUwj5yTKpsJ5me69WJ6fvtSJcriZXC4VHQ",
-            mc_project_id="6848071f7fe063e3230cab6b",
+            mc_project_id="684862347fe063e3230cab9a",
             environment="stage"  # Change to "prod" for production environment
         )
         print("Dataset upload job initiated successfully:", result)
@@ -161,7 +161,7 @@ def check_job_status_example(jobId:str):
     service_id = "d1199d1a-495b-43a0-b7cd-1f941a657356"
     service = MissonControlService(project_group_id=project_group_id, service_id=service_id)
     try:
-        job_id = service.get_job_result(project_id="6848071f7fe063e3230cab6b", flow_id=jobId)
+        job_id = service.get_job_result(project_id="684862347fe063e3230cab9a", flow_id=jobId)
         print("Job status:", job_id)
     except Exception as e:
         print("Error checking job status:", e)
