@@ -24,6 +24,7 @@ config = {
     }
 '''
 extracts = []
+mc_project_ids = {}
 for file in files:
     # get the name of the file without the extension
     name = os.path.splitext(os.path.basename(file))[0]
@@ -41,8 +42,14 @@ for file in files:
         }
     }
     extracts.append(extract)
+    mc_project_ids[name_lower] = "xyxyxy"
 config['extracts'] = extracts
 print(json.dumps(config, indent=4))
 # save the config to a file
 with open('counties-config.json', 'w') as f:
     json.dump(config, f, indent=4)
+
+# sort keys in alphabetic order
+mc_project_ids = dict(sorted(mc_project_ids.items()))
+with open('counties-mc-ids.json', 'w') as f:
+    json.dump(mc_project_ids, f, indent=4)

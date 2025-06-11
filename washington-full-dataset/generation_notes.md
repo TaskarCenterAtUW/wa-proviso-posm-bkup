@@ -33,4 +33,16 @@
 - TDEI_PASSWORD = password for TDEI System
 - TDEI_SERVICE_ID = service ID for looking up(searching) and uploading
 
+
+# Notes latest
+Steps to be done at a county level
+- Initiate `mc_project_upload` for the county.
+- Wait for the job to complete.
+- Ensure that there is a job for the dataset (Mission control Job)
+- Wait for the job to complete
+- Ensure to get a TDEI jobID from the above.
+- Wait till that job is complete
+- Ensure that the job is successful
+- Start a new job for incline
+
  
