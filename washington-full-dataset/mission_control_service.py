@@ -8,28 +8,20 @@ class MissonControlService:
         self.project_group_id = project_group_id
         self.service_id = service_id
         self.base_url = "https://wa-proviso-api-dev.azurewebsites.net"
+        self.time_between_requests = 25  # seconds between requests to avoid rate limiting
         pass
     
     def initiate_dataset_upload_job(self, dataset_name: str, working_dir:str, access_token: str,mc_project_id: str,environment: str = "prod",):
         # url = https://wa-proviso-api-dev.azurewebsites.net/projects/6848071f7fe063e3230cab6b/upload-tdei-dataset
         '''
-                Payload sample:
-                {
-        "boundary": {
-            "type": "Feature",
-            "properties": {
-            "name": "GS Asotin County",
-            "id": "6848071f7fe063e3230cab6b",
-            "tdei_service_id": "d1199d1a-495b-43a0-b7cd-1f941a657356",
-            "tdei_pg_id": "1dd7c38e-c7a6-4e3a-be8b-379f823a7ad7"
-            },
-            "geometry": {}
-        },
-        "metadata": {},
-        "access_token": "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICIxeEpjaktNdk9RcWQtXzZUMGhZN0JsS2lRVXd0dlFIbHd1M2hSTjNLRm1vIn0.eyJleHAiOjE3NDk2MTM2NjQsImlhdCI6MTc0OTUyNzI2NCwianRpIjoiNWZmYjZhMWEtNGE0My00MTZjLWI1MzMtNWU5MTZmYmRiNjY1IiwiaXNzIjoiaHR0cHM6Ly9hY2NvdW50LnRkZWkudXMvcmVhbG1zL3RkZWkiLCJhdWQiOiJhY2NvdW50Iiwic3ViIjoiNWIyZjI4ZTYtMzRhMC00MzU4LTk2NGEtZjZiMTdlMDE5ZjNhIiwidHlwIjoiQmVhcmVyIiwiYXpwIjoidGRlaS1nYXRld2F5Iiwic2lkIjoiODE1NzdhYWQtNDJlNS00OTM0LWE4ODctMjU2YmJkZGIyNWQ0IiwiYWNyIjoiMSIsImFsbG93ZWQtb3JpZ2lucyI6WyIiLCIqIl0sInJlYWxtX2FjY2VzcyI6eyJyb2xlcyI6WyJvZmZsaW5lX2FjY2VzcyIsImRlZmF1bHQtcm9sZXMtdGRlaSIsInVtYV9hdXRob3JpemF0aW9uIl19LCJyZXNvdXJjZV9hY2Nlc3MiOnsiYWNjb3VudCI6eyJyb2xlcyI6WyJtYW5hZ2UtYWNjb3VudCIsIm1hbmFnZS1hY2NvdW50LWxpbmtzIiwidmlldy1wcm9maWxlIl19fSwic2NvcGUiOiJlbWFpbCBwcm9maWxlIG9wZW5pZCIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJuYW1lIjoiTmFyZXNoIEt1bWFyIEt1bWFyIiwicHJlZmVycmVkX3VzZXJuYW1lIjoibmFyZXNoZEBnYXVzc2lhbnNvbHV0aW9ucy5jb20iLCJnaXZlbl9uYW1lIjoiTmFyZXNoIEt1bWFyIiwiZmFtaWx5X25hbWUiOiJLdW1hciIsImVtYWlsIjoibmFyZXNoZEBnYXVzc2lhbnNvbHV0aW9ucy5jb20ifQ.cCN7ZCBWCQvitefquwZfCmnIFxgtvPtKMjfQhN096xd1nWGEJXqQczQyniYv184i5ogFSE-kfIff79luYbUr1gASxy0svF5ZIPT6xeM6EJZE06E_xKNZvl7orpIGnJvKV3ybn2HrlmSmFJFdD-jj7HSStEna6FdaqouqlU7AvThcx3tyfFLPtxKUamggBz0vLsgwy-wKoeknZwugeQWsq0yS_ZCNIds7yAB6Pm8m_4wPFd-jOhFzjek_2EAuz0IlZ0PsX8VOu8mGqlQ-wHHGcEQCe9ZSPOEoIiiJh-GOdGpvK_33sepT-JatY5pKBY3eLEeEzHyGOMBp1-TMyHhTyg",
-        "environment": "prod"
-        }       
-    '''
+            Initiates a dataset upload job in Mission Control.       
+            Parameters:
+                dataset_name (str): The name of the dataset.
+                working_dir (str): The directory containing the boundary and metadata files.
+                access_token (str): The access token for authentication.
+                mc_project_id (str): The Mission Control project ID.
+                environment (str): The environment to use ('prod' or 'stage').
+        '''
      # Go through the working_dir and find boundary file (name ends with boundary.geojson)
         boundary_file_path = None
         for file in os.listdir(working_dir):
@@ -107,12 +99,12 @@ class MissonControlService:
             response  = job_status.get('response', {})
             report_url = response.get('report_url',None)
             if report_url is None:
-                print(f"Job {flow_id} is not finished yet. Current state: {job_status.get('state')}")
+                print(f"Job {flow_id} is not finished yet. Current state: {job_status.get('currentTask')} - {job_status.get('state')}")
                 time_since_start = time.time() - start_time
                 # If the time since the start is more than 30 minutes, raise an error
                 if time_since_start > 1800:  # 30 minutes
-                    raise TimeoutError(f"Job {flow_id} is taking too long to finish. Current state: {job_status.get('state')}")
-                time.sleep(15)
+                    raise TimeoutError(f"Job {flow_id} is taking too long to finish. Current state: {job_status.get('currentTask')} {job_status.get('state')}")
+                time.sleep(self.time_between_requests)
             else:
                 print(f"Job {flow_id} is finished. Retrieving results...")
                 # If the job is finished, retrieve the results

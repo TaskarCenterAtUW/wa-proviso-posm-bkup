@@ -14,33 +14,33 @@ import shutil
 import zipfile
 
 
-def download_osm_file(file_path, dataset_name):
-    working_dir = os.path.join("../output/county-datasets", dataset_name)
-    zip_file_path = os.path.join(working_dir, f'{dataset_name}.zip')
-    if os.path.exists(zip_file_path):
-        print(f'Zip file {zip_file_path} already exists. Skipping download and processing for {dataset_name}')
-        return 
-    # f = Formatter(workdir=working_dir, file_path=file_path)
-    # result = asyncio.run(f.osm2osw())
+# def download_osm_file(file_path, dataset_name):
+#     working_dir = os.path.join("../output/county-datasets", dataset_name)
+#     zip_file_path = os.path.join(working_dir, f'{dataset_name}.zip')
+#     if os.path.exists(zip_file_path):
+#         print(f'Zip file {zip_file_path} already exists. Skipping download and processing for {dataset_name}')
+#         return 
+#     # f = Formatter(workdir=working_dir, file_path=file_path)
+#     # result = asyncio.run(f.osm2osw())
 
-    f = OsmiumOSWConverter(workdir=working_dir, file_path=file_path)
-    result = f.convert()
-    # zip them 
+#     f = OsmiumOSWConverter(workdir=working_dir, file_path=file_path)
+#     result = f.convert()
+#     # zip them 
     
-    with zipfile.ZipFile(zip_file_path, 'w') as zipf:
-        for file in result.generated_files:
-            # Add the file to the zip file
-            file_basename = os.path.basename(file)
-            # remove prefix final. 
-            if file_basename.startswith('final.'):
-                file_basename = file_basename[len('final.'):]
-            zipf.write(file, file_basename)
-            print(f'Added {file} to {zip_file_path}')
-    print(f'Generated zip file at {zip_file_path}')
+#     with zipfile.ZipFile(zip_file_path, 'w') as zipf:
+#         for file in result.generated_files:
+#             # Add the file to the zip file
+#             file_basename = os.path.basename(file)
+#             # remove prefix final. 
+#             if file_basename.startswith('final.'):
+#                 file_basename = file_basename[len('final.'):]
+#             zipf.write(file, file_basename)
+#             print(f'Added {file} to {zip_file_path}')
+#     print(f'Generated zip file at {zip_file_path}')
 
 
 
-def generate_metadata_file(boundary_file_path,dow_file_path ,dataset_name, service: TDEIService = None, environment:str = 'prod'):
+def generate_metadata_file(boundary_file_path,dow_file_path ,dataset_name, service: TDEIService = None, environment:str = 'prod',tdei_project_group_id:str = '1dd7c38e-c7a6-4e3a-be8b-379f823a7ad7'):
 
     with open(boundary_file_path, 'r') as file:
         boundary_data = json.load(file)
@@ -52,11 +52,11 @@ def generate_metadata_file(boundary_file_path,dow_file_path ,dataset_name, servi
     latest_version = 1.0
     full_dataset_name = f'GS_{dataset_name_without_space}_County'
     if service:
-        online_latest_version = service.get_current_version(environment,full_dataset_name)
+        online_latest_version = service.get_current_version(environment,full_dataset_name,tdei_project_group_id)
         print(f'Latest version for {full_dataset_name} is {online_latest_version}')
         if online_latest_version is not None:
-            print(online_latest_version)
             latest_version = online_latest_version + 0.01
+            print(f'Incremented version to {latest_version}')
     else:
         print(f'Service is not provided. Using default version {latest_version}')
 

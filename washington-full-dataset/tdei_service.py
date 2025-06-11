@@ -75,13 +75,13 @@ class TDEIService:
         self.access_token = access_token
         return access_token
     
-    def get_current_version(self, environment: str, dataset_name: str):
-         project_group_id = '1dd7c38e-c7a6-4e3a-be8b-379f823a7ad7'
+    def get_current_version(self, environment: str, dataset_name: str, tdei_project_group_id: str = '1dd7c38e-c7a6-4e3a-be8b-379f823a7ad7'):
+        #  project_group_id = '1dd7c38e-c7a6-4e3a-be8b-379f823a7ad7'
          #TODO: Hardcoded project group ID
          query_params = {
             'page_no': 1,
             'page_size': 50,
-            'tdei_project_group_id':project_group_id,
+            'tdei_project_group_id':tdei_project_group_id,
             'data_type':'osw',
             'sort_field':'uploaded_timestamp',
             'full_dataset_name': dataset_name,
