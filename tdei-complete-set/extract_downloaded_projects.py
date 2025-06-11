@@ -1,5 +1,6 @@
 import zipfile
 import os
+from datetime import datetime, timezone
 
 downloads_dir = './downloads'
 
@@ -48,8 +49,20 @@ def collect_all_geojson_paths():
 # gdf = gpd.read_file(file_path)
 # print(gdf.head())
 
+def write_last_updated(filename='last_updated.txt'):
+    timestamp = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+    os.makedirs(downloads_dir, exist_ok=True)
+    filepath = os.path.join(downloads_dir, filename)
+    try:
+        with open(filepath, 'w') as ts_file:
+            ts_file.write(f"{timestamp}\n")
+        print(f'Created {filepath} with timestamp {timestamp}')
+    except Exception as e:
+        print(f'Error writing timestamp file {filepath}: {e}')
+
 if __name__ == "__main__":
     extract_base_zip_files()
     extract_internal_zip_files()
     all_geojson_paths = collect_all_geojson_paths()
     print(f'Total geojson files found: {len(all_geojson_paths)}')
+    write_last_updated()

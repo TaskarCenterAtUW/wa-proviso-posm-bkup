@@ -82,6 +82,7 @@ jobs:
           cp tdei-complete-set/washington_output.geojson output/washington_output.geojson
           cp tdei-complete-set/washington_complete.pmtiles output/washington_complete.pmtiles
           cp tdei-complete-set/washington_dataset_boundaries.geojson output/washington_dataset_boundaries.geojson
+          cp tdei-complete-set/downloads/last_updated.txt output/last_updated.txt
 
       - name: Check Backup File
         run: ls -lh output
