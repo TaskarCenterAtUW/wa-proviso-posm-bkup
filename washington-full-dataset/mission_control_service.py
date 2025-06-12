@@ -99,10 +99,10 @@ class MissonControlService:
             response  = job_status.get('response', {})
             report_url = response.get('report_url',None)
             if report_url is None:
-                print(f"Job {flow_id} is not finished yet. Current state: {job_status.get('currentTask')} - {job_status.get('state')}")
+                print(f"Job {flow_id}. Current state: {job_status.get('currentTask')} - {job_status.get('state')}")
                 time_since_start = time.time() - start_time
                 # If the time since the start is more than 30 minutes, raise an error
-                if time_since_start > 1800:  # 30 minutes
+                if time_since_start > 3600:  # 30 minutes
                     raise TimeoutError(f"Job {flow_id} is taking too long to finish. Current state: {job_status.get('currentTask')} {job_status.get('state')}")
                 time.sleep(self.time_between_requests)
             else:
