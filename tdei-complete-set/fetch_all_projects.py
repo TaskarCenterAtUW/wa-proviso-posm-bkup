@@ -90,11 +90,20 @@ class TDEIDatasetDownloader :
         while True:
             if len(response.json()) >= page_size:
                 print(f'Fetching page {page_no}')
+                
                 for data in response.json():
                     feature = {}
+                    dataset_detail = data.get('metadata', {}).get('dataset_detail', {})
+                    dataset_area = dataset_detail.get('dataset_area', None)
+                    if dataset_area is None:
+                        print(f'No dataset area found for dataset {data["metadata"]["dataset_detail"]["name"]}')
+                        continue
                     features = data['metadata']['dataset_detail']['dataset_area'].get('features', [])
                     if len(features) > 0:
                         feature = features[0]
+                    else:
+                        print(f'No features found for dataset {data["metadata"]["dataset_detail"]["name"]}')
+                        continue
                     datasets.append({'name':data['metadata']['dataset_detail']['name'],
                     'upload_date':data['uploaded_timestamp'],
                     'version':data['metadata']['dataset_detail']['version'],
