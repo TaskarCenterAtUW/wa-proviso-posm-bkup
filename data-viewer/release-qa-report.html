@@ -175,7 +175,9 @@
             maxZoom: 22, maxDataZoom: 18, maxNativeZoom: 21, interactive: true
         }).addTo(map);
 
-        let boundariesLayer = null;
+        let boundaryLayers = {};  
+        let layerControl = null;
+
 
         function getQualityLevel(row) {
             if (row.length_percentage < 99.0) return 0;
@@ -214,10 +216,15 @@
 
         async function loadBoundary(pg) {
             showLoader();
-            if (boundariesLayer) {
-                map.removeLayer(boundariesLayer);
-                boundariesLayer = null;
+
+            Object.values(boundaryLayers).forEach(layer => map.removeLayer(layer));
+            boundaryLayers = {};
+
+            if (layerControl) {
+                map.removeControl(layerControl);
+                layerControl = null;
             }
+
             try {
                 const url = pg === "GS"
                     ? "https://provisodevstorage.blob.core.windows.net/tdei-qa-reports/latest/GS_WSP_PG_datasets.json"
@@ -225,29 +232,48 @@
 
                 const response = await fetch(url);
                 const data = await response.json();
-                const geojson = convertToGeoJSON(data);
 
-                boundariesLayer = L.geoJSON(geojson, {
-                    style: feature => {
-                        const p = feature.properties;
-                        const level = getQualityLevel(p);
-                        return { color: getColor(level), weight: 2, fillOpacity: 0.3 };
-                    },
-                    onEachFeature: (feature, layer) => {
-                        const p = feature.properties;
-                        const content = `
-                    <b>Dataset Name:</b> ${p.name}<br/>
-                    <b>Version:</b> ${p.version}<br/>
-                    <b>Uploaded:</b> ${new Date(p.upload_date).toLocaleDateString()}<br/>
-                    <b>Length Completion:</b> ${p.length_percentage}%<br/>
-                    <b>Width Completion:</b> ${p.width_percentage}%<br/>
-                    <b>Incline Completion:</b> ${p.incline_percentage}%<br/>
-                    <b>Surface Completion:</b> ${p.surface_percentage}%<br/>
-                    <b>PG:</b> ${p.project_group}<br/>
-                    <b>Service:</b> ${p.service || '-'}
-                `;
-                        layer.bindPopup(content);
-                    }
+                const byService = {};
+                data.forEach(item => {
+                    const svc = item.service || 'unknown_service';
+                    if (!byService[svc]) byService[svc] = [];
+                    byService[svc].push(item);
+                });
+
+                for (const [serviceId, records] of Object.entries(byService)) {
+                    const geojson = convertToGeoJSON(records);
+
+                    const layer = L.geoJSON(geojson, {
+                        style: feature => {
+                            const p = feature.properties;
+                            const level = getQualityLevel(p);
+                            return { color: getColor(level), weight: 2, fillOpacity: 0.3 };
+                        },
+                        onEachFeature: (feature, layer) => {
+                            const p = feature.properties;
+                            const content = `
+                        <b>Dataset Name:</b> ${p.name}<br/>
+                        <b>Version:</b> ${p.version}<br/>
+                        <b>Uploaded:</b> ${new Date(p.upload_date).toLocaleDateString()}<br/>
+                        <b>Length Completion:</b> ${p.length_percentage}%<br/>
+                        <b>Width Completion:</b> ${p.width_percentage}%<br/>
+                        <b>Incline Completion:</b> ${p.incline_percentage}%<br/>
+                        <b>Surface Completion:</b> ${p.surface_percentage}%<br/>
+                        <b>PG:</b> ${p.project_group}<br/>
+                        <b>Service:</b> ${p.service || '-'}
+                    `;
+                            layer.bindPopup(content);
+                        }
+                    });
+
+                    const label = records[0]?.service || serviceId;
+                    boundaryLayers[label] = layer;
+                }
+
+                Object.values(boundaryLayers).forEach(layer => layer.addTo(map));
+                layerControl = L.control.layers(null, boundaryLayers, {
+                    collapsed: false,
+                    position: 'bottomleft'
                 }).addTo(map);
 
             } catch (err) {
