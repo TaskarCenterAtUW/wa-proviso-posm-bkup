@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>Planetiler Monaco Viewer</title>
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, shrink-to-fit=no, viewport-fit=cover" />
+    <script src="https://unpkg.com/maplibre-gl@1.15.2/dist/maplibre-gl.js"></script>
+    <link href="https://unpkg.com/maplibre-gl@1.15.2/dist/maplibre-gl.css" rel="stylesheet" />
+
+    <style>
+        html,
+        body {
+            padding: 0;
+            margin: 0;
+            height: 100%;
+            width: 100%;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            box-sizing: border-box;
+        }
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: inherit;
+        }
+
+        #map {
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            width: calc(100% - 300px);
+            user-select: none;
+            -webkit-user-select: none;
+            -webkit-touch-callout: none;
+        }
+
+        #info {
+            position: fixed;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            width: 300px;
+            background: #fff;
+            border-left: 1px solid #ddd;
+            padding: 1em;
+            overflow-y: auto;
+            font-size: 14px;
+            line-height: 1.4;
+        }
+
+        #info h1 {
+            margin-top: 0;
+        }
+
+        .layer {
+            display: flex;
+            align-items: center;
+            margin: 0.5em 0;
+        }
+
+        .color {
+            width: 1em;
+            height: 1em;
+            margin-right: 0.5em;
+            border: 1px solid #999;
+            border-radius: 2px;
+        }
+
+        hr {
+            border: none;
+            border-top: 1px solid #eee;
+            margin: 1em 0;
+        }
+
+        .popup {
+            max-height: 40vh;
+            overflow-y: auto;
+        }
+
+        .maplibregl-popup {
+            font-size: 12px;
+            line-height: 1.3;
+            max-width: 200px;
+        }
+
+        .maplibregl-popup table td {
+            padding-right: 4px;
+            vertical-align: top;
+        }
+
+        @media (max-width: 600px) {
+            #map {
+                width: 100%;
+                height: 65%;
+            }
+
+            #info {
+                top: auto;
+                height: 35%;
+                width: 100%;
+                border-left: none;
+                border-top: 1px solid #ddd;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div id="map"></div>
+    <div id="info">
+        <h1>Planetiler Monaco Viewer</h1>
+        <p>These vector tiles are rendered by <a href="https://github.com/onthegomap/planetiler"
+                target="_blank">Planetiler</a> and served locally.</p>
+        <h2>Layers</h2>
+        <div id="layers"></div>
+        <hr />
+        <p style="font-size:12px">
+            Built with <a href="https://maplibre.org" target="_blank">MapLibre GL JS</a>
+        </p>
+    </div>
+
+    <script>
+        const layers = [
+            ["water", 6, 204, 204],
+            ["water_name", 2, 44, 91],
+            ["waterway", 35, 117, 224],
+            ["landcover", 83, 224, 51],
+            ["landuse", 229, 180, 4],
+            ["park", 132, 234, 91],
+            ["boundary", 197, 69, 211],
+            ["aeroway", 81, 174, 181],
+            ["transportation", 242, 182, 72],
+            ["transportation_name", 188, 107, 56],
+            ["building", 43, 43, 43],
+            ["housenumber", 40, 40, 40],
+            ["place", 242, 14, 147],
+            ["mountain_peak", 98, 237, 247],
+            ["poi", 59, 181, 10]
+        ];
+        const map = new maplibregl.Map({
+            container: 'map',
+            maxZoom: 20,
+            style: {
+                version: 8,
+                sources: {
+                    monaco: {
+                        type: 'vector',
+                        tiles: ['http://localhost:3000/monaco/{z}/{x}/{y}'],
+                        minzoom: 0,
+                        maxzoom: 14,
+                        attribution: '&copy; OSM contributors'
+                    }
+                },
+                layers: [
+                    {
+                        id: 'background',
+                        type: 'background',
+                        paint: { 'background-color': 'rgb(250,250,250)' }
+                    },
+                    ...layers.flatMap(([id, r, g, b]) => ([
+                        {
+                            id: `fill_${id}`,
+                            type: 'fill',
+                            source: 'monaco',
+                            'source-layer': id,
+                            filter: ['==', '$type', 'Polygon'],
+                            paint: {
+                                'fill-color': `rgba(${r},${g},${b},0.3)`,
+                                'fill-outline-color': `rgba(${r},${g},${b},0.3)`
+                            }
+                        },
+                        {
+                            id: `line_${id}`,
+                            type: 'line',
+                            source: 'monaco',
+                            'source-layer': id,
+                            filter: ['==', '$type', 'LineString'],
+                            paint: {
+                                'line-color': `rgba(${r},${g},${b},0.6)`,
+                                'line-width': 1.2
+                            }
+                        },
+                        {
+                            id: `circle_${id}`,
+                            type: 'circle',
+                            source: 'monaco',
+                            'source-layer': id,
+                            filter: ['==', '$type', 'Point'],
+                            paint: {
+                                'circle-color': `rgba(${r},${g},${b},0.8)`,
+                                'circle-radius': 2
+                            }
+                        }
+                    ]))
+                ]
+            },
+            center: [7.4246, 43.7384],
+            zoom: 14
+        });
+        map.addControl(new maplibregl.NavigationControl({ showCompass: false }));
+        const legend = document.getElementById('layers');
+        layers.forEach(([id, r, g, b]) => {
+            const entry = document.createElement('div');
+            entry.className = 'layer';
+            entry.innerHTML = `
+        <span class="color" style="background:rgb(${r},${g},${b})"></span>
+        <span>${id}</span>
+      `;
+            legend.appendChild(entry);
+        });
+        const popup = new maplibregl.Popup({ closeButton: false, closeOnClick: false });
+        map.on('mousemove', (e) => {
+            const features = map.queryRenderedFeatures(e.point);
+            if (!features.length) return popup.remove();
+
+            let html = '';
+            features.forEach(f => {
+                html += `<strong>${f.layer['source-layer']}</strong><table>`;
+                for (const k in f.properties) {
+                    html += `<tr><td>${k}</td><td>${f.properties[k]}</td></tr>`;
+                }
+                html += `</table><hr>`;
+            });
+            popup.setLngLat(e.lngLat)
+                .setHTML(html)
+                .addTo(map);
+        });
+    </script>
+</body>
+
+</html>

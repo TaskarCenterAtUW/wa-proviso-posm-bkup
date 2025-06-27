@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8"/>
+  <title>Complete MBTiles Viewer</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <link
+    href="https://unpkg.com/maplibre-gl@2.4.0/dist/maplibre-gl.css"
+    rel="stylesheet"
+  />
+  <style>
+    html, body { margin:0; padding:0; height:100%; font-family:sans-serif; }
+    #map {
+      position:absolute; top:0; left:0;
+      width:calc(100% - 300px); height:100%;
+      user-select:none;
+    }
+    #info {
+      position:absolute; top:0; right:0;
+      width:300px; height:100%;
+      background:white; box-shadow:-2px 0 5px rgba(0,0,0,0.1);
+      overflow-y:auto; padding:1em;
+    }
+    h1,h2 { margin:0 0 0.5em; font-weight:normal; }
+    .legend { margin:1em 0; }
+    .legend-item {
+      display:flex; align-items:center; margin-bottom:0.5em; font-size:0.9em;
+    }
+    .legend-color {
+      width:1em; height:1em; margin-right:0.5em;
+      border:1px solid #aaa; border-radius:2px;
+    }
+    .maplibregl-popup {
+      font-size:0.85em; line-height:1.2; max-width:200px;
+    }
+    .maplibregl-popup table { font-size:0.8em; border-collapse:collapse; }
+    .maplibregl-popup td { padding:2px 4px; vertical-align:top; }
+    @media (max-width: 600px) {
+      #map { width:100%; height:60%; }
+      #info { top:auto; height:40%; width:100%; }
+    }
+  </style>
+</head>
+<body>
+
+  <div id="map"></div>
+  <div id="info">
+    <h1>Complete MBTiles Viewer</h1>
+    <h2>Legend</h2>
+    <div class="legend" id="legend"></div>
+    <p style="font-size:0.8em; margin-top:1em;">
+      Built with <a href="https://maplibre.org" target="_blank">MapLibre GL JS</a>
+    </p>
+  </div>
+
+  <script src="https://unpkg.com/maplibre-gl@2.4.0/dist/maplibre-gl.js"></script>
+  <script>
+    const layersInfo = [
+      { id: "boundary", type:"line",       color:"#ff6600" },
+      { id: "housenumber", type:"circle",  color:"#808080" },
+      { id: "landcover", type:"fill",      color:"#00cc66" },
+      { id: "landuse", type:"fill",        color:"#aaffaa" },
+      { id: "water", type:"fill",          color:"#66ccff" },
+      { id: "waterway", type:"line",       color:"#3399ff" },
+      { id: "transportation", type:"line", color:"#4444ff" },
+      { id: "transportation_name", type:"symbol", color:"#000000" },
+      { id: "poi", type:"circle",          color:"#ff00ff" },
+      { id: "building", type:"fill",       color:"#999999" }
+    ];
+
+    const legendEl = document.getElementById("legend");
+    layersInfo.forEach(({id,color}) => {
+      const item = document.createElement("div");
+      item.className = "legend-item";
+      item.innerHTML = `<div class="legend-color" style="background:${color}"></div><span>${id}</span>`;
+      legendEl.appendChild(item);
+    });
+
+    const map = new maplibregl.Map({
+      container: "map",
+      style: {
+        version: 8,
+        glyphs: "https://demotiles.maplibre.org/font/{fontstack}/{range}.pbf",
+        sources: {
+          complete_openmaptiles: {
+            type: "vector",
+            tiles: ["http://localhost:3000/complete_openmaptiles/{z}/{x}/{y}"],
+            minzoom: 0,
+            maxzoom: 14
+          }
+        },
+        layers: layersInfo.map(({id,type,color}) => {
+          const layer = {
+            id: id + "-layer",
+            type,
+            source: "complete_openmaptiles",
+            "source-layer": id,
+            paint: {},
+            layout: {}
+          };
+          if (type==="fill") {
+            layer.paint = {"fill-color":color,"fill-opacity":0.5};
+          } else if (type==="line") {
+            layer.paint = {"line-color":color,"line-width":1.5};
+          } else if (type==="circle") {
+            layer.paint = {"circle-color":color,"circle-radius":4};
+          } else if (type==="symbol") {
+            layer.layout = {
+              "text-field":["get","name"],
+              "text-font":["Open Sans Regular","Arial Unicode MS Regular"],
+              "text-size":10
+            };
+            layer.paint = {"text-color":color};
+          }
+          return layer;
+        })
+      },
+      center:[-122.33,47.6],
+      zoom:14,
+      maxZoom:20 
+    });
+
+    map.addControl(new maplibregl.NavigationControl());
+    map.showTileBoundaries = true;
+
+    // hover popup
+    const popup = new maplibregl.Popup({closeButton:false,closeOnClick:false});
+    let frozen=false;
+    map.on("mousemove", e => {
+      if (frozen) return;
+      const features = map.queryRenderedFeatures(e.point);
+      if (!features.length) return popup.remove();
+      let html = "";
+      features.forEach(f => {
+        html += `<strong>${f.layer["source-layer"]}</strong><br><table>`;
+        for (const k in f.properties) {
+          html += `<tr><td>${k}</td><td>${f.properties[k]}</td></tr>`;
+        }
+        html += "</table><hr>";
+      });
+      popup.setLngLat(e.lngLat).setHTML(html).addTo(map);
+    });
+    map.on("click", () => {
+      frozen = !frozen;
+      popup.options.closeButton = frozen;
+      if (!frozen) popup.remove();
+    });
+  </script>
+</body>
+</html>
