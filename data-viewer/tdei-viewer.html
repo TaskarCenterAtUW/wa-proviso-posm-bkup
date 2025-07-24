@@ -627,7 +627,7 @@
 
     function getFeatureContent(properties) {
       // const props = feature.feature.props || {};
-      const keystToShow = ['highway', 'footway', 'crossing', 'kerb', 'barrier', 'incline', 'width', 'length', 'foot', 'width', 'surface', 'ext:width_confidence', 'tactile_paving'];
+      const keystToShow = ['highway', 'footway', 'crossing', 'kerb', 'barrier', 'incline', 'width', 'length', 'foot', 'surface', 'tactile_paving'];
       const pairs = Object.entries(properties);
       const requiredPairs = pairs.filter(([key, value]) => keystToShow.includes(key) && value != null && value != 'NaN' && value != 'null');
       const content = requiredPairs.map(([key, value]) => {
