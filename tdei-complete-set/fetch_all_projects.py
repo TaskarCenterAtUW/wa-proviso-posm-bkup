@@ -172,7 +172,7 @@ if __name__ == '__main__':
     username = os.getenv('TDEI_USERNAME')
     password = os.getenv('TDEI_PASSWORD')
     access_token = downloader.get_access_token(username, password)
-    project_group_id = '0eace285-430b-4f3e-bd76-d102a2c5385c' #TCAT_WSP_PG
+    project_group_id = '1dd7c38e-c7a6-4e3a-be8b-379f823a7ad7' #GS_WSP_PG
     query_params = {
         'page_no': 1,
         'page_size': 50,
@@ -180,8 +180,8 @@ if __name__ == '__main__':
         'data_type':'osw',
         'sort_field':'uploaded_timestamp',
         'sort_order':'asc',
-        'status':'Publish',
-        'tdei_service_id':'f24b624c-8253-48d4-ae92-34e4395213e1'
+        'status':'Pre-Release',
+        'tdei_service_id':'a008c57d-7959-478d-97e3-b3ca4268eaa6'
     }
     datasets = downloader.get_latest_datasets(query_params)
     for index, row in tqdm(datasets.iterrows(), total=len(datasets), desc='Downloading datasets'):
