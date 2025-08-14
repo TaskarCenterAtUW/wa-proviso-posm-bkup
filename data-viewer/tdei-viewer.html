@@ -790,6 +790,8 @@
     map.on("mousemove", async function (e) {
       const zoom = map.getZoom();
       if (zoom < 16) {
+        hoverPopup.close();
+        lastFeatureId = null;
         return;
       }
       // console.log(e.latlng);
@@ -814,8 +816,10 @@
             .openOn(map);
         }
       } else {
-        hoverPopup.closePopup();
-        lastFeatureId = null; // Reset last feature
+        if (lastFeatureId !== null) {
+          hoverPopup.close();
+          lastFeatureId = null;
+        }
       }
     });
     map.on('popupopen', (e) => {
