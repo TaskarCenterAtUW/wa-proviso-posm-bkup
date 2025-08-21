@@ -543,14 +543,11 @@
     }
 
     function getCrossingColor(d) {
-      if (d['crossing'] == 'marked') {
-        return '#FFD166';
-      }
-      else if (d['crossing'] == 'unmarked') {
-        return '#dda15e';
-      }
-      else {
-        return '#FFD166';
+      console.log("crossing", d);
+      if (d['crossing:markings'] == 'no') {
+        return '#dda15e'; // Unmarked crossing
+      } else {
+        return '#FFD166'; // Marked crossing
       }
     }
     function clearSearch() {
