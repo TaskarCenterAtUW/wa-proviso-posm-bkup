@@ -2,6 +2,7 @@ Dataset GS_Aberdeen_Cosmopolis_City with ID e326a75b-c425-422f-8628-b9ef9462a2e5
 Dataset GS_Adams_UI with ID d4e65952-fca1-4840-b0a1-c0b4650f44b8 already downloaded. Skipping download.
 Dataset GS_Airway_Heights_City with ID cf627ea7-cd41-412f-8c13-857aa5d4da7a already downloaded. Skipping download.
 Dataset GS_Albion_City with ID abd7def9-c28e-4772-bd06-1ebe8f7ee8a5 already downloaded. Skipping download.
+
 Number of edges with zero width: 53
 Edges file found: /var/folders/2s/p3bg9q7n54d7kq9h25t04jph0000gp/T/tmprojutouu/ebe88a1b-feac-44c1-8f30-239b4c451aa1.edges.geojson
 Updated edges file saved to ./downloads/79774684-c4f7-4ad2-aba8-9b8d7c65da32/ebe88a1b-feac-44c1-8f30-239b4c451aa1.edges.geojson
@@ -13,6 +14,7 @@ Updated dataset zip file path: ./downloads/79774684-c4f7-4ad2-aba8-9b8d7c65da32/
 Uploading to https://api.tdei.us/api/v1/osw/upload/1dd7c38e-c7a6-4e3a-be8b-379f823a7ad7/a008c57d-7959-478d-97e3-b3ca4268eaa6
 Job ID: 9630
 Dataset GS_Algona_Pacific_City with ID 79774684-c4f7-4ad2-aba8-9b8d7c65da32 uploaded successfully. Job ID: 9630
+
 Number of edges with zero width: 196
 Edges file found: /var/folders/2s/p3bg9q7n54d7kq9h25t04jph0000gp/T/tmprj1vo5u9/e6e5c8a4-5885-4e90-aa0e-56d963fa77db.edges.geojson
 Updated edges file saved to ./downloads/0f5042ae-11e5-4753-8c8a-df3ec68b628b/e6e5c8a4-5885-4e90-aa0e-56d963fa77db.edges.geojson
@@ -24,6 +26,7 @@ Updated dataset zip file path: ./downloads/0f5042ae-11e5-4753-8c8a-df3ec68b628b/
 Uploading to https://api.tdei.us/api/v1/osw/upload/1dd7c38e-c7a6-4e3a-be8b-379f823a7ad7/a008c57d-7959-478d-97e3-b3ca4268eaa6
 Job ID: 9631
 Dataset GS_Anacortes_City with ID 0f5042ae-11e5-4753-8c8a-df3ec68b628b uploaded successfully. Job ID: 9631
+
 Number of edges with zero width: 178
 Edges file found: /var/folders/2s/p3bg9q7n54d7kq9h25t04jph0000gp/T/tmp_kcfwcs6/c31334f8-7045-46e2-88aa-362afa3f1c4c.edges.geojson
 Updated edges file saved to ./downloads/186148bc-9acc-407a-b209-f66a7c04adb7/c31334f8-7045-46e2-88aa-362afa3f1c4c.edges.geojson
@@ -35,6 +38,7 @@ Updated dataset zip file path: ./downloads/186148bc-9acc-407a-b209-f66a7c04adb7/
 Uploading to https://api.tdei.us/api/v1/osw/upload/1dd7c38e-c7a6-4e3a-be8b-379f823a7ad7/a008c57d-7959-478d-97e3-b3ca4268eaa6
 Job ID: 9632
 Dataset GS_Arlington_City with ID 186148bc-9acc-407a-b209-f66a7c04adb7 uploaded successfully. Job ID: 9632
+
 Number of edges with zero width: 12
 Edges file found: /var/folders/2s/p3bg9q7n54d7kq9h25t04jph0000gp/T/tmpszvvnrbi/b947bd41-60de-472b-b8b1-82fad054a3d8.edges.geojson
 Updated edges file saved to ./downloads/55647ba6-1f8f-4af5-bdab-bf26076b7580/b947bd41-60de-472b-b8b1-82fad054a3d8.edges.geojson
@@ -46,6 +50,7 @@ Updated dataset zip file path: ./downloads/55647ba6-1f8f-4af5-bdab-bf26076b7580/
 Uploading to https://api.tdei.us/api/v1/osw/upload/1dd7c38e-c7a6-4e3a-be8b-379f823a7ad7/a008c57d-7959-478d-97e3-b3ca4268eaa6
 Job ID: 9633
 Dataset GS_Asotin_City with ID 55647ba6-1f8f-4af5-bdab-bf26076b7580 uploaded successfully. Job ID: 9633
+
 Number of edges with zero width: 64
 Edges file found: /var/folders/2s/p3bg9q7n54d7kq9h25t04jph0000gp/T/tmpgqdb3mk5/29f80d08-725d-44b3-9899-22f29a400275.edges.geojson
 Updated edges file saved to ./downloads/be21f16c-d600-4aa9-8056-5a077e27b8fa/29f80d08-725d-44b3-9899-22f29a400275.edges.geojson
@@ -57,6 +62,7 @@ Updated dataset zip file path: ./downloads/be21f16c-d600-4aa9-8056-5a077e27b8fa/
 Uploading to https://api.tdei.us/api/v1/osw/upload/1dd7c38e-c7a6-4e3a-be8b-379f823a7ad7/a008c57d-7959-478d-97e3-b3ca4268eaa6
 Job ID: 9634
 Dataset GS_Asotin_UI with ID be21f16c-d600-4aa9-8056-5a077e27b8fa uploaded successfully. Job ID: 9634
+
 Number of edges with zero width: 565
 Edges file found: /var/folders/2s/p3bg9q7n54d7kq9h25t04jph0000gp/T/tmpo9l60jfs/d5655e8c-b035-47b9-aa51-ab98ce74b8be.edges.geojson
 Updated edges file saved to ./downloads/e66e7fd2-63e8-4821-b1c4-cfa343a422e0/d5655e8c-b035-47b9-aa51-ab98ce74b8be.edges.geojson
@@ -68,6 +74,7 @@ Updated dataset zip file path: ./downloads/e66e7fd2-63e8-4821-b1c4-cfa343a422e0/
 Uploading to https://api.tdei.us/api/v1/osw/upload/1dd7c38e-c7a6-4e3a-be8b-379f823a7ad7/a008c57d-7959-478d-97e3-b3ca4268eaa6
 Job ID: 9635
 Dataset GS_Auburn_City with ID e66e7fd2-63e8-4821-b1c4-cfa343a422e0 uploaded successfully. Job ID: 9635
+
 Number of edges with zero width: 135
 Edges file found: /var/folders/2s/p3bg9q7n54d7kq9h25t04jph0000gp/T/tmpimafqc_a/e2ec20d3-6aac-4352-916a-38c57ec467d3.edges.geojson
 Updated edges file saved to ./downloads/89b786e5-cedb-425a-aaba-1b7d66126dc9/e2ec20d3-6aac-4352-916a-38c57ec467d3.edges.geojson
@@ -79,6 +86,7 @@ Updated dataset zip file path: ./downloads/89b786e5-cedb-425a-aaba-1b7d66126dc9/
 Uploading to https://api.tdei.us/api/v1/osw/upload/1dd7c38e-c7a6-4e3a-be8b-379f823a7ad7/a008c57d-7959-478d-97e3-b3ca4268eaa6
 Job ID: 9636
 Dataset GS_Bainbridge_Island_City with ID 89b786e5-cedb-425a-aaba-1b7d66126dc9 uploaded successfully. Job ID: 9636
+
 Number of edges with zero width: 264
 Edges file found: /var/folders/2s/p3bg9q7n54d7kq9h25t04jph0000gp/T/tmpquswbycp/a96e0760-e5d2-476a-ab97-f5090fc24873.edges.geojson
 Updated edges file saved to ./downloads/4ac16866-e606-46e6-b815-d3e730d42075/a96e0760-e5d2-476a-ab97-f5090fc24873.edges.geojson
@@ -90,6 +98,7 @@ Updated dataset zip file path: ./downloads/4ac16866-e606-46e6-b815-d3e730d42075/
 Uploading to https://api.tdei.us/api/v1/osw/upload/1dd7c38e-c7a6-4e3a-be8b-379f823a7ad7/a008c57d-7959-478d-97e3-b3ca4268eaa6
 Job ID: 9637
 Dataset GS_Battle_Ground_City with ID 4ac16866-e606-46e6-b815-d3e730d42075 uploaded successfully. Job ID: 9637
+
 Number of edges with zero width: 9
 Edges file found: /var/folders/2s/p3bg9q7n54d7kq9h25t04jph0000gp/T/tmpek8a4p8k/6adf9822-09a9-4d35-a2b8-84a4df3e8650.edges.geojson
 Updated edges file saved to ./downloads/d8217b99-5f82-421a-8fde-c9d5cdedd82d/6adf9822-09a9-4d35-a2b8-84a4df3e8650.edges.geojson
@@ -101,6 +110,7 @@ Updated dataset zip file path: ./downloads/d8217b99-5f82-421a-8fde-c9d5cdedd82d/
 Uploading to https://api.tdei.us/api/v1/osw/upload/1dd7c38e-c7a6-4e3a-be8b-379f823a7ad7/a008c57d-7959-478d-97e3-b3ca4268eaa6
 Job ID: 9638
 Dataset GS_Beaux_Arts_Village_City with ID d8217b99-5f82-421a-8fde-c9d5cdedd82d uploaded successfully. Job ID: 9638
+
 Number of edges with zero width: 1470
 Edges file found: /var/folders/2s/p3bg9q7n54d7kq9h25t04jph0000gp/T/tmpx8wh39s9/470a1e9e-1047-495a-ab0f-ecb3a0914f9d.edges.geojson
 Updated edges file saved to ./downloads/0af8987c-83c0-499e-9739-5a812ab43f3e/470a1e9e-1047-495a-ab0f-ecb3a0914f9d.edges.geojson
@@ -112,6 +122,7 @@ Updated dataset zip file path: ./downloads/0af8987c-83c0-499e-9739-5a812ab43f3e/
 Uploading to https://api.tdei.us/api/v1/osw/upload/1dd7c38e-c7a6-4e3a-be8b-379f823a7ad7/a008c57d-7959-478d-97e3-b3ca4268eaa6
 Job ID: 9639
 Dataset GS_Bellevue_City with ID 0af8987c-83c0-499e-9739-5a812ab43f3e uploaded successfully. Job ID: 9639
+
 Number of edges with zero width: 565
 Edges file found: /var/folders/2s/p3bg9q7n54d7kq9h25t04jph0000gp/T/tmpx3cxjbwr/031b2d12-38ab-4f90-a75e-5e99c98bbfc3.edges.geojson
 Updated edges file saved to ./downloads/68210810-da8b-46b0-bff1-95446909e400/031b2d12-38ab-4f90-a75e-5e99c98bbfc3.edges.geojson
@@ -123,6 +134,7 @@ Updated dataset zip file path: ./downloads/68210810-da8b-46b0-bff1-95446909e400/
 Uploading to https://api.tdei.us/api/v1/osw/upload/1dd7c38e-c7a6-4e3a-be8b-379f823a7ad7/a008c57d-7959-478d-97e3-b3ca4268eaa6
 Job ID: 9640
 Dataset GS_Bellingham_City with ID 68210810-da8b-46b0-bff1-95446909e400 uploaded successfully. Job ID: 9640
+
 Number of edges with zero width: 24
 Edges file found: /var/folders/2s/p3bg9q7n54d7kq9h25t04jph0000gp/T/tmp8uel9zys/0d9b7cd6-e8f3-4d15-915d-9808fed80bbc.edges.geojson
 Updated edges file saved to ./downloads/af2c048c-02d2-4cfd-a78d-12cca5a144a1/0d9b7cd6-e8f3-4d15-915d-9808fed80bbc.edges.geojson
@@ -134,6 +146,7 @@ Updated dataset zip file path: ./downloads/af2c048c-02d2-4cfd-a78d-12cca5a144a1/
 Uploading to https://api.tdei.us/api/v1/osw/upload/1dd7c38e-c7a6-4e3a-be8b-379f823a7ad7/a008c57d-7959-478d-97e3-b3ca4268eaa6
 Job ID: 9641
 Dataset GS_Benton_City with ID af2c048c-02d2-4cfd-a78d-12cca5a144a1 uploaded successfully. Job ID: 9641
+
 Number of edges with zero width: 82
 Edges file found: /var/folders/2s/p3bg9q7n54d7kq9h25t04jph0000gp/T/tmpjw1l9ypg/36838263-e608-424a-b9c2-66190233e7a3.edges.geojson
 Updated edges file saved to ./downloads/02dbd75b-26b7-4fb7-905c-8fa17dc3a872/36838263-e608-424a-b9c2-66190233e7a3.edges.geojson
@@ -145,6 +158,7 @@ Updated dataset zip file path: ./downloads/02dbd75b-26b7-4fb7-905c-8fa17dc3a872/
 Uploading to https://api.tdei.us/api/v1/osw/upload/1dd7c38e-c7a6-4e3a-be8b-379f823a7ad7/a008c57d-7959-478d-97e3-b3ca4268eaa6
 Job ID: 9642
 Dataset GS_Benton_UI with ID 02dbd75b-26b7-4fb7-905c-8fa17dc3a872 uploaded successfully. Job ID: 9642
+
 Number of edges with zero width: 2
 Edges file found: /var/folders/2s/p3bg9q7n54d7kq9h25t04jph0000gp/T/tmpqvizt2ra/fe84e772-7720-4a15-bfa2-9bb6dfbecef1.edges.geojson
 Updated edges file saved to ./downloads/48cd30cf-e164-488c-9b03-dc416855514f/fe84e772-7720-4a15-bfa2-9bb6dfbecef1.edges.geojson
@@ -156,6 +170,7 @@ Updated dataset zip file path: ./downloads/48cd30cf-e164-488c-9b03-dc416855514f/
 Uploading to https://api.tdei.us/api/v1/osw/upload/1dd7c38e-c7a6-4e3a-be8b-379f823a7ad7/a008c57d-7959-478d-97e3-b3ca4268eaa6
 Job ID: 9643
 Dataset GS_Bingen_City with ID 48cd30cf-e164-488c-9b03-dc416855514f uploaded successfully. Job ID: 9643
+
 Number of edges with zero width: 156
 Edges file found: /var/folders/2s/p3bg9q7n54d7kq9h25t04jph0000gp/T/tmp2pbwhem5/0984997a-a87a-481f-a44a-dd64de1a8a5f.edges.geojson
 Updated edges file saved to ./downloads/6ded292f-01cd-4a02-83c6-ab7c0d6d3fb7/0984997a-a87a-481f-a44a-dd64de1a8a5f.edges.geojson
@@ -167,6 +182,7 @@ Updated dataset zip file path: ./downloads/6ded292f-01cd-4a02-83c6-ab7c0d6d3fb7/
 Uploading to https://api.tdei.us/api/v1/osw/upload/1dd7c38e-c7a6-4e3a-be8b-379f823a7ad7/a008c57d-7959-478d-97e3-b3ca4268eaa6
 Job ID: 9644
 Dataset GS_Black_Diamond_City with ID 6ded292f-01cd-4a02-83c6-ab7c0d6d3fb7 uploaded successfully. Job ID: 9644
+
 Number of edges with zero width: 86
 Edges file found: /var/folders/2s/p3bg9q7n54d7kq9h25t04jph0000gp/T/tmpkcd3v2jx/4829b761-c924-4b16-aa6c-224a2000f98d.edges.geojson
 Updated edges file saved to ./downloads/bf8bef58-9e5a-4363-8f6a-cef260fefde3/4829b761-c924-4b16-aa6c-224a2000f98d.edges.geojson
@@ -178,6 +194,7 @@ Updated dataset zip file path: ./downloads/bf8bef58-9e5a-4363-8f6a-cef260fefde3/
 Uploading to https://api.tdei.us/api/v1/osw/upload/1dd7c38e-c7a6-4e3a-be8b-379f823a7ad7/a008c57d-7959-478d-97e3-b3ca4268eaa6
 Job ID: 9645
 Dataset GS_Blaine_City with ID bf8bef58-9e5a-4363-8f6a-cef260fefde3 uploaded successfully. Job ID: 9645
+
 Number of edges with zero width: 206
 Edges file found: /var/folders/2s/p3bg9q7n54d7kq9h25t04jph0000gp/T/tmp7fnh7ioq/84bd4661-9f8c-4090-b545-0e667bd3ac43.edges.geojson
 Updated edges file saved to ./downloads/f5f72363-eaf2-4de8-938b-c26e95fc89b8/84bd4661-9f8c-4090-b545-0e667bd3ac43.edges.geojson
@@ -189,6 +206,7 @@ Updated dataset zip file path: ./downloads/f5f72363-eaf2-4de8-938b-c26e95fc89b8/
 Uploading to https://api.tdei.us/api/v1/osw/upload/1dd7c38e-c7a6-4e3a-be8b-379f823a7ad7/a008c57d-7959-478d-97e3-b3ca4268eaa6
 Job ID: 9646
 Dataset GS_Bonney_Lake_City with ID f5f72363-eaf2-4de8-938b-c26e95fc89b8 uploaded successfully. Job ID: 9646
+
 Number of edges with zero width: 1538
 Edges file found: /var/folders/2s/p3bg9q7n54d7kq9h25t04jph0000gp/T/tmplunathho/cc898096-afd9-4357-b954-a93df22b1b37.edges.geojson
 Updated edges file saved to ./downloads/22b3cb49-1c92-4328-940d-2f1b9fcba9b6/cc898096-afd9-4357-b954-a93df22b1b37.edges.geojson
@@ -200,6 +218,7 @@ Updated dataset zip file path: ./downloads/22b3cb49-1c92-4328-940d-2f1b9fcba9b6/
 Uploading to https://api.tdei.us/api/v1/osw/upload/1dd7c38e-c7a6-4e3a-be8b-379f823a7ad7/a008c57d-7959-478d-97e3-b3ca4268eaa6
 Job ID: 9647
 Dataset GS_Bothell_City with ID 22b3cb49-1c92-4328-940d-2f1b9fcba9b6 uploaded successfully. Job ID: 9647
+
 Number of edges with zero width: 403
 Edges file found: /var/folders/2s/p3bg9q7n54d7kq9h25t04jph0000gp/T/tmpxiia5m99/79d31323-0401-4819-adff-650156ce0ce0.edges.geojson
 Updated edges file saved to ./downloads/f14af2fc-b21b-4786-93a1-d54a69978b2b/79d31323-0401-4819-adff-650156ce0ce0.edges.geojson
@@ -211,6 +230,7 @@ Updated dataset zip file path: ./downloads/f14af2fc-b21b-4786-93a1-d54a69978b2b/
 Uploading to https://api.tdei.us/api/v1/osw/upload/1dd7c38e-c7a6-4e3a-be8b-379f823a7ad7/a008c57d-7959-478d-97e3-b3ca4268eaa6
 Job ID: 9648
 Dataset GS_Bremerton_City with ID f14af2fc-b21b-4786-93a1-d54a69978b2b uploaded successfully. Job ID: 9648
+
 Number of edges with zero width: 6
 Edges file found: /var/folders/2s/p3bg9q7n54d7kq9h25t04jph0000gp/T/tmpuczmg80x/dedc8639-1524-42d8-9935-202395db9991.edges.geojson
 Updated edges file saved to ./downloads/f820304b-be5f-49f4-a5f7-e3a6240c9d4e/dedc8639-1524-42d8-9935-202395db9991.edges.geojson
@@ -222,6 +242,7 @@ Updated dataset zip file path: ./downloads/f820304b-be5f-49f4-a5f7-e3a6240c9d4e/
 Uploading to https://api.tdei.us/api/v1/osw/upload/1dd7c38e-c7a6-4e3a-be8b-379f823a7ad7/a008c57d-7959-478d-97e3-b3ca4268eaa6
 Job ID: 9649
 Dataset GS_Brewster_City with ID f820304b-be5f-49f4-a5f7-e3a6240c9d4e uploaded successfully. Job ID: 9649
+
 Number of edges with zero width: 3
 Edges file found: /var/folders/2s/p3bg9q7n54d7kq9h25t04jph0000gp/T/tmpijzdgrh0/e7af19cd-698b-4fb1-9553-0cadd6e41a5b.edges.geojson
 Updated edges file saved to ./downloads/26ad24ee-72bd-4fc1-9937-ab88b61368c4/e7af19cd-698b-4fb1-9553-0cadd6e41a5b.edges.geojson
@@ -233,6 +254,7 @@ Updated dataset zip file path: ./downloads/26ad24ee-72bd-4fc1-9937-ab88b61368c4/
 Uploading to https://api.tdei.us/api/v1/osw/upload/1dd7c38e-c7a6-4e3a-be8b-379f823a7ad7/a008c57d-7959-478d-97e3-b3ca4268eaa6
 Job ID: 9650
 Dataset GS_Bridgeport_City with ID 26ad24ee-72bd-4fc1-9937-ab88b61368c4 uploaded successfully. Job ID: 9650
+
 Number of edges with zero width: 43
 Edges file found: /var/folders/2s/p3bg9q7n54d7kq9h25t04jph0000gp/T/tmpwf_jxcnm/8cbb294d-5a42-4bd8-8fb0-fee610759bcf.edges.geojson
 Updated edges file saved to ./downloads/0d693662-f831-4272-a1c1-e10653af59c8/8cbb294d-5a42-4bd8-8fb0-fee610759bcf.edges.geojson
@@ -244,6 +266,7 @@ Updated dataset zip file path: ./downloads/0d693662-f831-4272-a1c1-e10653af59c8/
 Uploading to https://api.tdei.us/api/v1/osw/upload/1dd7c38e-c7a6-4e3a-be8b-379f823a7ad7/a008c57d-7959-478d-97e3-b3ca4268eaa6
 Job ID: 9651
 Dataset GS_Brier_City with ID 0d693662-f831-4272-a1c1-e10653af59c8 uploaded successfully. Job ID: 9651
+
 Number of edges with zero width: 38
 Edges file found: /var/folders/2s/p3bg9q7n54d7kq9h25t04jph0000gp/T/tmpkjxjofbv/8584d878-fb31-439c-a998-5366baf35a79.edges.geojson
 Updated edges file saved to ./downloads/f7e1b848-1fd8-45d8-8222-618a2692e5bc/8584d878-fb31-439c-a998-5366baf35a79.edges.geojson
@@ -255,6 +278,7 @@ Updated dataset zip file path: ./downloads/f7e1b848-1fd8-45d8-8222-618a2692e5bc/
 Uploading to https://api.tdei.us/api/v1/osw/upload/1dd7c38e-c7a6-4e3a-be8b-379f823a7ad7/a008c57d-7959-478d-97e3-b3ca4268eaa6
 Job ID: 9652
 Dataset GS_Buckley_City with ID f7e1b848-1fd8-45d8-8222-618a2692e5bc uploaded successfully. Job ID: 9652
+
 Number of edges with zero width: 10
 Edges file found: /var/folders/2s/p3bg9q7n54d7kq9h25t04jph0000gp/T/tmpotlm3209/4bc0c69d-db9a-4ba9-910f-9378eb4d7123.edges.geojson
 Updated edges file saved to ./downloads/2a7103fc-eaac-4afd-8c95-7c776c973991/4bc0c69d-db9a-4ba9-910f-9378eb4d7123.edges.geojson
@@ -266,6 +290,7 @@ Updated dataset zip file path: ./downloads/2a7103fc-eaac-4afd-8c95-7c776c973991/
 Uploading to https://api.tdei.us/api/v1/osw/upload/1dd7c38e-c7a6-4e3a-be8b-379f823a7ad7/a008c57d-7959-478d-97e3-b3ca4268eaa6
 Job ID: 9653
 Dataset GS_Bucoda_City with ID 2a7103fc-eaac-4afd-8c95-7c776c973991 uploaded successfully. Job ID: 9653
+
 Number of edges with zero width: 161
 Edges file found: /var/folders/2s/p3bg9q7n54d7kq9h25t04jph0000gp/T/tmp6a46jx3r/a595b5fd-d800-4f43-8850-fedd381c4e84.edges.geojson
 Updated edges file saved to ./downloads/15567a89-a00c-4c3a-a28c-61fbd85cfeb1/a595b5fd-d800-4f43-8850-fedd381c4e84.edges.geojson
@@ -277,6 +302,7 @@ Updated dataset zip file path: ./downloads/15567a89-a00c-4c3a-a28c-61fbd85cfeb1/
 Uploading to https://api.tdei.us/api/v1/osw/upload/1dd7c38e-c7a6-4e3a-be8b-379f823a7ad7/a008c57d-7959-478d-97e3-b3ca4268eaa6
 Job ID: 9654
 Dataset GS_Burien_City with ID 15567a89-a00c-4c3a-a28c-61fbd85cfeb1 uploaded successfully. Job ID: 9654
+
 Number of edges with zero width: 101
 Edges file found: /var/folders/2s/p3bg9q7n54d7kq9h25t04jph0000gp/T/tmpuizl60bj/6f4b07bc-b8b0-4b4c-b58b-0f3bbb506bec.edges.geojson
 Updated edges file saved to ./downloads/d6fc582f-4527-41e6-8bc5-4bbd4f05fcc9/6f4b07bc-b8b0-4b4c-b58b-0f3bbb506bec.edges.geojson
@@ -288,6 +314,7 @@ Updated dataset zip file path: ./downloads/d6fc582f-4527-41e6-8bc5-4bbd4f05fcc9/
 Uploading to https://api.tdei.us/api/v1/osw/upload/1dd7c38e-c7a6-4e3a-be8b-379f823a7ad7/a008c57d-7959-478d-97e3-b3ca4268eaa6
 Job ID: 9655
 Dataset GS_Burlington_City with ID d6fc582f-4527-41e6-8bc5-4bbd4f05fcc9 uploaded successfully. Job ID: 9655
+
 Number of edges with zero width: 321
 Edges file found: /var/folders/2s/p3bg9q7n54d7kq9h25t04jph0000gp/T/tmpdc_ynr0w/a8acde20-3d94-4c1c-a57e-0713198e3a9c.edges.geojson
 Updated edges file saved to ./downloads/fef13603-b1f4-4573-bab5-8d2af08a6c01/a8acde20-3d94-4c1c-a57e-0713198e3a9c.edges.geojson
@@ -299,6 +326,7 @@ Updated dataset zip file path: ./downloads/fef13603-b1f4-4573-bab5-8d2af08a6c01/
 Uploading to https://api.tdei.us/api/v1/osw/upload/1dd7c38e-c7a6-4e3a-be8b-379f823a7ad7/a008c57d-7959-478d-97e3-b3ca4268eaa6
 Job ID: 9656
 Dataset GS_Camas_City with ID fef13603-b1f4-4573-bab5-8d2af08a6c01 uploaded successfully. Job ID: 9656
+
 Number of edges with zero width: 1
 Edges file found: /var/folders/2s/p3bg9q7n54d7kq9h25t04jph0000gp/T/tmps59njf33/bcf4e6f1-ed82-4f22-ba75-c0eb96260a77.edges.geojson
 Updated edges file saved to ./downloads/220e2cfd-2da8-4a92-9b35-16e676e86421/bcf4e6f1-ed82-4f22-ba75-c0eb96260a77.edges.geojson
@@ -310,6 +338,7 @@ Updated dataset zip file path: ./downloads/220e2cfd-2da8-4a92-9b35-16e676e86421/
 Uploading to https://api.tdei.us/api/v1/osw/upload/1dd7c38e-c7a6-4e3a-be8b-379f823a7ad7/a008c57d-7959-478d-97e3-b3ca4268eaa6
 Job ID: 9657
 Dataset GS_Carbonado_City with ID 220e2cfd-2da8-4a92-9b35-16e676e86421 uploaded successfully. Job ID: 9657
+
 Number of edges with zero width: 34
 Edges file found: /var/folders/2s/p3bg9q7n54d7kq9h25t04jph0000gp/T/tmpnvd4b75x/98947aac-f842-40f5-a5f1-d297970d783f.edges.geojson
 Updated edges file saved to ./downloads/90bbd898-8b32-4565-b935-c39e9b6cf57f/98947aac-f842-40f5-a5f1-d297970d783f.edges.geojson
@@ -321,6 +350,7 @@ Updated dataset zip file path: ./downloads/90bbd898-8b32-4565-b935-c39e9b6cf57f/
 Uploading to https://api.tdei.us/api/v1/osw/upload/1dd7c38e-c7a6-4e3a-be8b-379f823a7ad7/a008c57d-7959-478d-97e3-b3ca4268eaa6
 Job ID: 9658
 Dataset GS_Carnation_City with ID 90bbd898-8b32-4565-b935-c39e9b6cf57f uploaded successfully. Job ID: 9658
+
 Number of edges with zero width: 21
 Edges file found: /var/folders/2s/p3bg9q7n54d7kq9h25t04jph0000gp/T/tmpiem77o25/d7f7af71-4614-454d-a9f6-b65268db5577.edges.geojson
 Updated edges file saved to ./downloads/aac58de6-ef59-42d0-9826-9e1f3a8f982f/d7f7af71-4614-454d-a9f6-b65268db5577.edges.geojson
@@ -332,6 +362,7 @@ Updated dataset zip file path: ./downloads/aac58de6-ef59-42d0-9826-9e1f3a8f982f/
 Uploading to https://api.tdei.us/api/v1/osw/upload/1dd7c38e-c7a6-4e3a-be8b-379f823a7ad7/a008c57d-7959-478d-97e3-b3ca4268eaa6
 Job ID: 9659
 Dataset GS_Cashmere_City with ID aac58de6-ef59-42d0-9826-9e1f3a8f982f uploaded successfully. Job ID: 9659
+
 Number of edges with zero width: 29
 Edges file found: /var/folders/2s/p3bg9q7n54d7kq9h25t04jph0000gp/T/tmpmiizbmqu/07ef3abf-b856-4e0c-bfb6-cf4cf669ea5f.edges.geojson
 Updated edges file saved to ./downloads/5a1900ac-8a11-4d69-a6ce-06902d46de67/07ef3abf-b856-4e0c-bfb6-cf4cf669ea5f.edges.geojson
@@ -343,6 +374,7 @@ Updated dataset zip file path: ./downloads/5a1900ac-8a11-4d69-a6ce-06902d46de67/
 Uploading to https://api.tdei.us/api/v1/osw/upload/1dd7c38e-c7a6-4e3a-be8b-379f823a7ad7/a008c57d-7959-478d-97e3-b3ca4268eaa6
 Job ID: 9660
 Dataset GS_Castle_Rock_City with ID 5a1900ac-8a11-4d69-a6ce-06902d46de67 uploaded successfully. Job ID: 9660
+
 Number of edges with zero width: 19
 Edges file found: /var/folders/2s/p3bg9q7n54d7kq9h25t04jph0000gp/T/tmp3e22lmox/a640d334-d421-484a-aa59-77d9f6b49a04.edges.geojson
 Updated edges file saved to ./downloads/a24d7d53-bb5b-4042-880a-942166ba78ad/a640d334-d421-484a-aa59-77d9f6b49a04.edges.geojson
@@ -354,6 +386,7 @@ Updated dataset zip file path: ./downloads/a24d7d53-bb5b-4042-880a-942166ba78ad/
 Uploading to https://api.tdei.us/api/v1/osw/upload/1dd7c38e-c7a6-4e3a-be8b-379f823a7ad7/a008c57d-7959-478d-97e3-b3ca4268eaa6
 Job ID: 9661
 Dataset GS_Cathlamet_City with ID a24d7d53-bb5b-4042-880a-942166ba78ad uploaded successfully. Job ID: 9661
+
 Number of edges with zero width: 238
 Edges file found: /var/folders/2s/p3bg9q7n54d7kq9h25t04jph0000gp/T/tmpmhwbxjco/e65bbcbb-23ae-43d1-8a82-2463da7146d3.edges.geojson
 Updated edges file saved to ./downloads/13ed4935-48ae-40bc-89d8-7722e5c7aa92/e65bbcbb-23ae-43d1-8a82-2463da7146d3.edges.geojson
@@ -365,6 +398,7 @@ Updated dataset zip file path: ./downloads/13ed4935-48ae-40bc-89d8-7722e5c7aa92/
 Uploading to https://api.tdei.us/api/v1/osw/upload/1dd7c38e-c7a6-4e3a-be8b-379f823a7ad7/a008c57d-7959-478d-97e3-b3ca4268eaa6
 Job ID: 9662
 Dataset GS_Centralia_Chehalis_City with ID 13ed4935-48ae-40bc-89d8-7722e5c7aa92 uploaded successfully. Job ID: 9662
+
 Number of edges with zero width: 138
 Edges file found: /var/folders/2s/p3bg9q7n54d7kq9h25t04jph0000gp/T/tmpukrfp01z/335b1994-c609-4bef-9c98-86c06ba3c592.edges.geojson
 Updated edges file saved to ./downloads/c8b194ca-e33b-4b21-8460-05ec0fe9e6b3/335b1994-c609-4bef-9c98-86c06ba3c592.edges.geojson
@@ -376,6 +410,7 @@ Updated dataset zip file path: ./downloads/c8b194ca-e33b-4b21-8460-05ec0fe9e6b3/
 Uploading to https://api.tdei.us/api/v1/osw/upload/1dd7c38e-c7a6-4e3a-be8b-379f823a7ad7/a008c57d-7959-478d-97e3-b3ca4268eaa6
 Job ID: 9663
 Dataset GS_Centralia_City with ID c8b194ca-e33b-4b21-8460-05ec0fe9e6b3 uploaded successfully. Job ID: 9663
+
 Number of edges with zero width: 100
 Edges file found: /var/folders/2s/p3bg9q7n54d7kq9h25t04jph0000gp/T/tmpxn18fo19/83dfaa9a-4b07-46f5-8981-ece4c6646c0a.edges.geojson
 Updated edges file saved to ./downloads/768264fb-0798-4e92-9e11-5dbcdb19086a/83dfaa9a-4b07-46f5-8981-ece4c6646c0a.edges.geojson
@@ -387,6 +422,7 @@ Updated dataset zip file path: ./downloads/768264fb-0798-4e92-9e11-5dbcdb19086a/
 Uploading to https://api.tdei.us/api/v1/osw/upload/1dd7c38e-c7a6-4e3a-be8b-379f823a7ad7/a008c57d-7959-478d-97e3-b3ca4268eaa6
 Job ID: 9664
 Dataset GS_Chehalis_City with ID 768264fb-0798-4e92-9e11-5dbcdb19086a uploaded successfully. Job ID: 9664
+
 Number of edges with zero width: 66
 Edges file found: /var/folders/2s/p3bg9q7n54d7kq9h25t04jph0000gp/T/tmpwn69gwhp/3a9c7ca6-33ad-4f14-8049-cfb0a8806991.edges.geojson
 Updated edges file saved to ./downloads/62c15147-0a8e-4431-9aee-c900719ff626/3a9c7ca6-33ad-4f14-8049-cfb0a8806991.edges.geojson
@@ -398,6 +434,7 @@ Updated dataset zip file path: ./downloads/62c15147-0a8e-4431-9aee-c900719ff626/
 Uploading to https://api.tdei.us/api/v1/osw/upload/1dd7c38e-c7a6-4e3a-be8b-379f823a7ad7/a008c57d-7959-478d-97e3-b3ca4268eaa6
 Job ID: 9665
 Dataset GS_Chelan_City with ID 62c15147-0a8e-4431-9aee-c900719ff626 uploaded successfully. Job ID: 9665
+
 Number of edges with zero width: 49
 Edges file found: /var/folders/2s/p3bg9q7n54d7kq9h25t04jph0000gp/T/tmpbjq3q0oh/f01efef5-a740-4257-80d1-6c4878e90c95.edges.geojson
 Updated edges file saved to ./downloads/fa7e0b10-72c9-4b32-9605-d0fa46a5f38f/f01efef5-a740-4257-80d1-6c4878e90c95.edges.geojson
@@ -409,6 +446,7 @@ Updated dataset zip file path: ./downloads/fa7e0b10-72c9-4b32-9605-d0fa46a5f38f/
 Uploading to https://api.tdei.us/api/v1/osw/upload/1dd7c38e-c7a6-4e3a-be8b-379f823a7ad7/a008c57d-7959-478d-97e3-b3ca4268eaa6
 Job ID: 9666
 Dataset GS_Chelan_UI with ID fa7e0b10-72c9-4b32-9605-d0fa46a5f38f uploaded successfully. Job ID: 9666
+
 Number of edges with zero width: 202
 Edges file found: /var/folders/2s/p3bg9q7n54d7kq9h25t04jph0000gp/T/tmpb8earyzx/de587b28-9352-42b5-a9c0-7f36679c5d59.edges.geojson
 Updated edges file saved to ./downloads/4c12f3e1-baca-4c83-b60a-18278cf60806/de587b28-9352-42b5-a9c0-7f36679c5d59.edges.geojson
@@ -420,6 +458,7 @@ Updated dataset zip file path: ./downloads/4c12f3e1-baca-4c83-b60a-18278cf60806/
 Uploading to https://api.tdei.us/api/v1/osw/upload/1dd7c38e-c7a6-4e3a-be8b-379f823a7ad7/a008c57d-7959-478d-97e3-b3ca4268eaa6
 Job ID: 9667
 Dataset GS_Cheney_City with ID 4c12f3e1-baca-4c83-b60a-18278cf60806 uploaded successfully. Job ID: 9667
+
 Number of edges with zero width: 28
 Edges file found: /var/folders/2s/p3bg9q7n54d7kq9h25t04jph0000gp/T/tmpysajkyu9/d8243038-f707-40fd-aa45-634f7a0741c0.edges.geojson
 Updated edges file saved to ./downloads/6fc92afa-41dd-48e6-bc6e-9ec7aa801e79/d8243038-f707-40fd-aa45-634f7a0741c0.edges.geojson
@@ -431,6 +470,7 @@ Updated dataset zip file path: ./downloads/6fc92afa-41dd-48e6-bc6e-9ec7aa801e79/
 Uploading to https://api.tdei.us/api/v1/osw/upload/1dd7c38e-c7a6-4e3a-be8b-379f823a7ad7/a008c57d-7959-478d-97e3-b3ca4268eaa6
 Job ID: 9668
 Dataset GS_Chewelah_City with ID 6fc92afa-41dd-48e6-bc6e-9ec7aa801e79 uploaded successfully. Job ID: 9668
+
 Number of edges with zero width: 464
 Edges file found: /var/folders/2s/p3bg9q7n54d7kq9h25t04jph0000gp/T/tmp70t4qhdc/45ebbcd5-a606-4b9b-8350-6b88580eb527.edges.geojson
 Updated edges file saved to ./downloads/2e5580d8-2423-48f8-a093-f494c48d8948/45ebbcd5-a606-4b9b-8350-6b88580eb527.edges.geojson
@@ -442,6 +482,7 @@ Updated dataset zip file path: ./downloads/2e5580d8-2423-48f8-a093-f494c48d8948/
 Uploading to https://api.tdei.us/api/v1/osw/upload/1dd7c38e-c7a6-4e3a-be8b-379f823a7ad7/a008c57d-7959-478d-97e3-b3ca4268eaa6
 Job ID: 9669
 Dataset GS_Clallam_UI with ID 2e5580d8-2423-48f8-a093-f494c48d8948 uploaded successfully. Job ID: 9669
+
 Number of edges with zero width: 823
 Edges file found: /var/folders/2s/p3bg9q7n54d7kq9h25t04jph0000gp/T/tmp4ah7j89b/844fcf42-c92c-4a38-8d87-d328f17ca7f4.edges.geojson
 Updated edges file saved to ./downloads/9db08058-93ee-457c-a683-8cf5a1d0ba2a/844fcf42-c92c-4a38-8d87-d328f17ca7f4.edges.geojson
@@ -453,6 +494,7 @@ Updated dataset zip file path: ./downloads/9db08058-93ee-457c-a683-8cf5a1d0ba2a/
 Uploading to https://api.tdei.us/api/v1/osw/upload/1dd7c38e-c7a6-4e3a-be8b-379f823a7ad7/a008c57d-7959-478d-97e3-b3ca4268eaa6
 Job ID: 9670
 Dataset GS_Clark_UI with ID 9db08058-93ee-457c-a683-8cf5a1d0ba2a uploaded successfully. Job ID: 9670
+
 Number of edges with zero width: 28
 Edges file found: /var/folders/2s/p3bg9q7n54d7kq9h25t04jph0000gp/T/tmp_oyt4uwf/a9e9ce62-659f-4bbc-871a-756363e43339.edges.geojson
 Updated edges file saved to ./downloads/8a253c90-eafd-4c0b-9a81-ce61d1eb5ea4/a9e9ce62-659f-4bbc-871a-756363e43339.edges.geojson
@@ -464,6 +506,7 @@ Updated dataset zip file path: ./downloads/8a253c90-eafd-4c0b-9a81-ce61d1eb5ea4/
 Uploading to https://api.tdei.us/api/v1/osw/upload/1dd7c38e-c7a6-4e3a-be8b-379f823a7ad7/a008c57d-7959-478d-97e3-b3ca4268eaa6
 Job ID: 9671
 Dataset GS_Clarkston_City with ID 8a253c90-eafd-4c0b-9a81-ce61d1eb5ea4 uploaded successfully. Job ID: 9671
+
 Number of edges with zero width: 16
 Edges file found: /var/folders/2s/p3bg9q7n54d7kq9h25t04jph0000gp/T/tmp7mw3gpr4/5424a615-ad14-4068-b5e7-4837f05e0e6d.edges.geojson
 Updated edges file saved to ./downloads/132bab1f-1957-4820-9b63-4cfcce087813/5424a615-ad14-4068-b5e7-4837f05e0e6d.edges.geojson
@@ -475,6 +518,8 @@ Updated dataset zip file path: ./downloads/132bab1f-1957-4820-9b63-4cfcce087813/
 Uploading to https://api.tdei.us/api/v1/osw/upload/1dd7c38e-c7a6-4e3a-be8b-379f823a7ad7/a008c57d-7959-478d-97e3-b3ca4268eaa6
 Job ID: 9672
 Dataset GS_Clyde_Hill_City with ID 132bab1f-1957-4820-9b63-4cfcce087813 uploaded successfully. Job ID: 9672
+
+
 Number of edges with zero width: 112
 Edges file found: /var/folders/2s/p3bg9q7n54d7kq9h25t04jph0000gp/T/tmplljkh043/2971b99a-5bc2-4572-ab38-80e977d49838.edges.geojson
 Updated edges file saved to ./downloads/4ae7b7f7-e507-4d09-b671-7f7b69c70c42/2971b99a-5bc2-4572-ab38-80e977d49838.edges.geojson
@@ -486,6 +531,8 @@ Updated dataset zip file path: ./downloads/4ae7b7f7-e507-4d09-b671-7f7b69c70c42/
 Uploading to https://api.tdei.us/api/v1/osw/upload/1dd7c38e-c7a6-4e3a-be8b-379f823a7ad7/a008c57d-7959-478d-97e3-b3ca4268eaa6
 Job ID: 9673
 Dataset GS_Colfax_City with ID 4ae7b7f7-e507-4d09-b671-7f7b69c70c42 uploaded successfully. Job ID: 9673
+
+
 Number of edges with zero width: 161
 Edges file found: /var/folders/2s/p3bg9q7n54d7kq9h25t04jph0000gp/T/tmp8mscna68/4706c74c-706b-4f23-8b7e-d3222004957a.edges.geojson
 Updated edges file saved to ./downloads/c319acc6-8c28-41aa-a3d3-4b3e5cdf3e2c/4706c74c-706b-4f23-8b7e-d3222004957a.edges.geojson
@@ -497,6 +544,7 @@ Updated dataset zip file path: ./downloads/c319acc6-8c28-41aa-a3d3-4b3e5cdf3e2c/
 Uploading to https://api.tdei.us/api/v1/osw/upload/1dd7c38e-c7a6-4e3a-be8b-379f823a7ad7/a008c57d-7959-478d-97e3-b3ca4268eaa6
 Job ID: 9674
 Dataset GS_College_Place_City with ID c319acc6-8c28-41aa-a3d3-4b3e5cdf3e2c uploaded successfully. Job ID: 9674
+
 Number of edges with zero width: 4
 Edges file found: /var/folders/2s/p3bg9q7n54d7kq9h25t04jph0000gp/T/tmpauv24r5j/c425a3e8-eab1-4499-98e6-36371ddb2ddf.edges.geojson
 Updated edges file saved to ./downloads/258f1b56-46e2-49b5-a7b2-fb73994f40f8/c425a3e8-eab1-4499-98e6-36371ddb2ddf.edges.geojson
@@ -508,6 +556,7 @@ Updated dataset zip file path: ./downloads/258f1b56-46e2-49b5-a7b2-fb73994f40f8/
 Uploading to https://api.tdei.us/api/v1/osw/upload/1dd7c38e-c7a6-4e3a-be8b-379f823a7ad7/a008c57d-7959-478d-97e3-b3ca4268eaa6
 Job ID: 9675
 Dataset GS_Colton_City with ID 258f1b56-46e2-49b5-a7b2-fb73994f40f8 uploaded successfully. Job ID: 9675
+
 Number of edges with zero width: 33
 Edges file found: /var/folders/2s/p3bg9q7n54d7kq9h25t04jph0000gp/T/tmp3e93o9l0/234973c8-fc25-4659-b035-07fae35ffea8.edges.geojson
 Updated edges file saved to ./downloads/c503f925-6af1-486f-a852-509009d1c8bc/234973c8-fc25-4659-b035-07fae35ffea8.edges.geojson
@@ -519,6 +568,7 @@ Updated dataset zip file path: ./downloads/c503f925-6af1-486f-a852-509009d1c8bc/
 Uploading to https://api.tdei.us/api/v1/osw/upload/1dd7c38e-c7a6-4e3a-be8b-379f823a7ad7/a008c57d-7959-478d-97e3-b3ca4268eaa6
 Job ID: 9676
 Dataset GS_Columbia_UI with ID c503f925-6af1-486f-a852-509009d1c8bc uploaded successfully. Job ID: 9676
+
 Number of edges with zero width: 39
 Edges file found: /var/folders/2s/p3bg9q7n54d7kq9h25t04jph0000gp/T/tmpkz1l7yx7/579ebc64-9a8c-48fd-9409-5820c6a4724f.edges.geojson
 Updated edges file saved to ./downloads/51ee12d2-e101-4ce3-8501-512ec38218fc/579ebc64-9a8c-48fd-9409-5820c6a4724f.edges.geojson
@@ -530,10 +580,14 @@ Updated dataset zip file path: ./downloads/51ee12d2-e101-4ce3-8501-512ec38218fc/
 Uploading to https://api.tdei.us/api/v1/osw/upload/1dd7c38e-c7a6-4e3a-be8b-379f823a7ad7/a008c57d-7959-478d-97e3-b3ca4268eaa6
 Job ID: 9677
 Dataset GS_Colville_City with ID 51ee12d2-e101-4ce3-8501-512ec38218fc uploaded successfully. Job ID: 9677
+
+
 No edges with zero width found in ./downloads/a334324e-0e37-493f-8020-22e6eff81ae2.zip
 Dataset GS_Conconully_City does not have edges with zero width. No changes made.
 Dataset GS_Conconully_City with ID a334324e-0e37-493f-8020-22e6eff81ae2 does not have edges with zero width. No changes made.
 Skipping dataset GS_Conconully_City with ID a334324e-0e37-493f-8020-22e6eff81ae2 as it does not have edges with zero width.
+
+
 Number of edges with zero width: 15
 Edges file found: /var/folders/2s/p3bg9q7n54d7kq9h25t04jph0000gp/T/tmph_xzfj85/13583156-e726-4425-bbee-99b72bfc871a.edges.geojson
 Updated edges file saved to ./downloads/fd1c6153-e3b9-4076-8afc-79da0441a76c/13583156-e726-4425-bbee-99b72bfc871a.edges.geojson
@@ -545,6 +599,8 @@ Updated dataset zip file path: ./downloads/fd1c6153-e3b9-4076-8afc-79da0441a76c/
 Uploading to https://api.tdei.us/api/v1/osw/upload/1dd7c38e-c7a6-4e3a-be8b-379f823a7ad7/a008c57d-7959-478d-97e3-b3ca4268eaa6
 Job ID: 9678
 Dataset GS_Concrete_City with ID fd1c6153-e3b9-4076-8afc-79da0441a76c uploaded successfully. Job ID: 9678
+
+
 Number of edges with zero width: 135
 Edges file found: /var/folders/2s/p3bg9q7n54d7kq9h25t04jph0000gp/T/tmp9p5zcq39/ef0d8ee9-2d97-45e8-a55a-6b31ef8f395b.edges.geojson
 Updated edges file saved to ./downloads/7c0382a5-8275-42a5-b57e-3819c23278d9/ef0d8ee9-2d97-45e8-a55a-6b31ef8f395b.edges.geojson
@@ -556,6 +612,7 @@ Updated dataset zip file path: ./downloads/7c0382a5-8275-42a5-b57e-3819c23278d9/
 Uploading to https://api.tdei.us/api/v1/osw/upload/1dd7c38e-c7a6-4e3a-be8b-379f823a7ad7/a008c57d-7959-478d-97e3-b3ca4268eaa6
 Job ID: 9679
 Dataset GS_Connell_City with ID 7c0382a5-8275-42a5-b57e-3819c23278d9 uploaded successfully. Job ID: 9679
+
 Number of edges with zero width: 11
 Edges file found: /var/folders/2s/p3bg9q7n54d7kq9h25t04jph0000gp/T/tmpeze51vuw/d3da0f54-97b8-4866-9daa-2fa692ba6501.edges.geojson
 Updated edges file saved to ./downloads/21efbb0e-3fc0-4fa9-8a55-6b90aee52878/d3da0f54-97b8-4866-9daa-2fa692ba6501.edges.geojson
@@ -567,6 +624,7 @@ Updated dataset zip file path: ./downloads/21efbb0e-3fc0-4fa9-8a55-6b90aee52878/
 Uploading to https://api.tdei.us/api/v1/osw/upload/1dd7c38e-c7a6-4e3a-be8b-379f823a7ad7/a008c57d-7959-478d-97e3-b3ca4268eaa6
 Job ID: 9680
 Dataset GS_Cosmopolis_City with ID 21efbb0e-3fc0-4fa9-8a55-6b90aee52878 uploaded successfully. Job ID: 9680
+
 Number of edges with zero width: 4
 Edges file found: /var/folders/2s/p3bg9q7n54d7kq9h25t04jph0000gp/T/tmplj3rlz3j/debd0f3c-a4cd-49a9-a6de-d6d298136f2c.edges.geojson
 Updated edges file saved to ./downloads/edb84574-7ad3-41ee-8da9-ab69e4e52e0b/debd0f3c-a4cd-49a9-a6de-d6d298136f2c.edges.geojson
@@ -578,6 +636,7 @@ Updated dataset zip file path: ./downloads/edb84574-7ad3-41ee-8da9-ab69e4e52e0b/
 Uploading to https://api.tdei.us/api/v1/osw/upload/1dd7c38e-c7a6-4e3a-be8b-379f823a7ad7/a008c57d-7959-478d-97e3-b3ca4268eaa6
 Job ID: 9681
 Dataset GS_Coulee_City with ID edb84574-7ad3-41ee-8da9-ab69e4e52e0b uploaded successfully. Job ID: 9681
+
 Number of edges with zero width: 11
 Edges file found: /var/folders/2s/p3bg9q7n54d7kq9h25t04jph0000gp/T/tmp4awx1bt7/335dab0c-5c92-4ad5-bbc3-bbafea066014.edges.geojson
 Updated edges file saved to ./downloads/efbbbaa6-689c-45de-aba4-7bfdaf2e9b85/335dab0c-5c92-4ad5-bbc3-bbafea066014.edges.geojson
@@ -589,6 +648,7 @@ Updated dataset zip file path: ./downloads/efbbbaa6-689c-45de-aba4-7bfdaf2e9b85/
 Uploading to https://api.tdei.us/api/v1/osw/upload/1dd7c38e-c7a6-4e3a-be8b-379f823a7ad7/a008c57d-7959-478d-97e3-b3ca4268eaa6
 Job ID: 9682
 Dataset GS_Coulee_Dam_City with ID efbbbaa6-689c-45de-aba4-7bfdaf2e9b85 uploaded successfully. Job ID: 9682
+
 Number of edges with zero width: 19
 Edges file found: /var/folders/2s/p3bg9q7n54d7kq9h25t04jph0000gp/T/tmpkp9t0nmr/b1503eb2-d5c6-44d3-8b58-a7b87645d371.edges.geojson
 Updated edges file saved to ./downloads/654b4345-e6b0-40bb-b1cc-da4837c75564/b1503eb2-d5c6-44d3-8b58-a7b87645d371.edges.geojson
@@ -600,6 +660,7 @@ Updated dataset zip file path: ./downloads/654b4345-e6b0-40bb-b1cc-da4837c75564/
 Uploading to https://api.tdei.us/api/v1/osw/upload/1dd7c38e-c7a6-4e3a-be8b-379f823a7ad7/a008c57d-7959-478d-97e3-b3ca4268eaa6
 Job ID: 9683
 Dataset GS_Coupeville_City with ID 654b4345-e6b0-40bb-b1cc-da4837c75564 uploaded successfully. Job ID: 9683
+
 Number of edges with zero width: 1638
 Edges file found: /var/folders/2s/p3bg9q7n54d7kq9h25t04jph0000gp/T/tmp0j7cj_2l/9e83253e-6719-44f1-ae26-4e42296a8f00.edges.geojson
 Updated edges file saved to ./downloads/9a07536e-22aa-473b-842a-fa1538c21db4/9e83253e-6719-44f1-ae26-4e42296a8f00.edges.geojson
@@ -611,6 +672,7 @@ Updated dataset zip file path: ./downloads/9a07536e-22aa-473b-842a-fa1538c21db4/
 Uploading to https://api.tdei.us/api/v1/osw/upload/1dd7c38e-c7a6-4e3a-be8b-379f823a7ad7/a008c57d-7959-478d-97e3-b3ca4268eaa6
 Job ID: 9684
 Dataset GS_Covington_City with ID 9a07536e-22aa-473b-842a-fa1538c21db4 uploaded successfully. Job ID: 9684
+
 Number of edges with zero width: 49
 Edges file found: /var/folders/2s/p3bg9q7n54d7kq9h25t04jph0000gp/T/tmpzk8z8kng/fa5cb48d-df5b-4cb7-b410-9016e54894af.edges.geojson
 Updated edges file saved to ./downloads/b1073b3c-5ba8-4bd5-a0db-a0d9f7c3af15/fa5cb48d-df5b-4cb7-b410-9016e54894af.edges.geojson
@@ -622,6 +684,7 @@ Updated dataset zip file path: ./downloads/b1073b3c-5ba8-4bd5-a0db-a0d9f7c3af15/
 Uploading to https://api.tdei.us/api/v1/osw/upload/1dd7c38e-c7a6-4e3a-be8b-379f823a7ad7/a008c57d-7959-478d-97e3-b3ca4268eaa6
 Job ID: 9685
 Dataset GS_Cowlitz_UI with ID b1073b3c-5ba8-4bd5-a0db-a0d9f7c3af15 uploaded successfully. Job ID: 9685
+
 Number of edges with zero width: 3
 Edges file found: /var/folders/2s/p3bg9q7n54d7kq9h25t04jph0000gp/T/tmp_0fykvk1/creston_city.edges.geojson
 Updated edges file saved to ./downloads/d784a99a-5136-4540-93ed-be3ac276d0b7/creston_city.edges.geojson
@@ -633,6 +696,7 @@ Updated dataset zip file path: ./downloads/d784a99a-5136-4540-93ed-be3ac276d0b7/
 Uploading to https://api.tdei.us/api/v1/osw/upload/1dd7c38e-c7a6-4e3a-be8b-379f823a7ad7/a008c57d-7959-478d-97e3-b3ca4268eaa6
 Job ID: 9686
 Dataset GS_Creston_City with ID d784a99a-5136-4540-93ed-be3ac276d0b7 uploaded successfully. Job ID: 9686
+
 Number of edges with zero width: 2
 Edges file found: /var/folders/2s/p3bg9q7n54d7kq9h25t04jph0000gp/T/tmpqeauui4l/54454271-46c7-4ca9-84cd-1a6d296459f8.edges.geojson
 Updated edges file saved to ./downloads/418be4d9-c2e5-44f4-a9ff-997ee1932994/54454271-46c7-4ca9-84cd-1a6d296459f8.edges.geojson
@@ -644,6 +708,7 @@ Updated dataset zip file path: ./downloads/418be4d9-c2e5-44f4-a9ff-997ee1932994/
 Uploading to https://api.tdei.us/api/v1/osw/upload/1dd7c38e-c7a6-4e3a-be8b-379f823a7ad7/a008c57d-7959-478d-97e3-b3ca4268eaa6
 Job ID: 9687
 Dataset GS_Cusick_City with ID 418be4d9-c2e5-44f4-a9ff-997ee1932994 uploaded successfully. Job ID: 9687
+
 Number of edges with zero width: 35
 Edges file found: /var/folders/2s/p3bg9q7n54d7kq9h25t04jph0000gp/T/tmprinwg3mn/916b47b5-35f4-4f8c-bebe-49398fdd2f9b.edges.geojson
 Updated edges file saved to ./downloads/e141baa7-258a-437b-ad86-aff79a042bdd/916b47b5-35f4-4f8c-bebe-49398fdd2f9b.edges.geojson
@@ -655,6 +720,7 @@ Updated dataset zip file path: ./downloads/e141baa7-258a-437b-ad86-aff79a042bdd/
 Uploading to https://api.tdei.us/api/v1/osw/upload/1dd7c38e-c7a6-4e3a-be8b-379f823a7ad7/a008c57d-7959-478d-97e3-b3ca4268eaa6
 Job ID: 9688
 Dataset GS_Darrington_City with ID e141baa7-258a-437b-ad86-aff79a042bdd uploaded successfully. Job ID: 9688
+
 Number of edges with zero width: 26
 Edges file found: /var/folders/2s/p3bg9q7n54d7kq9h25t04jph0000gp/T/tmpk1a4ncb7/3100bcef-0243-4b5d-b9a1-db1fe04e57f2.edges.geojson
 Updated edges file saved to ./downloads/923d4d8e-59e2-4202-a866-3514849b1d98/3100bcef-0243-4b5d-b9a1-db1fe04e57f2.edges.geojson
@@ -666,6 +732,7 @@ Updated dataset zip file path: ./downloads/923d4d8e-59e2-4202-a866-3514849b1d98/
 Uploading to https://api.tdei.us/api/v1/osw/upload/1dd7c38e-c7a6-4e3a-be8b-379f823a7ad7/a008c57d-7959-478d-97e3-b3ca4268eaa6
 Job ID: 9689
 Dataset GS_Davenport_City with ID 923d4d8e-59e2-4202-a866-3514849b1d98 uploaded successfully. Job ID: 9689
+
 Number of edges with zero width: 32
 Edges file found: /var/folders/2s/p3bg9q7n54d7kq9h25t04jph0000gp/T/tmpusi6mwsd/3ccd9f27-6829-4adc-abe6-27605954f322.edges.geojson
 Updated edges file saved to ./downloads/1ec81f91-bfc5-40fa-88a3-34fd86799db5/3ccd9f27-6829-4adc-abe6-27605954f322.edges.geojson
@@ -677,6 +744,7 @@ Updated dataset zip file path: ./downloads/1ec81f91-bfc5-40fa-88a3-34fd86799db5/
 Uploading to https://api.tdei.us/api/v1/osw/upload/1dd7c38e-c7a6-4e3a-be8b-379f823a7ad7/a008c57d-7959-478d-97e3-b3ca4268eaa6
 Job ID: 9690
 Dataset GS_Dayton_City with ID 1ec81f91-bfc5-40fa-88a3-34fd86799db5 uploaded successfully. Job ID: 9690
+
 Number of edges with zero width: 31
 Edges file found: /var/folders/2s/p3bg9q7n54d7kq9h25t04jph0000gp/T/tmp2_xmwvyy/43cbab4d-e0e2-4f76-9bfa-bd84342a7dc4.edges.geojson
 Updated edges file saved to ./downloads/061ab0ca-4a26-4397-954b-45bce29cd237/43cbab4d-e0e2-4f76-9bfa-bd84342a7dc4.edges.geojson
@@ -688,6 +756,7 @@ Updated dataset zip file path: ./downloads/061ab0ca-4a26-4397-954b-45bce29cd237/
 Uploading to https://api.tdei.us/api/v1/osw/upload/1dd7c38e-c7a6-4e3a-be8b-379f823a7ad7/a008c57d-7959-478d-97e3-b3ca4268eaa6
 Job ID: 9691
 Dataset GS_Deer_Park_City with ID 061ab0ca-4a26-4397-954b-45bce29cd237 uploaded successfully. Job ID: 9691
+
 Number of edges with zero width: 117
 Edges file found: /var/folders/2s/p3bg9q7n54d7kq9h25t04jph0000gp/T/tmpn90rv1ks/c4173495-c0b6-40f5-99c7-b08a617a0b34.edges.geojson
 Updated edges file saved to ./downloads/c7b2e729-e7ed-4fde-b47d-96136b38e3d3/c4173495-c0b6-40f5-99c7-b08a617a0b34.edges.geojson
@@ -699,6 +768,7 @@ Updated dataset zip file path: ./downloads/c7b2e729-e7ed-4fde-b47d-96136b38e3d3/
 Uploading to https://api.tdei.us/api/v1/osw/upload/1dd7c38e-c7a6-4e3a-be8b-379f823a7ad7/a008c57d-7959-478d-97e3-b3ca4268eaa6
 Job ID: 9692
 Dataset GS_Des_Moines_City with ID c7b2e729-e7ed-4fde-b47d-96136b38e3d3 uploaded successfully. Job ID: 9692
+
 Number of edges with zero width: 242
 Edges file found: /var/folders/2s/p3bg9q7n54d7kq9h25t04jph0000gp/T/tmp5p2lwpxl/1403b36d-2b3f-428d-b326-6c83c6e4f8fa.edges.geojson
 Updated edges file saved to ./downloads/d54d6c3e-4079-474d-8e8e-06aeb3987335/1403b36d-2b3f-428d-b326-6c83c6e4f8fa.edges.geojson
@@ -710,6 +780,7 @@ Updated dataset zip file path: ./downloads/d54d6c3e-4079-474d-8e8e-06aeb3987335/
 Uploading to https://api.tdei.us/api/v1/osw/upload/1dd7c38e-c7a6-4e3a-be8b-379f823a7ad7/a008c57d-7959-478d-97e3-b3ca4268eaa6
 Job ID: 9693
 Dataset GS_Douglas_UI with ID d54d6c3e-4079-474d-8e8e-06aeb3987335 uploaded successfully. Job ID: 9693
+
 Number of edges with zero width: 74
 Edges file found: /var/folders/2s/p3bg9q7n54d7kq9h25t04jph0000gp/T/tmpfmiugly8/b5980904-f8a7-4afc-9acf-893676c4d3b9.edges.geojson
 Updated edges file saved to ./downloads/d6effc91-13dd-45fe-868d-1017b46649a3/b5980904-f8a7-4afc-9acf-893676c4d3b9.edges.geojson
@@ -721,6 +792,7 @@ Updated dataset zip file path: ./downloads/d6effc91-13dd-45fe-868d-1017b46649a3/
 Uploading to https://api.tdei.us/api/v1/osw/upload/1dd7c38e-c7a6-4e3a-be8b-379f823a7ad7/a008c57d-7959-478d-97e3-b3ca4268eaa6
 Job ID: 9694
 Dataset GS_DuPont_City with ID d6effc91-13dd-45fe-868d-1017b46649a3 uploaded successfully. Job ID: 9694
+
 Number of edges with zero width: 88
 Edges file found: /var/folders/2s/p3bg9q7n54d7kq9h25t04jph0000gp/T/tmppnog2nuk/2ea31a97-b944-4d5e-b656-d9a7ed4e18a4.edges.geojson
 Updated edges file saved to ./downloads/1fe19f1d-27f6-4842-8e00-a3b8fcd08379/2ea31a97-b944-4d5e-b656-d9a7ed4e18a4.edges.geojson
@@ -732,6 +804,7 @@ Updated dataset zip file path: ./downloads/1fe19f1d-27f6-4842-8e00-a3b8fcd08379/
 Uploading to https://api.tdei.us/api/v1/osw/upload/1dd7c38e-c7a6-4e3a-be8b-379f823a7ad7/a008c57d-7959-478d-97e3-b3ca4268eaa6
 Job ID: 9695
 Dataset GS_Duvall_City with ID 1fe19f1d-27f6-4842-8e00-a3b8fcd08379 uploaded successfully. Job ID: 9695
+
 Number of edges with zero width: 59
 Edges file found: /var/folders/2s/p3bg9q7n54d7kq9h25t04jph0000gp/T/tmp2aqcl5w4/201ca05f-d39b-4288-81cb-0880cef87359.edges.geojson
 Updated edges file saved to ./downloads/4c315177-b382-4fbb-b1a9-5b2bb54eb935/201ca05f-d39b-4288-81cb-0880cef87359.edges.geojson
@@ -743,6 +816,7 @@ Updated dataset zip file path: ./downloads/4c315177-b382-4fbb-b1a9-5b2bb54eb935/
 Uploading to https://api.tdei.us/api/v1/osw/upload/1dd7c38e-c7a6-4e3a-be8b-379f823a7ad7/a008c57d-7959-478d-97e3-b3ca4268eaa6
 Job ID: 9696
 Dataset GS_East_Wenatchee_City with ID 4c315177-b382-4fbb-b1a9-5b2bb54eb935 uploaded successfully. Job ID: 9696
+
 Number of edges with zero width: 79
 Edges file found: /var/folders/2s/p3bg9q7n54d7kq9h25t04jph0000gp/T/tmp43s2c4eh/20fd258c-9ebc-4385-9f51-c477dae4901c.edges.geojson
 Updated edges file saved to ./downloads/f1f29e8c-b00a-4c69-b9a5-dbd3574358a9/20fd258c-9ebc-4385-9f51-c477dae4901c.edges.geojson
@@ -754,6 +828,7 @@ Updated dataset zip file path: ./downloads/f1f29e8c-b00a-4c69-b9a5-dbd3574358a9/
 Uploading to https://api.tdei.us/api/v1/osw/upload/1dd7c38e-c7a6-4e3a-be8b-379f823a7ad7/a008c57d-7959-478d-97e3-b3ca4268eaa6
 Job ID: 9697
 Dataset GS_Eatonville_City with ID f1f29e8c-b00a-4c69-b9a5-dbd3574358a9 uploaded successfully. Job ID: 9697
+
 Number of edges with zero width: 41
 Edges file found: /var/folders/2s/p3bg9q7n54d7kq9h25t04jph0000gp/T/tmpjmvjhmi8/bb8b3875-9f2a-4a3b-abd8-cc393d63c44c.edges.geojson
 Updated edges file saved to ./downloads/bb7d2c68-c686-4aa5-b9cd-2163b81afec0/bb8b3875-9f2a-4a3b-abd8-cc393d63c44c.edges.geojson

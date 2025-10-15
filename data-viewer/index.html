@@ -326,13 +326,6 @@
 }).addTo(map);
 
 
-  var hexagonWMS = L.tileLayer.wms('https://waprovisoimg.centralindia.cloudapp.azure.com/streaming/wms',{
-    layers:'HxGN_Imagery',
-    format:'image/png',
-    transparent:true,
-    attribution:' Hexagon WMS',
-    maxZoom:22
-  });
 
 
   var layers = L.control().layers
@@ -364,8 +357,7 @@
 
 
   const baseLayers = {
-    'Raster': CartoDB_Positron,
-    "Imagery": hexagonWMS
+    'Raster': CartoDB_Positron
   };
   const position = {
     position: 'topleft',
