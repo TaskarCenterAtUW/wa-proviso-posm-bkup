@@ -181,13 +181,13 @@ if __name__ == '__main__':
         'sort_field':'uploaded_timestamp',
         'sort_order':'asc',
         'status':'Pre-Release',
-        'tdei_service_id':'a008c57d-7959-478d-97e3-b3ca4268eaa6'
+        'tdei_service_id':'d1199d1a-495b-43a0-b7cd-1f941a657356'
     }
     datasets = downloader.get_latest_datasets(query_params)
-    for index, row in tqdm(datasets.iterrows(), total=len(datasets), desc='Downloading datasets'):
-        dataset_id = row['tdei_dataset_id']
-        downloader.download_dataset(dataset_id)
-    datasets.to_json('tdei_datasets.json', orient='records', indent=4)
+    # for index, row in tqdm(datasets.iterrows(), total=len(datasets), desc='Downloading datasets'):
+    #     dataset_id = row['tdei_dataset_id']
+    #     downloader.download_dataset(dataset_id)
+    datasets.to_json('tdei_datasets_unions_updated.json', orient='records', indent=4)
     '''
     Command to generate GeoJSON from the dataset JSON file:
     jq '{

@@ -124,11 +124,12 @@ def update_metadata_file(metadata_path:str):
 
 
 
-def upload_tdei_dataset(token:str,environment:str,dataset_file:str,metadata_file:str,tdei_project_group:str,tdei_service_id:str):
+def upload_tdei_dataset(token:str,environment:str,dataset_file:str,metadata_file:str,tdei_project_group:str,tdei_service_id:str, derived_from_dataset_id:str = None) -> str:
          '''
          Uploads the TDEI dataset to the storage. and fetches the jobId from upload
          '''
          try:
+            # derived_from_dataset_id
             #   self.check_access_token_validity(token,environment)
               # Get the local meta file content json
               base_url = 'https://api.tdei.us'
@@ -137,6 +138,8 @@ def upload_tdei_dataset(token:str,environment:str,dataset_file:str,metadata_file
               else:
                    upload_url = f'{base_url}/api/v1/osw/upload/{tdei_project_group}/{tdei_service_id}'
                    print(f'Uploading to {upload_url}')
+                   if derived_from_dataset_id:
+                        upload_url += f'?derived_from_dataset_id={derived_from_dataset_id}'
                    # Upload multi-part form data
                    files = {
                     'dataset': open(dataset_file, 'rb'),
@@ -244,7 +247,7 @@ def finish_all_stuff():
             print(f"Dataset {result['dataset_name']} with ID {result['dataset_id']} uploaded successfully. Job ID: {job_id}")
             # sleep for 5 seconds to avoid rate limiting
             time.sleep(5)
-            # break # Uncomment this line to stop after processing the first dataset
+            break # Uncomment this line to stop after processing the first dataset
         else:
             print(f"Dataset {dataset_name} with ID {dataset_id} does not have edges with zero width. No changes made.")
             datasets_with_zero_widths += 1
