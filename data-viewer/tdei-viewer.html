@@ -508,17 +508,13 @@
   </div>
   <script type="text/javascript">
 
-    // Reads the URL hash in the format `#map=ZOOM/LAT/LNG`.
-    // Returns an object { z, lat, lng } if valid; otherwise returns null.
+    // Parse #map=ZOOM/LAT/LNG from the URL and return { z, lat, lng }
+    // Returns null if the hash is missing or invalid
     function parseMapHash() {
-      // Match #map=12/47.61/-122.31  (zoom 1–2 digits, lat/lng can be signed decimals)
       const m = location.hash.match(/^#map=(\d{1,2})\/(-?\d+(?:\.\d+)?)\/(-?\d+(?:\.\d+)?)/);
       if (!m) return null;
 
-      // Clamp and normalize values:
-      // - zoom clamped to [0, 22] since we set map max to 22
-      // - latitude clamped to [-90, 90]
-      // - longitude wrapped to [-180, 180)
+      // Keep values within valid ranges
       const z = Math.max(0, Math.min(22, +m[1]));
       const lat = Math.max(-90, Math.min(90, +m[2]));
       const lngRaw = +m[3];
@@ -526,49 +522,44 @@
 
       return { z, lat, lng };
     }
-    // Writes the current map view back to the URL hash as `#map=ZOOM/LAT/LNG`.
-    // Uses history.replaceState to avoid adding a new history entry on every pan/zoom.
+
+    // Update the URL hash to reflect the current map view
     function setHashFromMap(map) {
       const c = map.getCenter();
       const z = map.getZoom();
-      // Keep a stable, short hash: 5 decimal places is ~1 meter precision
       const lat = c.lat.toFixed(5);
       const lng = c.lng.toFixed(5);
       const next = `#map=${z}/${lat}/${lng}`;
-      if (location.hash !== next) {
-        history.replaceState(null, '', next);
-      }
+      if (location.hash !== next) history.replaceState(null, '', next);
     }
-    // Determine initial map view:
-    // Prefer the hash if present and valid; otherwise fall back to default.
+
+    // Use hash if present, otherwise default to Seattle
     const initial = parseMapHash() || { z: 15, lat: 47.61163, lng: -122.31332 };
 
-    // Ensure the URL always has a valid `#map=...` hash:
-    // If missing, inject the default hash WITHOUT creating a new history entry.
+    // Make sure the URL always includes a valid map hash
     (function ensureDefaultMapHash() {
       const hasMapHash = /^#map=\d{1,2}\/-?\d+(?:\.\d+)?\/-?\d+(?:\.\d+)?$/.test(location.hash);
       if (!hasMapHash) {
-        const def = '#map=15/47.61163/-122.31332';
-        history.replaceState(null, '', location.pathname + location.search + def);
+        history.replaceState(null, '', `${location.pathname + location.search}#map=15/47.61163/-122.31332`);
       }
     })();
 
-    // Create the Leaflet map with the resolved initial view.
+    // Initialize map view
     const map = L.map('map', { zoomSnap: 1 }).setView([initial.lat, initial.lng], initial.z);
 
-    // Keep the URL hash in sync when the user pans/zooms.
+    // Keep URL hash in sync as the user pans or zooms
     let _hashSyncTimer = null;
     map.on('moveend', () => {
       clearTimeout(_hashSyncTimer);
       _hashSyncTimer = setTimeout(() => setHashFromMap(map), 0);
     });
 
-    // Support manual edits to the URL hash or back/forward navigation.
-    // If the hash changes to a valid view, recenter the map accordingly.
+    // React to manual URL hash edits or back/forward navigation
     window.addEventListener('hashchange', () => {
       const v = parseMapHash();
       if (v) map.setView([v.lat, v.lng], v.z);
     });
+
 
     var CartoDB_Positron = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
