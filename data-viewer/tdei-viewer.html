@@ -508,7 +508,57 @@
   </div>
   <script type="text/javascript">
 
-    const map = L.map('map').setView([47.61163, -122.31332], 15);
+    // Parse #map=ZOOM/LAT/LNG from the URL and return { z, lat, lng }
+    // Returns null if the hash is missing or invalid
+    function parseMapHash() {
+      const m = location.hash.match(/^#map=(\d{1,2})\/(-?\d+(?:\.\d+)?)\/(-?\d+(?:\.\d+)?)/);
+      if (!m) return null;
+
+      // Keep values within valid ranges
+      const z = Math.max(0, Math.min(22, +m[1]));
+      const lat = Math.max(-90, Math.min(90, +m[2]));
+      const lngRaw = +m[3];
+      const lng = ((lngRaw + 540) % 360) - 180;
+
+      return { z, lat, lng };
+    }
+
+    // Update the URL hash to reflect the current map view
+    function setHashFromMap(map) {
+      const c = map.getCenter();
+      const z = map.getZoom();
+      const lat = c.lat.toFixed(5);
+      const lng = c.lng.toFixed(5);
+      const next = `#map=${z}/${lat}/${lng}`;
+      if (location.hash !== next) history.replaceState(null, '', next);
+    }
+
+    // Use hash if present, otherwise default to Seattle
+    const initial = parseMapHash() || { z: 15, lat: 47.61163, lng: -122.31332 };
+
+    // Make sure the URL always includes a valid map hash
+    (function ensureDefaultMapHash() {
+      const hasMapHash = /^#map=\d{1,2}\/-?\d+(?:\.\d+)?\/-?\d+(?:\.\d+)?$/.test(location.hash);
+      if (!hasMapHash) {
+        history.replaceState(null, '', `${location.pathname + location.search}#map=15/47.61163/-122.31332`);
+      }
+    })();
+
+    // Initialize map view
+    const map = L.map('map', { zoomSnap: 1 }).setView([initial.lat, initial.lng], initial.z);
+
+    // Keep URL hash in sync as the user pans or zooms
+    let _hashSyncTimer = null;
+    map.on('moveend', () => {
+      clearTimeout(_hashSyncTimer);
+      _hashSyncTimer = setTimeout(() => setHashFromMap(map), 0);
+    });
+
+    // React to manual URL hash edits or back/forward navigation
+    window.addEventListener('hashchange', () => {
+      const v = parseMapHash();
+      if (v) map.setView([v.lat, v.lng], v.z);
+    });
 
 
     var CartoDB_Positron = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
@@ -1187,22 +1237,22 @@
     // var control = new L.Control.Button()
     // control.addTo(map);
     fetch(tsUrl)
-    .then(res => {
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      return res.text();
-    })
-    .then(text => {
-      const utcString = text.trim();           
-        const date = new Date(utcString);        
-        const localDate = date.toLocaleDateString();     
+      .then(res => {
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        return res.text();
+      })
+      .then(text => {
+        const utcString = text.trim();
+        const date = new Date(utcString);
+        const localDate = date.toLocaleDateString();
         const localTime = date.toLocaleTimeString();
         document.getElementById('lastUpdated').textContent =
-          `Last updated: ${localDate} ${localTime}`;   
-    })
-    .catch(err => {
-      console.warn('Couldnt load last_updated.txt:', err);
-      document.getElementById('lastUpdated').textContent = 'Last updated: unavailable';
-    });
+          `Last updated: ${localDate} ${localTime}`;
+      })
+      .catch(err => {
+        console.warn('Couldnt load last_updated.txt:', err);
+        document.getElementById('lastUpdated').textContent = 'Last updated: unavailable';
+      });
 
   </script>
   <div id="mapTooltip" class="mapActionWindow">
