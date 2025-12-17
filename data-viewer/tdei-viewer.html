@@ -588,12 +588,42 @@
     // Initialize map view
     const map = L.map('map', { zoomSnap: 1 }).setView([initial.lat, initial.lng], initial.z);
 
+    // Tracking functionality for long visits (GA4)
+    let visitTimer;
+    const DURATION_THRESHOLD = 5000; // 5 seconds in milliseconds
+
+    function recordLongVisit(hash) {
+      console.log(`User stayed on ${hash} for over 5 seconds.`);
+      gtag('event', 'map_view_duration', {
+        'map_hash': hash,
+        'duration': '5s_plus'
+      });
+    }
+
+    function trackHashVisit() {
+      if (visitTimer) {
+        clearTimeout(visitTimer);
+      }
+      const currentHash = window.location.hash;
+      if (currentHash) {
+        visitTimer = setTimeout(() => {
+          recordLongVisit(currentHash);
+        }, DURATION_THRESHOLD);
+      }
+    }
+
     // Keep URL hash in sync as the user pans or zooms
     let _hashSyncTimer = null;
     map.on('moveend', () => {
       clearTimeout(_hashSyncTimer);
-      _hashSyncTimer = setTimeout(() => setHashFromMap(map), 0);
+      _hashSyncTimer = setTimeout(() => {
+        setHashFromMap(map);
+        trackHashVisit();
+      }, 0);
     });
+    
+    // Start tracking the initial view
+    trackHashVisit();
 
     // React to manual URL hash edits or back/forward navigation
     window.addEventListener('hashchange', () => {
