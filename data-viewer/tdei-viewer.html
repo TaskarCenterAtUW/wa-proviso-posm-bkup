@@ -291,7 +291,6 @@
 
     .infoBlock .value {
       font-weight: 500;
-      text-transform: capitalize;
       margin-right: 5px;
     }
 
@@ -742,6 +741,37 @@
         return '#588157';
       }
     }
+    function toNumber(v) {
+  const n = typeof v === 'number' ? v : Number(v);
+  return Number.isFinite(n) ? n : null;
+}
+
+function formatIncline(v) {
+  const n = toNumber(v);
+  if (n === null) return v;
+  // OSW incline = slope ratio (rise/run)
+  return `${(n * 100).toFixed(1)}%`;
+}
+
+function formatMeters(v, decimals = 2) {
+  const n = toNumber(v);
+  if (n === null) return v;
+  return `${n.toFixed(decimals)} m`;
+}
+
+  function formatValueByKey(key, value) {
+    switch (key) {
+      case 'incline':
+        return formatIncline(value);
+      case 'width':
+        return formatMeters(value, 2);
+      case 'length':
+        return formatMeters(value, 2);
+      default:
+        return value;
+    }
+  }
+
 
     function getFeatureContent(properties) {
       // const props = feature.feature.props || {};
@@ -750,7 +780,10 @@
       const requiredPairs = pairs.filter(([key, value]) => keystToShow.includes(key) && value != null && value != 'NaN' && value != 'null');
       const content = requiredPairs.map(([key, value]) => {
         if (keystToShow.includes(key)) {
-          return `<div class="infoBlock"><div class="key">${key}</div><div class="value">${value}</div></div>`;
+          return `<div class="infoBlock">
+        <div class="key">${key === 'incline' ? 'incline' : key}</div>
+        <div class="value">${formatValueByKey(key, value)}</div>
+        </div>`;
         }
         else {
           return ``;
@@ -963,9 +996,10 @@
 
 
     let overlays = {
-      'Data': layer,
-      'Boundaries': {}
+      'Data': layer
     }
+    const layerControl = L.control.layers(baseLayers, overlays, position).addTo(map);
+
     // Add boundaries overlay
     const boundariesLayerUrl = 'https://provisodevstorage.blob.core.windows.net/waposmdbbkup/wa-tdei-latest/washington_dataset_boundaries.geojson';
     // const boundariesLayer = L.geoJSON.ajax(boundariesLayerUrl, {
@@ -1039,8 +1073,7 @@
 
         overlays['Boundaries'] = boundariesLayer;
         boundariesLayer.addTo(map);
-        L.control.layers(baseLayers, overlays, position).addTo(map);
-        // Add the layer to the control
+        layerControl.addOverlay(boundariesLayer, "Boundaries");
       })
       .catch(error => console.error('Error loading boundaries:', error));
     // L.control.layers(baseLayers, overlays, position).addTo(map);
