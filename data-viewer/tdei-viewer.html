@@ -345,7 +345,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      background: var(--tdei-blue);
+      background: var(--primary-color);
       border-radius: 50%;
       color: #fff;
       border: none;
@@ -384,6 +384,7 @@
       font-size: 12px;
       display: -webkit-box;
       -webkit-line-clamp: 2;
+      line-clamp: 2;
       -webkit-box-orient: vertical;
       overflow: hidden;
     }
@@ -430,34 +431,28 @@
       --white: #ffffff;
     }
 
-    /* Landing Page Styles */
-    #landing-section {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: var(--white);
-      z-index: 10000;
-      overflow-y: auto;
+    /* Landing Page Modal Styles */
+    #landing-modal .modal-content {
       font-family: var(--primary-font-family);
+      border-radius: 0;
+      border: none;
     }
 
-    #landing-section.hidden {
-      display: none;
+    #landing-modal .modal-body {
+      max-height: calc(100vh - 200px);
+      overflow-y: auto;
     }
 
     #osc-header {
       height: 60px;
       background: var(--primary-color);
       color: #ffffff;
-      display: flex;
-      align-items: center;
-      justify-content: flex-start;
-      padding: 0 15px;
-      position: sticky;
-      top: 0;
-      z-index: 10001;
+      border-bottom: none;
+      border-radius: 0;
+    }
+
+    #osc-header .btn-close {
+      filter: brightness(0) invert(1);
     }
 
     #osc-header h1 {
@@ -530,14 +525,28 @@
       padding: 1rem 1.5rem;
       background: var(--purple-background-light);
       border-radius: 8px;
-      border: 1px solid var(--purple-background-dark);
+      border: 1px solid rgba(135, 62, 242, 0.2);
       color: #2f3661;
       transition: all 0.3s ease;
     }
 
     .info-grid span:hover {
       background: var(--purple-background-medium);
+      border-color: var(--primary-color);
       transform: translateY(-2px);
+    }
+
+    .info-grid-link {
+      color: var(--tdei-blue);
+      text-decoration: none;
+      font-weight: 600;
+      transition: all 0.2s ease;
+      border-bottom: 1px solid transparent;
+    }
+
+    .info-grid-link:hover {
+      color: #3d4a7a;
+      border-bottom: 1px solid var(--tdei-blue);
     }
 
     .osc-btn {
@@ -559,27 +568,29 @@
       background-color: var(--primary-color);
       color: #ffffff;
       border-color: var(--primary-color);
-      box-shadow: 0 2px 8px rgba(135, 62, 242, 0.2);
+      box-shadow: 0 2px 6px rgba(135, 62, 242, 0.2);
     }
 
     .osc-btn.primary:hover {
       background-color: var(--primary-color-dark);
-      transform: translateY(-2px);
-      box-shadow: 0 6px 16px rgba(135, 62, 242, 0.25);
+      border-color: var(--primary-color-dark);
+      color: #ffffff;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 10px rgba(135, 62, 242, 0.3);
     }
 
     .osc-btn.secondary {
       background-color: #ffffff;
-      color: var(--primary-color);
-      border-color: var(--primary-color);
+      color: #0d0c22;
+      border-color: #d1d5db;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
     }
 
     .osc-btn.secondary:hover {
-      background-color: var(--purple-background-medium);
-      border-color: var(--primary-color-dark);
-      color: var(--primary-color-dark);
-      transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(135, 62, 242, 0.15);
+      background-color: #f9fafb;
+      border-color: #9ca3af;
+      transform: translateY(-1px);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     }
 
     #osc-main {
@@ -610,7 +621,7 @@
       border-radius: 12px;
       padding: 1.75rem;
       box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
-      border-left: 5px solid var(--primary-color);
+      border-left: 4px solid var(--primary-color);
       transition: all 0.3s ease;
       position: relative;
       overflow: hidden;
@@ -622,7 +633,7 @@
     }
 
     #osc-main section h2 {
-      color: var(--primary-color);
+      color: #1f2937;
       font-family: var(--secondary-font-family);
       font-size: 1.35rem;
       font-weight: 700;
@@ -636,6 +647,7 @@
 
     #osc-main section h2 i {
       font-size: 1.5rem;
+      color: var(--primary-color);
     }
 
     #osc-main section p {
@@ -662,20 +674,20 @@
     }
 
     #osc-main section .section-actions .osc-btn.secondary {
-      background-color: var(--purple-background-medium);
-      color: var(--primary-color);
-      border-color: var(--primary-color);
+      background-color: #ffffff;
+      color: #0d0c22;
+      border-color: #d1d5db;
     }
 
     #osc-main section .section-actions .osc-btn.secondary:hover {
-      background-color: var(--purple-background-dark);
-      border-color: var(--primary-color-dark);
-      color: var(--primary-color-dark);
+      background-color: #f9fafb;
+      border-color: #9ca3af;
+      color: #0d0c22;
     }
 
     .help-tip {
       background: var(--purple-background-medium);
-      border-left: 5px solid var(--primary-color);
+      border-left: 4px solid var(--primary-color);
       padding: 1.5rem;
       margin-top: 2rem;
       border-radius: 12px;
@@ -700,23 +712,89 @@
     }
 
     .help-tip strong {
-      color: var(--primary-color);
+      color: #1f2937;
       font-weight: 600;
     }
 
     #landing-footer {
       background: var(--purple-background-dark);
-      color: black;
-      padding: 2.5rem 0;
+      color: #2f3661;
+      padding: 2rem 1.5rem;
       margin-top: 3rem;
-      text-align: center;
+      border-top: 2px solid var(--primary-color);
+      border-radius: 8px;
+      font-family: var(--primary-font-family);
     }
 
-    #landing-footer small {
-      display: block;
-      margin: 0.5rem 0;
-      opacity: 0.9;
+    #landing-footer .footer-organization {
+      font-size: 0.95rem;
+      line-height: 1.6;
+      color: #2f3661;
     }
+
+    #landing-footer .footer-institution {
+      font-weight: 600;
+      color: #1f2937;
+      font-family: var(--secondary-font-family);
+    }
+
+    #landing-footer .footer-separator {
+      margin: 0 0.5rem;
+      color: var(--secondary-color);
+    }
+
+    #landing-footer .footer-university {
+      font-weight: 500;
+      color: #2f3661;
+    }
+
+    #landing-footer .footer-partner {
+      font-size: 0.95rem;
+      color: #2f3661;
+    }
+
+    #landing-footer .footer-partner-label {
+      color: #2f3661;
+      font-weight: 600;
+      margin-right: 0.35rem;
+    }
+
+    #landing-footer .footer-partner-name {
+      font-weight: 600;
+      color: var(--tdei-blue);
+    }
+
+    #landing-footer .footer-update {
+      font-size: 0.9rem;
+      color: #2f3661;
+      margin-top: 0.5rem;
+      padding-top: 0.5rem;
+      border-top: 1px solid rgba(135, 62, 242, 0.15);
+    }
+
+    #landing-footer .footer-update small {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: #2f3661;
+    }
+
+    #landing-footer .footer-date {
+      font-weight: 500;
+      color: #2f3661;
+    }
+
+    #landing-footer .footer-link {
+      color: var(--tdei-blue);
+      text-decoration: none;
+      transition: all 0.2s ease;
+      border-bottom: 1px solid transparent;
+    }
+
+    #landing-footer .footer-link:hover {
+      color: #3d4a7a;
+      border-bottom: 1px solid var(--tdei-blue);
+    }
+
 
     @media (max-width: 768px) {
       #osc-header h1 {
@@ -769,126 +847,146 @@
 </head>
 
 <body>
-  <!-- Landing Page Section -->
-  <div id="landing-section">
-    <header id="osc-header" class="appbar" role="banner">
-      <div class="container">
-        <img
-          src="https://portal.tdei.us/static/media/tdei_logo.1ffbe39dbe9c9d2be23a081ac0fa2cfc.svg"
-          alt="TDEI Logo"
-          class="logoImage"
-        />
-        <h1>OS-CONNECT Viewer</h1>
-      </div>
-    </header>
+  <!-- Landing Page Modal -->
+  <div class="modal fade" id="landing-modal" tabindex="-1" aria-labelledby="landingModalLabel" aria-hidden="true"
+    data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-xl modal-dialog-scrollable modal-fullscreen-lg-down">
+      <div class="modal-content">
+        <header id="osc-header" class="modal-header appbar" role="banner">
+          <div class="container">
+            <img src="https://portal.tdei.us/static/media/tdei_logo.1ffbe39dbe9c9d2be23a081ac0fa2cfc.svg"
+              alt="TDEI Logo" class="logoImage" />
+            <h1 class="modal-title" id="landingModalLabel">OS-CONNECT Viewer</h1>
+          </div>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </header>
 
-    <main id="osc-main">
-      <div class="intro-copy" aria-labelledby="intro-title">
-        <h2 id="intro-title">Explore Washington's connected sidewalk and crossing data</h2>
-        <p>
-          This Viewer displays <strong>OS-CONNECT</strong>, a statewide connected pedestrian network dataset for
-          Washington State. It includes sidewalks, crossings, and related pedestrian features intended to support
-          accessibility analysis, planning, and long-term data stewardship.
-        </p>
-        <p>
-          Use this Viewer to explore the map, inspect feature attributes, and open QA/QC summaries by jurisdiction or
-          unincorporated area. For downloads, exchange, and data lifecycle support, use the <strong>TDEI
-            portal</strong>.
-        </p>
+        <div class="modal-body" id="osc-main">
+          <div class="intro-copy" aria-labelledby="intro-title">
+            <h2 id="intro-title">Explore Washington's connected sidewalk and crossing data</h2>
+            <p>
+              This Viewer displays <strong>OS-CONNECT</strong>, a statewide connected pedestrian network dataset for
+              Washington State. It includes sidewalks, crossings, and related pedestrian features intended to support
+              accessibility analysis, planning, and long-term data stewardship.
+            </p>
+            <p>
+              Use this Viewer to explore the map, inspect feature attributes, and open QA/QC summaries by jurisdiction
+              or
+              unincorporated area. For downloads, exchange, and data lifecycle support, use the <strong>TDEI
+                portal</strong>.
+            </p>
 
-        <div class="info-grid">
-          <span><strong>Project Leads:</strong> UW Taskar Center for Accessible Technology; <strong>Project
-              Partners:</strong> Gaussian Solutions</span>
-          <span><strong>OS-CONNECT Viewer:</strong> Available to the public, no login</span>
-          <span><strong>TDEI:</strong> Free, registered access needed for data sharing and management</span>
+            <div class="info-grid">
+              <span><strong>Project Leads:</strong> <a href="https://tcat.cs.washington.edu/" target="_blank"
+                  class="info-grid-link">UW Taskar Center for Accessible Technology</a>; <strong>Project
+                  Partners:</strong> <a href="https://gaussiansolutions.com/" target="_blank"
+                  class="info-grid-link">Gaussian Solutions LLC</a></span>
+              <span><strong>OS-CONNECT Viewer:</strong> Available to the public, no login</span>
+              <span><strong>TDEI:</strong> Free, registered access needed for data sharing and management</span>
+            </div>
+
+            <div style="margin-top: 1.5rem;">
+              <button class="osc-btn primary" data-bs-dismiss="modal">
+                Open the map viewer →
+              </button>
+              <a class="osc-btn secondary" href="https://sidewalks.washington.edu" target="_blank">
+                Main site (sidewalks.washington.edu) →
+              </a>
+              <a class="osc-btn secondary" href="https://portal.tdei.us" target="_blank">
+                TDEI portal →
+              </a>
+            </div>
+          </div>
+
+          <div class="sections-grid">
+            <section>
+              <h2><i class="bi bi-map"></i> View data and QA/QC</h2>
+              <p>Explore the map, inspect attributes, and open QA/QC reports for any jurisdiction in WA State.</p>
+              <div class="section-actions">
+                <button class="osc-btn primary" data-bs-dismiss="modal">Open Viewer →</button>
+                <a class="osc-btn secondary"
+                  href="https://taskarcenteratuw.github.io/tcat-wiki/os-connect/data-viewer/user-manual/"
+                  target="_blank">How to use</a>
+                <a class="osc-btn secondary"
+                  href="https://taskarcenteratuw.github.io/tcat-wiki/os-connect/qa-qc/user-manual/"
+                  target="_blank">QA/QC docs</a>
+              </div>
+            </section>
+
+            <section>
+              <h2><i class="bi bi-download"></i> Download & Integration</h2>
+              <p>Use TDEI for authoritative releases, downloads, and the dataset lifecycle.</p>
+              <div class="section-actions">
+                <a class="osc-btn primary" href="https://portal.tdei.us" target="_blank">TDEI Portal →</a>
+                <a class="osc-btn secondary"
+                  href="https://taskarcenteratuw.github.io/tcat-wiki/tdei/portal/user-manual/account-registration/"
+                  target="_blank">Registration</a>
+                <a class="osc-btn secondary"
+                  href="https://taskarcenteratuw.github.io/tcat-wiki/tdei/portal/user-manual/" target="_blank">Download
+                  guide</a>
+              </div>
+            </section>
+
+            <section>
+              <h2><i class="bi bi-question-circle"></i> Support Channels</h2>
+              <p>Get help with your requests. Include your area, dataset name/ID, version, and evidence.</p>
+              <div class="section-actions">
+                <a class="osc-btn primary"
+                  href="mailto:helpdesk@tdei.us?subject=Help Requested&body=Place%20your%20request%20here."
+                  target="_blank">Email
+                  Support →</a>
+                <a class="osc-btn secondary" href="https://sidewalks.washington.edu/weekly-office-hours/"
+                  target="_blank">Office hours</a>
+              </div>
+            </section>
+
+            <section>
+              <h2><i class="bi bi-book"></i> Documentation & Tutorials</h2>
+              <p>Find schema, versioning, known issues, and short tutorials for common workflows.</p>
+              <div class="section-actions">
+                <a class="osc-btn primary" href="https://taskarcenteratuw.github.io/tcat-wiki/"
+                  target="_blank">Documentation →</a>
+                <a class="osc-btn secondary" href="https://taskarcenteratuw.github.io/tcat-wiki/opensidewalks/schema/"
+                  target="_blank">Schema</a>
+                <a class="osc-btn secondary"
+                  href="https://youtube.com/playlist?list=PLPiUH5AVqLFEpc1lSSRaWLZlxUv7T7ipe&si=2czXgJp41OlLecaD"
+                  target="_blank">Tutorials</a>
+              </div>
+            </section>
+          </div>
+
+          <div class="help-tip">
+            <p>
+              <strong>To get help faster:</strong> include the jurisdiction or unincorporated area, the TDEI dataset
+              name/ID
+              (shown in the Viewer),
+              the version identifier, and helpful information such as: coordinates, feature IDs, screenshots, or a short
+              screen recording.
+            </p>
+          </div>
+
+          <footer id="landing-footer">
+            <div class="w-100 text-center">
+              <div class="footer-organization mb-2">
+                <strong class="footer-institution"><a href="https://tcat.cs.washington.edu/" target="_blank"
+                    class="footer-link">Taskar Center for Accessible Technology
+                    (TCAT)</a></strong>
+                <span class="footer-separator">•</span>
+                <span class="footer-university">University of Washington</span>
+              </div>
+              <div class="footer-partner mb-2">
+                <span class="footer-partner-label">Project Partner:</span>
+                <strong class="footer-partner-name"><a href="https://gaussiansolutions.com/" target="_blank"
+                    class="footer-link">Gaussian Solutions LLC</a></strong>
+              </div>
+              <div class="footer-update">
+                <small>Last updated: <span id="last-updated-landing" class="footer-date">February 2026</span></small>
+              </div>
+            </div>
+          </footer>
         </div>
-
-        <div style="margin-top: 1.5rem;">
-          <button class="osc-btn primary" onclick="openMapViewer()">
-            Open the map viewer →
-          </button>
-          <a class="osc-btn secondary" href="https://sidewalks.washington.edu" target="_blank">
-            Main site (sidewalks.washington.edu) →
-          </a>
-          <a class="osc-btn secondary" href="https://portal.tdei.us" target="_blank">
-            TDEI portal →
-          </a>
-        </div>
       </div>
-
-      <div class="sections-grid">
-        <section>
-          <h2><i class="bi bi-map"></i> View data and QA/QC</h2>
-          <p>Explore the map, inspect attributes, and open QA/QC reports for any jurisdiction in WA State.</p>
-          <div class="section-actions">
-            <button class="osc-btn primary" onclick="openMapViewer()">Open Viewer →</button>
-            <a class="osc-btn secondary" href="https://taskarcenteratuw.github.io/tcat-wiki/tdei/viewer/"
-              target="_blank">How to use</a>
-            <a class="osc-btn secondary" href="https://taskarcenteratuw.github.io/tcat-wiki/tdei/qaqc/"
-              target="_blank">QA/QC docs</a>
-          </div>
-        </section>
-
-        <section>
-          <h2><i class="bi bi-download"></i> Download & Integration</h2>
-          <p>Use TDEI for authoritative releases, downloads, and the dataset lifecycle.</p>
-          <div class="section-actions">
-            <a class="osc-btn primary" href="https://portal.tdei.us" target="_blank">TDEI Portal →</a>
-            <a class="osc-btn secondary"
-              href="https://taskarcenteratuw.github.io/tcat-wiki/tdei/portal/user-manual/account-registration/"
-              target="_blank">Registration</a>
-            <a class="osc-btn secondary" href="https://taskarcenteratuw.github.io/tcat-wiki/tdei/portal/user-manual/"
-              target="_blank">Download guide</a>
-          </div>
-        </section>
-
-        <section>
-          <h2><i class="bi bi-question-circle"></i> Support Channels</h2>
-          <p>Get help with your requests. Include your area, dataset name/ID, version, and evidence.</p>
-          <div class="section-actions">
-            <a class="osc-btn primary"
-              href="mailto:tdei@uw.edu?subject=Help Requested&body=Place%20your%20request%20here." target="_blank">Email
-              Support →</a>
-            <a class="osc-btn secondary" href="https://portal.tdei.us/support" target="_blank">Submit request</a>
-            <a class="osc-btn secondary" href="https://sidewalks.washington.edu/weekly-office-hours/"
-              target="_blank">Office hours</a>
-          </div>
-        </section>
-
-        <section>
-          <h2><i class="bi bi-book"></i> Documentation & Tutorials</h2>
-          <p>Find schema, versioning, known issues, and short tutorials for common workflows.</p>
-          <div class="section-actions">
-            <a class="osc-btn primary" href="https://taskarcenteratuw.github.io/tcat-wiki/"
-              target="_blank">Documentation →</a>
-            <a class="osc-btn secondary" href="https://taskarcenteratuw.github.io/tcat-wiki/opensidewalks/schema/"
-              target="_blank">Schema</a>
-            <a class="osc-btn secondary"
-              href="https://youtube.com/playlist?list=PLPiUH5AVqLFEpc1lSSRaWLZlxUv7T7ipe&si=2czXgJp41OlLecaD"
-              target="_blank">Tutorials</a>
-          </div>
-        </section>
-      </div>
-
-      <div class="help-tip">
-        <p>
-          <strong>To get help faster:</strong> include the jurisdiction or unincorporated area, the TDEI dataset
-          name/ID
-          (shown in the Viewer),
-          the version identifier, and helpful information such as: coordinates, feature IDs, screenshots, or a short
-          screen recording.
-        </p>
-      </div>
-    </main>
-
-    <footer id="landing-footer">
-      <small>
-        Taskar Center for Accessible Technology (TCAT), University of Washington • Project partner: Gaussian Solutions
-      </small>
-      <small>
-        Last updated: <span id="last-updated-landing">February 2026</span>
-      </small>
-    </footer>
+    </div>
   </div>
 
   <!-- Map Viewer Section -->
@@ -910,8 +1008,8 @@
             underlying infrastructure.
           </span>
         </div>
-        <button type="button" id="home-button" title="Back to home page" onclick="showLanding()">
-          <i class="bi bi-house-fill"></i>
+        <button type="button" id="home-button" title="View information" onclick="showLanding()">
+          <i class="bi bi-info-circle"></i>
         </button>
       </div>
     </div>
@@ -990,17 +1088,19 @@
     </div>
   </div>
   <script type="text/javascript">
-    // Toggle between landing page and map viewer
-    function openMapViewer() {
-      document.getElementById('landing-section').classList.add('hidden');
-      // Initialize map if not already done
-      if (!window.mapInitialized) {
-        window.mapInitialized = true;
-      }
-    }
+    // Initialize and show the landing modal on page load
+    document.addEventListener('DOMContentLoaded', function () {
+      const landingModal = new bootstrap.Modal(document.getElementById('landing-modal'), {
+        backdrop: 'static',
+        keyboard: false
+      });
+      landingModal.show();
+    });
 
+    // Function to show landing modal
     function showLanding() {
-      document.getElementById('landing-section').classList.remove('hidden');
+      const landingModal = bootstrap.Modal.getOrCreateInstance(document.getElementById('landing-modal'));
+      landingModal.show();
     }
 
     // Parse #map=ZOOM/LAT/LNG from the URL and return { z, lat, lng }
