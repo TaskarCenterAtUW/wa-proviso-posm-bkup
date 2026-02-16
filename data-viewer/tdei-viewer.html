@@ -980,7 +980,7 @@
                     class="footer-link">Gaussian Solutions LLC</a></strong>
               </div>
               <div class="footer-update">
-                <small>Last updated: <span id="last-updated-landing" class="footer-date">February 2026</span></small>
+                <small>Last updated: <span id="last-updated-landing" class="footer-date"> 2026</span></small>
               </div>
             </div>
           </footer>
@@ -1889,25 +1889,27 @@
           }
         });
     });
-    // var control = new L.Control.Button()
-    // control.addTo(map);
-    // fetch(tsUrl)
-    //   .then(res => {
-    //     if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    //     return res.text();
-    //   })
-    //   .then(text => {
-    //     const utcString = text.trim();
-    //     const date = new Date(utcString);
-    //     const localDate = date.toLocaleDateString();
-    //     const localTime = date.toLocaleTimeString();
-    //     document.getElementById('lastUpdated').textContent =
-    //       `Last updated: ${localDate} ${localTime}`;
-    //   })
-    //   .catch(err => {
-    //     console.warn('Couldnt load last_updated.txt:', err);
-    //     document.getElementById('lastUpdated').textContent = 'Last updated: unavailable';
-    //   });
+
+    // Fetch and display last updated timestamp
+    fetch(tsUrl)
+      .then(res => {
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        return res.text();
+      })
+      .then(text => {
+        const utcString = text.trim();
+        const date = new Date(utcString);
+        const localDate = date.toLocaleDateString('en-US', {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric'
+        });
+        document.getElementById('last-updated-landing').textContent = localDate;
+      })
+      .catch(err => {
+        console.warn('Could not load last_updated.txt:', err);
+        document.getElementById('last-updated-landing').textContent = 'February 2026';
+      });
 
   </script>
   <div id="mapTooltip" class="mapActionWindow">
