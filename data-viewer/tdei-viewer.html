@@ -4,8 +4,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>OSConnect Data Viewer</title>
-    <!-- Google tag (gtag.js) -->
+  <title>OS-CONNECT Viewer - TDEI</title>
+  <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-SHL847YL68"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -22,7 +22,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
-    href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
     rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
@@ -240,10 +240,6 @@
       align-items: flex-end;
     }
 
-    .awAction {
-      /* align-content: flex-end; */
-    }
-
     .awContent .title {
       color: #838383;
       font-size: 10px;
@@ -337,26 +333,34 @@
     #search-button {
       height: 32px;
       padding: 0 12px;
-      background: #17a2b8;
+      background: var(--primary-color);
       border-radius: 4px;
       color: #fff;
       border: none;
     }
 
-    #info-button {
+    #home-button {
       width: 28px;
       height: 28px;
       display: flex;
       align-items: center;
       justify-content: center;
-      background: #138496;
+      background: var(--primary-color);
       border-radius: 50%;
       color: #fff;
       border: none;
+      cursor: pointer;
+      /* transition: all 0.3s ease; */
     }
+
+    #home-button:hover {
+      background: var(--primary-color);
+      transform: scale(1.1);
+    }
+
     .disclaimer-box {
       flex: 1;
-      max-width: 320px;
+      max-width: 360px;
       height: 32px;
       background: #f2f4f5;
       border-radius: 4px;
@@ -377,8 +381,10 @@
 
     .disclaimer-text {
       white-space: normal;
+      font-size: 12px;
       display: -webkit-box;
       -webkit-line-clamp: 2;
+      line-clamp: 2;
       -webkit-box-orient: vertical;
       overflow: hidden;
     }
@@ -409,10 +415,581 @@
     .leaflet-popup-content .copy-btn i {
       color: #fff;
     }
+
+    /* TDEI Color Scheme and Theme */
+    :root {
+      --primary-font-family: "Open Sans", sans-serif;
+      --secondary-font-family: "Montserrat", sans-serif;
+      --primary-color: #873EF2;
+      --primary-color-dark: #7a32e4;
+      --secondary-color: #83879b;
+      --tdei-blue: #586AB5;
+      --tdei-green: #479FA1;
+      --purple-background-light: #fbf8ff;
+      --purple-background-dark: #e7e2f3;
+      --purple-background-medium: #f5f0ff;
+      --white: #ffffff;
+    }
+
+    /* Landing Page Modal Styles */
+    #landing-modal .modal-content {
+      font-family: var(--primary-font-family);
+      border-radius: 0;
+      border: none;
+    }
+
+    #landing-modal .modal-body {
+      max-height: calc(100vh - 200px);
+      overflow-y: auto;
+    }
+
+    #osc-header {
+      height: 60px;
+      background: var(--primary-color);
+      color: #ffffff;
+      border-bottom: none;
+      border-radius: 0;
+    }
+
+    #osc-header .btn-close {
+      filter: brightness(0) invert(1);
+    }
+
+    #osc-header h1 {
+      font-family: var(--secondary-font-family);
+      font-size: 1.2rem;
+      font-weight: 500;
+      margin: 0;
+      text-align: left;
+    }
+
+    #osc-header p {
+      font-size: 1rem;
+      line-height: 1.6;
+      margin-bottom: 0.75rem;
+      opacity: 0.95;
+    }
+
+    .appbar {
+      display: flex;
+      align-items: center;
+    }
+
+    .appbar .container {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      width: 100%;
+      max-width: none;
+      padding: 0;
+    }
+
+    .appbar-logo {
+      width: 50px;
+      background: #ffffff;
+      padding: 5px 8px;
+      border-radius: 4px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .logoImage {
+      width: 70px;
+      background-color: #fff;
+      padding: 5px;
+      border-radius: 4px;
+      margin: 2px;
+      height: 48px;
+    }
+
+    .appbar-title {
+      display: flex;
+      flex-direction: column;
+      gap: 0.15rem;
+    }
+
+    .appbar-subtitle {
+      font-size: 0.95rem;
+      opacity: 0.9;
+    }
+
+    .info-grid {
+      display: grid;
+      gap: 1rem;
+      margin-top: 2rem;
+    }
+
+    .info-grid span {
+      font-size: 0.95rem;
+      padding: 1rem 1.5rem;
+      background: var(--purple-background-light);
+      border-radius: 8px;
+      border: 1px solid rgba(135, 62, 242, 0.2);
+      color: #2f3661;
+      transition: all 0.3s ease;
+    }
+
+    .info-grid span:hover {
+      background: var(--purple-background-medium);
+      border-color: var(--primary-color);
+      transform: translateY(-2px);
+    }
+
+    .info-grid-link {
+      color: var(--tdei-blue);
+      text-decoration: none;
+      font-weight: 600;
+      transition: all 0.2s ease;
+      border-bottom: 1px solid transparent;
+    }
+
+    .info-grid-link:hover {
+      color: #3d4a7a;
+      border-bottom: 1px solid var(--tdei-blue);
+    }
+
+    .osc-btn {
+      display: inline-block;
+      padding: 0.875rem 2rem;
+      margin: 0.5rem 0.5rem 0.5rem 0;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 600;
+      font-family: var(--primary-font-family);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      border: 2px solid transparent;
+      cursor: pointer;
+      font-size: 0.95rem;
+      letter-spacing: 0.3px;
+    }
+
+    .osc-btn.primary {
+      background-color: var(--primary-color);
+      color: #ffffff;
+      border-color: var(--primary-color);
+      box-shadow: 0 2px 6px rgba(135, 62, 242, 0.2);
+    }
+
+    .osc-btn.primary:hover {
+      background-color: var(--primary-color-dark);
+      border-color: var(--primary-color-dark);
+      color: #ffffff;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 10px rgba(135, 62, 242, 0.3);
+    }
+
+    .osc-btn.secondary {
+      background-color: #ffffff;
+      color: #0d0c22;
+      border-color: #d1d5db;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    }
+
+    .osc-btn.secondary:hover {
+      background-color: #f9fafb;
+      border-color: #9ca3af;
+      transform: translateY(-1px);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    #osc-main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 3rem 2rem;
+    }
+
+    .intro-copy {
+      margin-bottom: 2rem;
+    }
+
+    .intro-copy p {
+      color: #4a4a4a;
+      font-size: 0.95rem;
+      line-height: 1.7;
+    }
+
+    .sections-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    #osc-main section {
+      background: white;
+      border-radius: 12px;
+      padding: 1.75rem;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+      border-left: 4px solid var(--primary-color);
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    #osc-main section:hover {
+      box-shadow: 0 6px 24px rgba(135, 62, 242, 0.15);
+      transform: translateY(-2px);
+    }
+
+    #osc-main section h2 {
+      color: #1f2937;
+      font-family: var(--secondary-font-family);
+      font-size: 1.35rem;
+      font-weight: 700;
+      margin-bottom: 0.75rem;
+      position: relative;
+      z-index: 1;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    #osc-main section h2 i {
+      font-size: 1.5rem;
+      color: var(--primary-color);
+    }
+
+    #osc-main section p {
+      font-size: 0.9rem;
+      color: #5a5a5a;
+      margin-bottom: 1.25rem;
+      line-height: 1.6;
+      position: relative;
+      z-index: 1;
+    }
+
+    #osc-main section .section-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    #osc-main section .section-actions .osc-btn {
+      padding: 0.6rem 1.25rem;
+      font-size: 0.85rem;
+      margin: 0;
+    }
+
+    #osc-main section .section-actions .osc-btn.secondary {
+      background-color: #ffffff;
+      color: #0d0c22;
+      border-color: #d1d5db;
+    }
+
+    #osc-main section .section-actions .osc-btn.secondary:hover {
+      background-color: #f9fafb;
+      border-color: #9ca3af;
+      color: #0d0c22;
+    }
+
+    .help-tip {
+      background: var(--purple-background-medium);
+      border-left: 4px solid var(--primary-color);
+      padding: 1.5rem;
+      margin-top: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 3px 12px rgba(135, 62, 242, 0.1);
+    }
+
+    .osc-btn:focus-visible,
+    .osc-btn.primary:focus-visible,
+    .osc-btn.secondary:focus-visible,
+    a:focus-visible,
+    button:focus-visible {
+      outline: 3px solid var(--tdei-green);
+      outline-offset: 2px;
+      border-radius: 8px;
+    }
+
+    .help-tip p {
+      margin: 0;
+      color: #4a4a4a;
+      font-size: 0.95rem;
+      line-height: 1.6;
+    }
+
+    .help-tip strong {
+      color: #1f2937;
+      font-weight: 600;
+    }
+
+    #landing-footer {
+      background: var(--purple-background-dark);
+      color: #2f3661;
+      padding: 2rem 1.5rem;
+      margin-top: 3rem;
+      border-top: 2px solid var(--primary-color);
+      border-radius: 8px;
+      font-family: var(--primary-font-family);
+    }
+
+    #landing-footer .footer-organization {
+      font-size: 0.95rem;
+      line-height: 1.6;
+      color: #2f3661;
+    }
+
+    #landing-footer .footer-institution {
+      font-weight: 600;
+      color: #1f2937;
+      font-family: var(--secondary-font-family);
+    }
+
+    #landing-footer .footer-separator {
+      margin: 0 0.5rem;
+      color: var(--secondary-color);
+    }
+
+    #landing-footer .footer-university {
+      font-weight: 500;
+      color: #2f3661;
+    }
+
+    #landing-footer .footer-partner {
+      font-size: 0.95rem;
+      color: #2f3661;
+    }
+
+    #landing-footer .footer-partner-label {
+      color: #2f3661;
+      font-weight: 600;
+      margin-right: 0.35rem;
+    }
+
+    #landing-footer .footer-partner-name {
+      font-weight: 600;
+      color: var(--tdei-blue);
+    }
+
+    #landing-footer .footer-update {
+      font-size: 0.9rem;
+      color: #2f3661;
+      margin-top: 0.5rem;
+      padding-top: 0.5rem;
+      border-top: 1px solid rgba(135, 62, 242, 0.15);
+    }
+
+    #landing-footer .footer-update small {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: #2f3661;
+    }
+
+    #landing-footer .footer-date {
+      font-weight: 500;
+      color: #2f3661;
+    }
+
+    #landing-footer .footer-link {
+      color: var(--tdei-blue);
+      text-decoration: none;
+      transition: all 0.2s ease;
+      border-bottom: 1px solid transparent;
+    }
+
+    #landing-footer .footer-link:hover {
+      color: #3d4a7a;
+      border-bottom: 1px solid var(--tdei-blue);
+    }
+
+
+    @media (max-width: 768px) {
+      #osc-header h1 {
+        font-size: 1.35rem;
+      }
+
+      .appbar-logo {
+        width: 44px;
+        padding: 4px 6px;
+      }
+
+      #osc-main {
+        padding: 2rem 1rem;
+      }
+
+      .sections-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+      }
+
+      #osc-main section {
+        padding: 1.5rem;
+      }
+
+      #osc-main section h2 {
+        font-size: 1.2rem;
+      }
+
+      .osc-btn {
+        display: block;
+        margin: 0.5rem 0;
+        text-align: center;
+        width: 100%;
+      }
+
+      .info-grid span {
+        padding: 0.75rem 1rem;
+      }
+    }
+  </style>
+  <style>
+    body {
+      margin: 0;
+      font-family: var(--primary-font-family);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      min-height: 100vh;
+    }
   </style>
 </head>
 
 <body>
+  <!-- Landing Page Modal -->
+  <div class="modal fade" id="landing-modal" tabindex="-1" aria-labelledby="landingModalLabel" aria-hidden="true"
+    data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-xl modal-dialog-scrollable modal-fullscreen-lg-down">
+      <div class="modal-content">
+        <header id="osc-header" class="modal-header appbar" role="banner">
+          <div class="container">
+            <img src="https://portal.tdei.us/static/media/tdei_logo.1ffbe39dbe9c9d2be23a081ac0fa2cfc.svg"
+              alt="TDEI Logo" class="logoImage" />
+            <h1 class="modal-title" id="landingModalLabel">OS-CONNECT Viewer</h1>
+          </div>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </header>
+
+        <div class="modal-body" id="osc-main">
+          <div class="intro-copy" aria-labelledby="intro-title">
+            <h2 id="intro-title">Explore Washington's connected sidewalk and crossing data</h2>
+            <p>
+              This Viewer displays <strong>OS-CONNECT</strong>, a statewide connected pedestrian network dataset for
+              Washington State. It includes sidewalks, crossings, and related pedestrian features intended to support
+              accessibility analysis, planning, and long-term data stewardship.
+            </p>
+            <p>
+              Use this Viewer to explore the map, inspect feature attributes, and open QA/QC summaries by jurisdiction
+              or
+              unincorporated area. For downloads, exchange, and data lifecycle support, use the <strong>TDEI
+                portal</strong>.
+            </p>
+
+            <div class="info-grid">
+              <span><strong>Project Leads:</strong> <a href="https://tcat.cs.washington.edu/" target="_blank"
+                  class="info-grid-link">UW Taskar Center for Accessible Technology</a>; <strong>Project
+                  Partners:</strong> <a href="https://gaussiansolutions.com/" target="_blank"
+                  class="info-grid-link">Gaussian Solutions LLC</a></span>
+              <span><strong>OS-CONNECT Viewer:</strong> Available to the public, no login</span>
+              <span><strong>TDEI:</strong> Free, registered access needed for data sharing and management</span>
+            </div>
+
+            <div style="margin-top: 1.5rem;">
+              <button class="osc-btn primary" data-bs-dismiss="modal">
+                Open the map viewer →
+              </button>
+              <a class="osc-btn secondary" href="https://sidewalks.washington.edu" target="_blank">
+                Main site (sidewalks.washington.edu) →
+              </a>
+              <a class="osc-btn secondary" href="https://portal.tdei.us" target="_blank">
+                TDEI portal →
+              </a>
+            </div>
+          </div>
+
+          <div class="sections-grid">
+            <section>
+              <h2><i class="bi bi-map"></i> View data and QA/QC</h2>
+              <p>Explore the map, inspect attributes, and open QA/QC reports for any jurisdiction in WA State.</p>
+              <div class="section-actions">
+                <button class="osc-btn primary" data-bs-dismiss="modal">Open Viewer →</button>
+                <a class="osc-btn secondary"
+                  href="https://taskarcenteratuw.github.io/tcat-wiki/os-connect/data-viewer/user-manual/"
+                  target="_blank">How to use</a>
+                <a class="osc-btn secondary"
+                  href="https://taskarcenteratuw.github.io/tcat-wiki/os-connect/qa-qc/user-manual/"
+                  target="_blank">QA/QC docs</a>
+              </div>
+            </section>
+
+            <section>
+              <h2><i class="bi bi-download"></i> Download & Integration</h2>
+              <p>Use TDEI for authoritative releases, downloads, and the dataset lifecycle.</p>
+              <div class="section-actions">
+                <a class="osc-btn primary" href="https://portal.tdei.us" target="_blank">TDEI Portal →</a>
+                <a class="osc-btn secondary"
+                  href="https://taskarcenteratuw.github.io/tcat-wiki/tdei/portal/user-manual/account-registration/"
+                  target="_blank">Registration</a>
+                <a class="osc-btn secondary"
+                  href="https://taskarcenteratuw.github.io/tcat-wiki/tdei/portal/user-manual/" target="_blank">Download
+                  guide</a>
+              </div>
+            </section>
+
+            <section>
+              <h2><i class="bi bi-question-circle"></i> Support Channels</h2>
+              <p>Get help with your requests. Include your area, dataset name/ID, version, and evidence.</p>
+              <div class="section-actions">
+                <a class="osc-btn primary"
+                  href="mailto:helpdesk@tdei.us?subject=Help Requested&body=Place%20your%20request%20here."
+                  target="_blank">Email
+                  Support →</a>
+                <a class="osc-btn secondary" href="https://sidewalks.washington.edu/weekly-office-hours/"
+                  target="_blank">Office hours</a>
+              </div>
+            </section>
+
+            <section>
+              <h2><i class="bi bi-book"></i> Documentation & Tutorials</h2>
+              <p>Find schema, versioning, known issues, and short tutorials for common workflows.</p>
+              <div class="section-actions">
+                <a class="osc-btn primary" href="https://taskarcenteratuw.github.io/tcat-wiki/"
+                  target="_blank">Documentation →</a>
+                <a class="osc-btn secondary" href="https://taskarcenteratuw.github.io/tcat-wiki/opensidewalks/schema/"
+                  target="_blank">Schema</a>
+                <a class="osc-btn secondary"
+                  href="https://youtube.com/playlist?list=PLPiUH5AVqLFEpc1lSSRaWLZlxUv7T7ipe&si=2czXgJp41OlLecaD"
+                  target="_blank">Tutorials</a>
+              </div>
+            </section>
+          </div>
+
+          <div class="help-tip">
+            <p>
+              <strong>To get help faster:</strong> include the jurisdiction or unincorporated area, the TDEI dataset
+              name/ID
+              (shown in the Viewer),
+              the version identifier, and helpful information such as: coordinates, feature IDs, screenshots, or a short
+              screen recording.
+            </p>
+          </div>
+
+          <footer id="landing-footer">
+            <div class="w-100 text-center">
+              <div class="footer-organization mb-2">
+                <strong class="footer-institution"><a href="https://tcat.cs.washington.edu/" target="_blank"
+                    class="footer-link">Taskar Center for Accessible Technology
+                    (TCAT)</a></strong>
+                <span class="footer-separator">•</span>
+                <span class="footer-university">University of Washington</span>
+              </div>
+              <div class="footer-partner mb-2">
+                <span class="footer-partner-label">Project Partner:</span>
+                <strong class="footer-partner-name"><a href="https://gaussiansolutions.com/" target="_blank"
+                    class="footer-link">Gaussian Solutions LLC</a></strong>
+              </div>
+              <div class="footer-update">
+                <small>Last updated: <span id="last-updated-landing" class="footer-date"> 2026</span></small>
+              </div>
+            </div>
+          </footer>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Map Viewer Section -->
   <div class="container2">
     <div class="mapContainer">
       <div id='map'></div>
@@ -428,12 +1005,11 @@
           <i class="bi bi-exclamation-circle"></i>
           <span class="disclaimer-text">
             <strong>Known Issue:</strong> Due to a shift in imagery, you may see the mapping edges not align with
-            underlying
-            infrastructure.
+            underlying infrastructure.
           </span>
         </div>
-        <button type="button" id="info-button" title="About this viewer">
-          <i class="bi bi-info-lg"></i>
+        <button type="button" id="home-button" title="View information" onclick="showLanding()">
+          <i class="bi bi-info-circle"></i>
         </button>
       </div>
     </div>
@@ -494,42 +1070,7 @@
         </div>
       </div>
     </div>
-    <!-- Info Modal -->
-    <div class="modal fade" id="infoModal" tabindex="-1" aria-labelledby="infoModalLabel" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="infoModalLabel">OSConnect Dataset Viewer</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            <p>This page shows the consolidated data from all the released OSW datasets from
-              <strong>TCAT_WSP_PG</strong> Project group.
-            </p>
-            <ul>
-              <li>Hover over the elements to see their details.</li>
-              <li>Click on the map to know the underlying dataset name and version.</li>
-              <li>To download a dataset, copy the ID, go to
-                <a href="https://portal.tdei.us/" target="_blank" rel="noopener">portal.tdei.us</a> &rsaquo; Datasets
-                &rsaquo; All
-                Released Datasets and paste the ID in the Dataset ID field
-                <em>(requires login to the portal)</em>
-              <li>To view the quality report of a dataset, click on the <strong>Quality Report</strong> link shown on
-                the popup.
-              </li>
-              <li>Right click to submit an issue you may have found.</li>
-              </li>
-            </ul>
-            <p id="lastUpdated" class="small text-muted">
-              Loading last-updated
-            </p>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          </div>
-        </div>
-      </div>
-    </div>
+    <!-- Info Modal - Removed, now using landing page -->
 
 
     <!-- Toast for submission-->
@@ -547,6 +1088,20 @@
     </div>
   </div>
   <script type="text/javascript">
+    // Initialize and show the landing modal on page load
+    document.addEventListener('DOMContentLoaded', function () {
+      const landingModal = new bootstrap.Modal(document.getElementById('landing-modal'), {
+        backdrop: 'static',
+        keyboard: false
+      });
+      landingModal.show();
+    });
+
+    // Function to show landing modal
+    function showLanding() {
+      const landingModal = bootstrap.Modal.getOrCreateInstance(document.getElementById('landing-modal'));
+      landingModal.show();
+    }
 
     // Parse #map=ZOOM/LAT/LNG from the URL and return { z, lat, lng }
     // Returns null if the hash is missing or invalid
@@ -620,7 +1175,7 @@
         trackHashVisit();
       }, 0);
     });
-    
+
     // Start tracking the initial view
     trackHashVisit();
 
@@ -742,35 +1297,35 @@
       }
     }
     function toNumber(v) {
-  const n = typeof v === 'number' ? v : Number(v);
-  return Number.isFinite(n) ? n : null;
-}
-
-function formatIncline(v) {
-  const n = toNumber(v);
-  if (n === null) return v;
-  // OSW incline = slope ratio (rise/run)
-  return `${(n * 100).toFixed(1)}%`;
-}
-
-function formatMeters(v, decimals = 2) {
-  const n = toNumber(v);
-  if (n === null) return v;
-  return `${n.toFixed(decimals)} m`;
-}
-
-  function formatValueByKey(key, value) {
-    switch (key) {
-      case 'incline':
-        return formatIncline(value);
-      case 'width':
-        return formatMeters(value, 2);
-      case 'length':
-        return formatMeters(value, 2);
-      default:
-        return value;
+      const n = typeof v === 'number' ? v : Number(v);
+      return Number.isFinite(n) ? n : null;
     }
-  }
+
+    function formatIncline(v) {
+      const n = toNumber(v);
+      if (n === null) return v;
+      // OSW incline = slope ratio (rise/run)
+      return `${(n * 100).toFixed(1)}%`;
+    }
+
+    function formatMeters(v, decimals = 2) {
+      const n = toNumber(v);
+      if (n === null) return v;
+      return `${n.toFixed(decimals)} m`;
+    }
+
+    function formatValueByKey(key, value) {
+      switch (key) {
+        case 'incline':
+          return formatIncline(value);
+        case 'width':
+          return formatMeters(value, 2);
+        case 'length':
+          return formatMeters(value, 2);
+        default:
+          return value;
+      }
+    }
 
 
     function getFeatureContent(properties) {
@@ -1208,12 +1763,7 @@ function formatMeters(v, decimals = 2) {
           rightClickMarker = null;
         }
       });
-      document.getElementById('info-button').addEventListener('click', function () {
-        var infoModal = new bootstrap.Modal(document.getElementById('infoModal'), {
-          keyboard: false
-        });
-        infoModal.show();
-      });
+      // Info button removed - users access info from landing page
       document.getElementById('search-input').addEventListener('input', function () {
         if (this.value.trim() === '') {
           clearSearch();
@@ -1339,8 +1889,8 @@ function formatMeters(v, decimals = 2) {
           }
         });
     });
-    // var control = new L.Control.Button()
-    // control.addTo(map);
+
+    // Fetch and display last updated timestamp
     fetch(tsUrl)
       .then(res => {
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
@@ -1349,14 +1899,16 @@ function formatMeters(v, decimals = 2) {
       .then(text => {
         const utcString = text.trim();
         const date = new Date(utcString);
-        const localDate = date.toLocaleDateString();
-        const localTime = date.toLocaleTimeString();
-        document.getElementById('lastUpdated').textContent =
-          `Last updated: ${localDate} ${localTime}`;
+        const localDate = date.toLocaleDateString('en-US', {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric'
+        });
+        document.getElementById('last-updated-landing').textContent = localDate;
       })
       .catch(err => {
-        console.warn('Couldnt load last_updated.txt:', err);
-        document.getElementById('lastUpdated').textContent = 'Last updated: unavailable';
+        console.warn('Could not load last_updated.txt:', err);
+        document.getElementById('last-updated-landing').textContent = 'February 2026';
       });
 
   </script>
