@@ -94,6 +94,10 @@
       font-size: 14px;
     }
 
+    .leaflet-top.leaflet-left {
+      margin-top: 56px;
+    }
+
     .leaflet-control-layers label {
       font-size: 14px !important;
     }
@@ -340,22 +344,46 @@
     }
 
     #home-button {
-      width: 28px;
-      height: 28px;
+      width: 36px;
+      height: 36px;
       display: flex;
       align-items: center;
       justify-content: center;
       background: var(--primary-color);
-      border-radius: 50%;
+      border-radius: 6px;
       color: #fff;
       border: none;
       cursor: pointer;
-      /* transition: all 0.3s ease; */
+      font-size: 18px;
     }
 
     #home-button:hover {
+      background: var(--primary-color-dark);
+      transform: scale(1.05);
+    }
+
+    #left-info-button {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      z-index: 1000;
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       background: var(--primary-color);
-      transform: scale(1.1);
+      border-radius: 6px;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      font-size: 18px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+    }
+
+    #left-info-button:hover {
+      background: var(--primary-color-dark);
+      transform: scale(1.05);
     }
 
     .disclaimer-box {
@@ -877,10 +905,6 @@
             </p>
 
             <div class="info-grid">
-              <span><strong>Project Leads:</strong> <a href="https://tcat.cs.washington.edu/" target="_blank"
-                  class="info-grid-link">UW Taskar Center for Accessible Technology</a>; <strong>Project
-                  Partners:</strong> <a href="https://gaussiansolutions.com/" target="_blank"
-                  class="info-grid-link">Gaussian Solutions LLC</a></span>
               <span><strong>OS-CONNECT Viewer:</strong> Available to the public, no login</span>
               <span><strong>TDEI:</strong> Free, registered access needed for data sharing and management</span>
             </div>
@@ -990,6 +1014,11 @@
   </div>
 
   <!-- Map Viewer Section -->
+  <!-- Left-side hamburger/info button -->
+  <button type="button" id="left-info-button" title="View information" onclick="showLanding()"
+    aria-label="Open information panel">
+    <i class="bi bi-list"></i>
+  </button>
   <div class="container2">
     <div class="mapContainer">
       <div id='map'></div>
@@ -1008,9 +1037,7 @@
             underlying infrastructure.
           </span>
         </div>
-        <button type="button" id="home-button" title="View information" onclick="showLanding()">
-          <i class="bi bi-info-circle"></i>
-        </button>
+
       </div>
     </div>
 
