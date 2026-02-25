@@ -7,7 +7,7 @@ on:
 
 jobs:
   backup:
-    runs-on: ReportGen
+    runs-on: ubuntu-latest
 
     steps:
       - name: Set up Java 21
@@ -58,7 +58,8 @@ jobs:
       - name: Combine all the geojson files
         working-directory: ./tdei-complete-set
         run: |
-            jq '{"type": "FeatureCollection", "features": [.[] | .features[]]}' --slurp ./downloads/*/*/*.geojson > washington_output.geojson
+            jq -c '.features[]' ./downloads/*/*/*.geojson > washington_output.ndjson
+            jq -s '{"type": "FeatureCollection", "features": .}' washington_output.ndjson > washington_output.geojson
       - name: Generate Dataset Boundaries GeoJSON
         working-directory: ./tdei-complete-set
         run: |
