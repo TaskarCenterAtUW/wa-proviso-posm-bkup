@@ -1,0 +1,82 @@
+name: Refresh the OSConnect dataset boundaries GeoJSON file
+
+on:
+  workflow_dispatch:  # Only Manual trigger
+
+jobs:
+  backup:
+    runs-on: ReportGen
+
+    steps:
+      - name: Set up Java 21
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'  # Use 'zulu' or 'adopt' if needed
+          java-version: '21'
+
+      - name: Verify Java Version
+        run: java -version
+
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+    
+      - name: Install Python
+        uses: actions/setup-python@v4
+        with:
+            python-version: '3.11'
+      - name: Install Dependencies
+        run: |
+            python -m pip install --upgrade pip
+            pip install -r tdei-dataset.txt
+
+      - name: Setup Output Folder name
+        run: echo "OUTPUT_FOLDER=wa-tdei-$(date +"%Y-%m-%d")" >> $GITHUB_ENV
+    
+      - name: Install jq
+        run: sudo apt-get install -y jq
+
+      - name: Login to Azure
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.TDEI_CORE_AZURE_CREDS }}
+        
+      - name: Fetch the latest projects
+        working-directory: ./tdei-complete-set
+        env:
+            TDEI_USERNAME: ${{ secrets.TDEI_USERNAME }}
+            TDEI_PASSWORD: ${{ secrets.TDEI_PASSWORD }}
+        run: |
+            mkdir -p downloads
+            python fetch_all_projects.py -nd
+    
+      - name: Generate Dataset Boundaries GeoJSON
+        working-directory: ./tdei-complete-set
+        run: |
+            jq '{type: "FeatureCollection",features: map({type: "Feature",geometry: .geometry,properties: (del(.geometry) | .custom_metadata as $custom | del(.custom_metadata) | . + $custom)})}' tdei_datasets.json > washington_dataset_boundaries.geojson
+      - name: Copy the created files into output folder
+        run: |
+          mkdir -p output
+          cp tdei-complete-set/washington_dataset_boundaries.geojson output/washington_dataset_boundaries.geojson
+
+      - name: Check the Output folder
+        run: ls -lh output
+
+      - name: Upload the file to Azure Blob Storage (dated folder)
+        uses: LanceMcCarthy/Action-AzureBlobUpload@v2
+        with:
+          source_folder: output/washington_dataset_boundaries.geojson
+          connection_string: ${{ secrets.AZURE_STORAGE_CONNECTION }}
+          container_name: 'waposmdbbkup'
+          destination_folder: ${{ env.OUTPUT_FOLDER }}
+          delete_if_exists: 'true'
+          clean_destination_folder: 'false'
+
+      - name: Upload the file to Azure Blob Storage (latest folder)
+        uses: LanceMcCarthy/Action-AzureBlobUpload@v2
+        with:
+          source_folder: output/washington_dataset_boundaries.geojson
+          connection_string: ${{ secrets.AZURE_STORAGE_CONNECTION }}
+          container_name: 'waposmdbbkup'
+          destination_folder: wa-tdei-latest
+          delete_if_exists: 'true'
+          clean_destination_folder: 'false'

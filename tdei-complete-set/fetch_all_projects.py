@@ -7,6 +7,7 @@ load_dotenv()
 import pandas as pd
 import json
 import io
+import argparse
 
 class TDEIDatasetDownloader : 
 
@@ -168,6 +169,13 @@ class TDEIDatasetDownloader :
 
 
 if __name__ == '__main__':
+
+    # Get the argparse argument if download is needed
+    parser = argparse.ArgumentParser(description='Download datasets')
+    parser.add_argument('-nd','--no-download', action='store_true' ,help='Download datasets')
+    dont_download_flag = parser.parse_args().no_download
+    print(f'No Download flag {dont_download_flag}')
+
     downloader = TDEIDatasetDownloader()
     username = os.getenv('TDEI_USERNAME')
     password = os.getenv('TDEI_PASSWORD')
@@ -184,9 +192,12 @@ if __name__ == '__main__':
         'tdei_service_id':'f24b624c-8253-48d4-ae92-34e4395213e1'
     }
     datasets = downloader.get_latest_datasets(query_params)
-    for index, row in tqdm(datasets.iterrows(), total=len(datasets), desc='Downloading datasets'):
-        dataset_id = row['tdei_dataset_id']
-        downloader.download_dataset(dataset_id)
+
+    
+    if not dont_download_flag:
+        for index, row in tqdm(datasets.iterrows(), total=len(datasets), desc='Downloading datasets'):
+            dataset_id = row['tdei_dataset_id']
+            downloader.download_dataset(dataset_id)
     datasets.to_json('tdei_datasets.json', orient='records', indent=4)
     '''
     Command to generate GeoJSON from the dataset JSON file:
