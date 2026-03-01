@@ -55,11 +55,11 @@ jobs:
             python fetch_all_projects.py
             python extract_downloaded_projects.py
     
-      - name: Combine all the geojson files
-        working-directory: ./tdei-complete-set
-        run: |
-            find ./downloads -name "*.geojson" -exec jq -c '.features[]' {} + >washington_output.ndjson
-            jq -s '{"type": "FeatureCollection", "features": .}' washington_output.ndjson >washington_output.geojson
+      # - name: Combine all the geojson files
+      #   working-directory: ./tdei-complete-set
+      #   run: |
+      #       find ./downloads -name "*.geojson" -exec jq -c '.features[]' {} + >washington_output.ndjson
+      #       jq -s '{"type": "FeatureCollection", "features": .}' washington_output.ndjson >washington_output.geojson
       - name: Generate Dataset Boundaries GeoJSON
         working-directory: ./tdei-complete-set
         run: |
@@ -75,12 +75,11 @@ jobs:
 
       - name: Create .pmtiles using Tippecanoe
         working-directory: ./tdei-complete-set
-        run: tippecanoe -z 18 -Z 8 -o washington_complete.pmtiles --drop-densest-as-needed --extend-zooms-if-still-dropping -l wa-proviso-data washington_output.geojson
+        run: find ./downloads -name "*.geojson" -exec jq -c '.features[]' {} +  | tippecanoe -z 18 -Z 8 -o washington_complete.pmtiles --drop-densest-as-needed --extend-zooms-if-still-dropping -l wa-proviso-data
 
       - name: Copy the created files into output folder
         run: |
           mkdir -p output
-          cp tdei-complete-set/washington_output.geojson output/washington_output.geojson
           cp tdei-complete-set/washington_complete.pmtiles output/washington_complete.pmtiles
           cp tdei-complete-set/washington_dataset_boundaries.geojson output/washington_dataset_boundaries.geojson
           cp tdei-complete-set/downloads/last_updated.txt output/last_updated.txt
