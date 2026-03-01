@@ -58,12 +58,12 @@ jobs:
       - name: Combine all the geojson files
         working-directory: ./tdei-complete-set
         run: |
-            jq -c '.features[]' ./downloads/*/*/*.geojson > washington_output.ndjson
-            jq -s '{"type": "FeatureCollection", "features": .}' washington_output.ndjson > washington_output.geojson
+            find ./downloads -name "*.geojson" -exec jq -c '.features[]' {} + >washington_output.ndjson
+            jq -s '{"type": "FeatureCollection", "features": .}' washington_output.ndjson >washington_output.geojson
       - name: Generate Dataset Boundaries GeoJSON
         working-directory: ./tdei-complete-set
         run: |
-            jq '{type: "FeatureCollection",features: map({type: "Feature",geometry: .geometry,properties: (del(.geometry) | .custom_metadata as $custom | del(.custom_metadata) | . + $custom)})}' tdei_datasets.json > washington_dataset_boundaries.geojson
+            jq '{type: "FeatureCollection",features: map({type: "Feature",geometry: .geometry,properties: (del(.geometry) | .custom_metadata as $custom | del(.custom_metadata) | . + $custom)})}' tdei_datasets.json >washington_dataset_boundaries.geojson
       - name: Install Tippecanoe
         run: |
           git clone https://github.com/felt/tippecanoe.git
