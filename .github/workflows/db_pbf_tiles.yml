@@ -27,9 +27,12 @@ jobs:
 
       - name: Setup Output Folder name
         run: echo "OUTPUT_FOLDER=$(date +"%Y-%m-%d")" >> $GITHUB_ENV
+      
+      - name: Run APT update
+        run: sudo apt-get update -y
 
       - name: Install Osmosis
-        run: sudo apt install osmosis
+        run: sudo apt-get install -y osmosis
 
       - name: Install Osmium
         run: sudo apt-get install -y osmium-tool
