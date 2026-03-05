@@ -876,8 +876,8 @@
 
 <body>
   <!-- Landing Page Modal -->
-  <div class="modal fade" id="landing-modal" tabindex="-1" aria-labelledby="landingModalLabel" aria-hidden="true"
-    data-bs-backdrop="static" data-bs-keyboard="false">
+  <div class="modal fade" id="landing-modal" tabindex="-1" role="dialog" aria-modal="true"
+    aria-labelledby="landingModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl modal-dialog-scrollable modal-fullscreen-lg-down">
       <div class="modal-content">
         <header id="osc-header" class="modal-header appbar" role="banner">
@@ -1117,10 +1117,7 @@
   <script type="text/javascript">
     // Initialize and show the landing modal on page load
     document.addEventListener('DOMContentLoaded', function () {
-      const landingModal = new bootstrap.Modal(document.getElementById('landing-modal'), {
-        backdrop: 'static',
-        keyboard: false
-      });
+      const landingModal = new bootstrap.Modal(document.getElementById('landing-modal'));
       landingModal.show();
     });
 
