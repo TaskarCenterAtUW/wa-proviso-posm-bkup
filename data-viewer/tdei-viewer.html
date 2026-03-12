@@ -1787,23 +1787,53 @@
           rightClickMarker = null;
         }
       });
-      // Info button removed - users access info from landing page
+      // search dataset logic
+      function performSearch() {
+        const term = document.getElementById('search-input').value.trim().toLowerCase();
+        if (!term) {
+          showErrorToast('Please enter a dataset name');
+          return;
+        }
+        if (!boundariesLayer) {
+          showErrorToast('Dataset boundaries not loaded yet');
+          return;
+        }
+        clearSearch();
+        boundariesLayer.eachLayer(layer => {
+          const name = (layer.feature.properties.name || '').toLowerCase();
+          if (name.includes(term)) {
+            layer.setStyle({
+              stroke: true,
+              color: '#81C14B',
+              weight: 3,
+              fill: false
+            });
+            layer.openPopup();
+            lastMatches.push(layer);
+          }
+        });
+
+        if (lastMatches.length) {
+          const group = L.featureGroup(lastMatches);
+          map.fitBounds(group.getBounds(), { maxZoom: 16 });
+        } else {
+          showErrorToast('No matching datasets found');
+        }
+      }
+
       document.getElementById('search-input').addEventListener('input', function () {
         if (this.value.trim() === '') {
           clearSearch();
         }
       });
 
-      document
-        .getElementById('search-input')
-        .addEventListener('input', function () {
-          if (this.value.trim() === '') {
-            clearSearch();
-          }
-        });
+      document.getElementById('search-input').addEventListener('keydown', function (event) {
+        if (event.key === 'Enter') {
+          performSearch();
+        }
+      });
 
-      // Open in Posm logic
-
+      document.getElementById('search-button').addEventListener('click', performSearch);
 
       // Report issue logic
       document.getElementById('reportIssue').addEventListener('click', function () {
@@ -1878,40 +1908,6 @@
           showToast("Error submitting issue. Please try again.");
         });
       });
-      // ADDED: Search by dataset_name
-      document.getElementById('search-button')
-        .addEventListener('click', function () {
-          const term = document.getElementById('search-input').value.trim().toLowerCase();
-          if (!term) {
-            showErrorToast('Please enter a dataset name');
-            return;
-          }
-          if (!boundariesLayer) {
-            showErrorToast('Dataset boundaries not loaded yet');
-            return;
-          }
-          clearSearch();
-          boundariesLayer.eachLayer(layer => {
-            const name = (layer.feature.properties.name || '').toLowerCase();
-            if (name.includes(term)) {
-              layer.setStyle({
-                stroke: true,
-                color: '#81C14B',
-                weight: 3,
-                fill: false
-              });
-              layer.openPopup();
-              lastMatches.push(layer);
-            }
-          });
-
-          if (lastMatches.length) {
-            const group = L.featureGroup(lastMatches);
-            map.fitBounds(group.getBounds(), { maxZoom: 16 });
-          } else {
-            showErrorToast('No matching datasets found');
-          }
-        });
     });
 
     // Fetch and display last updated timestamp
