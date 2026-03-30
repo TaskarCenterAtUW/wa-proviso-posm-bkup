@@ -1612,6 +1612,7 @@
             const uploadDate = new Date(props.upload_date).toLocaleDateString('en-US', {
               year: 'numeric', month: 'short', day: 'numeric'
             });
+            const report_url = props.tcat_quality_report_url_pdf || props.tcat_quality_report_url;
             let html = `
             <div class="popup-content">
             <h5>${props.name}</h5>
@@ -1628,11 +1629,11 @@
                <i class="bi bi-clipboard text-white"></i>
                 </button>
               </p>`;
-            if (props.tcat_quality_report_url) {
+            if (report_url) {
               html += `
                 <p>
                   <strong>Quality Report:</strong>
-                  <a href="${props.tcat_quality_report_url}" target="_blank" rel="noopener">
+                  <a href="${report_url}" target="_blank" rel="noopener">
                     View Report
                   </a>
                 </p>
