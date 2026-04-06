@@ -1244,9 +1244,9 @@
 
     function getCrossingColor(d) {
       if (d['crossing:markings'] == 'no') {
-        return '#dda15e'; // Unmarked crossing
+        return '#44AA99'; // Unmarked crossing
       } else {
-        return '#FFD166'; // Marked crossing
+        return '#DDCC77'; // Marked crossing
       }
     }
     function clearSearch() {
@@ -1283,13 +1283,13 @@
         return getCrossingColor(props);
       }
       else if (isSidewalk(props)) {
-        return '#4cc9f0';
+        return '#88CCEE';
       }
       else if (isFootpath(props)) {
-        return '#ee6c4d';
+        return '#CC6677';
       }
       else {
-        return '#8093f1';
+        return '#882255';
       }
       // return getColor(props.mapping_status);
     }
@@ -1300,7 +1300,7 @@
         return getKerbColor(feature);
       }
       else {
-        return '#FF7F50';
+        return '#882255';
       }
 
     }
@@ -1308,16 +1308,16 @@
     function getKerbColor(feature) {
       const props = feature.props || {};
       if (props['kerb'] === 'lowered') {
-        return '#06d6a0';
+        return '#117733';
       }
       if (props['kerb'] === 'raised') {
-        return '#8cb369';
+        return '#AA4499';
       }
       if (props['kerb'] === 'flush') {
-        return '#006d77';
+        return '#332288';
       }
       if (props['kerb'] == null) {
-        return '#588157';
+        return '#332288';
       }
     }
     function toNumber(v) {
@@ -1375,21 +1375,21 @@
     function getLegendColor(d) {
       switch (d) {
         case 'Sidewalk':
-          return '#4cc9f0';
+          return '#88CCEE';
         case 'Crossing Marked':
-          return '#ffd166';
+          return '#DDCC77';
         case 'Crossing Unmarked':
-          return '#dda15e';
+          return '#44AA99';
         case 'Footway':
-          return '#ee6c4d';
+          return '#CC6677';
         case 'Kerb Lowered':
-          return '#06d6a0';
+          return '#117733';
         case 'Kerb Flushed':
-          return '#006d77';
+          return '#332288';
         case 'Kerb Raised':
-          return '#8cb369';
+          return '#AA4499';
         case 'Traffic Island':
-          return '#8093f1';
+          return '#882255';
       }
     }
 
