@@ -1238,6 +1238,9 @@
     function isCrossing(d) { //FFF07C
       return d['highway'] == 'footway' && d['footway'] == 'crossing';
     }
+    function isTrafficIsland(d) {
+      return d['highway'] == 'footway' && d['footway'] == 'traffic_island';
+    }
     function isKerb(d) {
       return d['barrier'] == 'kerb';
     }
@@ -1288,8 +1291,11 @@
       else if (isFootpath(props)) {
         return '#CC6677';
       }
-      else {
+      else if (isTrafficIsland(props)) {
         return '#882255';
+      }
+      else {
+        return '#777777'; // Others
       }
       // return getColor(props.mapping_status);
     }
@@ -1390,6 +1396,8 @@
           return '#AA4499';
         case 'Traffic Island':
           return '#882255';
+        case 'Others':
+          return '#777777';
       }
     }
 
@@ -1397,7 +1405,7 @@
 
     legend.onAdd = function (map) {
       const div = L.DomUtil.create('div', 'info legend');
-      const status = ['Sidewalk', 'Crossing Marked', 'Crossing Unmarked', 'Footway', 'Kerb Lowered', 'Kerb Flushed', 'Kerb Raised', 'Traffic Island'];
+      const status = ['Sidewalk', 'Crossing Marked', 'Crossing Unmarked', 'Footway', 'Kerb Lowered', 'Kerb Flushed', 'Kerb Raised', 'Traffic Island', 'Others'];
       const labels = [];
 
       for (let i = 0; i < status.length; i++) {
