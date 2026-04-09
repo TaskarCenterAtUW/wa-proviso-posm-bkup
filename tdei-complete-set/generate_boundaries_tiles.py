@@ -1,5 +1,10 @@
 #!/usr/bin/env python3
 """Generate dataset boundary GeoJSON, search index, and PMTiles artifacts."""
+# - the viewer now renders dataset boundaries from PMTiles instead of raw GeoJSON
+# - search/popups still need lightweight dataset metadata and bounds without loading
+#   full geometry into the browser
+# - tippecanoe produces MBTiles first in this flow, so we explicitly convert that
+#   output into a real PMTiles archive for the viewer/workflows to publish
 
 from __future__ import annotations
 
@@ -25,6 +30,8 @@ def scalarize(value):
 
 
 def iter_positions(node):
+    # Recursively walk nested Polygon/MultiPolygon coordinates so we can derive bounds
+    # for each dataset boundary without adding a GIS dependency.
     if isinstance(node, list):
         if node and isinstance(node[0], (int, float)) and len(node) >= 2:
             yield node
@@ -34,6 +41,8 @@ def iter_positions(node):
 
 
 def compute_bbox(geometry):
+    # Search in the viewer does not read boundary geometry from PMTiles. It reads the
+    # precomputed bbox from the index JSON and uses that bbox for map.fitBounds(...).
     coords = list(iter_positions((geometry or {}).get("coordinates", [])))
     if not coords:
         return None
@@ -48,6 +57,9 @@ def compute_bbox(geometry):
 
 
 def feature_from_record(record):
+    # Build two outputs from one dataset record:
+    # 1. a full GeoJSON feature for PMTiles rendering
+    # 2. a lightweight index entry for search/popup/fitBounds in the viewer
     geometry = record.get("geometry")
     if not geometry:
         return None, None
@@ -72,6 +84,8 @@ def feature_from_record(record):
         "geometry": geometry,
         "properties": props,
     }
+    # The viewer search uses bbox to zoom to matching datasets and center to anchor the
+    # popup for the first match, without loading the full boundary GeoJSON in the page.
     center = {
         "lat": (bbox["minLat"] + bbox["maxLat"]) / 2,
         "lng": (bbox["minLng"] + bbox["maxLng"]) / 2,
@@ -92,6 +106,9 @@ def write_json(path: Path, payload):
 
 
 def build_geojson_and_index(records):
+    # Produce both artifacts together so they stay in sync:
+    # - GeoJSON feeds tippecanoe -> PMTiles for boundary rendering
+    # - index JSON feeds name search + bbox-based fitBounds in the viewer
     features = []
     index = []
     for record in records:
@@ -150,6 +167,8 @@ def build_pmtiles(geojson_path: Path, output_pmtiles: Path, layer_name: str, min
             str(mbtiles_path),
             str(ndjson_path),
         ])
+        # Convert the intermediate MBTiles file into a real PMTiles archive.
+        # The viewer renders boundaries from this PMTiles file, not from GeoJSON.
         if output_pmtiles.exists():
             output_pmtiles.unlink()
         run([pmtiles, "convert", str(mbtiles_path), str(output_pmtiles)])
