@@ -1253,12 +1253,10 @@
       }
     }
     function clearSearch() {
-      if (!boundariesLayer) return;
-      lastMatches.forEach(layer => {
-        boundariesLayer.resetStyle(layer);
-        layer.closePopup();
-      });
       lastMatches = [];
+      if (typeof map !== 'undefined') {
+        map.closePopup();
+      }
     }
     function showErrorToast(message) {
       const toastEl = document.getElementById('errorToast');
@@ -1482,6 +1480,35 @@
       }
     ];
 
+    // Painter for boundary polygons (wa-boundaries layer in PMTiles)
+    class BoundaryPainter {
+      draw(context, geom, z, feature) {
+        if (feature.geomType !== 3) return;
+        context.strokeStyle = '#000000';
+        context.lineWidth = 2;
+        context.lineJoin = 'round';
+        context.setLineDash([]);
+        context.globalAlpha = 1;
+        context.beginPath();
+        for (const ring of geom) {
+          if (!ring || ring.length === 0) continue;
+          context.moveTo(ring[0].x, ring[0].y);
+          for (const pt of ring.slice(1)) context.lineTo(pt.x, pt.y);
+          context.closePath();
+        }
+        context.stroke();
+        context.fillStyle = 'rgba(0, 0, 0, 0.05)';
+        context.fill('evenodd');
+      }
+    }
+
+    const BOUNDARY_PAINT_RULES = [
+      {
+        dataLayer: 'wa-boundaries',
+        symbolizer: new BoundaryPainter()
+      }
+    ];
+
     function closeModal() {
       var myModalEl = document.getElementById('reportIssueModel');
       var modalInstance = bootstrap.Modal.getInstance(myModalEl);
@@ -1504,8 +1531,13 @@
       const toast = new bootstrap.Toast(toastElement);
       toast.show();
     }
+    const useLocalDataPmtiles = new URLSearchParams(window.location.search).get('localData') === '1';
+    const dataPmtilesUrl = (useLocalDataPmtiles && (location.hostname === 'localhost' || location.hostname === '127.0.0.1'))
+      ? 'washington_complete.pmtiles'
+      : 'https://provisodevstorage.blob.core.windows.net/waposmdbbkup/wa-tdei-latest/washington_complete.pmtiles';
+
     const layer = protomapsL.leafletLayer({
-      url: 'https://provisodevstorage.blob.core.windows.net/waposmdbbkup/wa-tdei-latest/washington_complete.pmtiles',
+      url: dataPmtilesUrl,
       // maxDataZoom:21,
       maxZoom: 22,
       maxDataZoom: 18,
@@ -1586,84 +1618,105 @@
       'Data': layer
     }
     const layerControl = L.control.layers(baseLayers, overlays, position).addTo(map);
+    map.createPane('boundariesPane');
+    map.getPane('boundariesPane').style.zIndex = 450;
 
-    // Add boundaries overlay
-    const boundariesLayerUrl = 'https://provisodevstorage.blob.core.windows.net/waposmdbbkup/wa-tdei-latest/washington_dataset_boundaries.geojson';
-    // const boundariesLayer = L.geoJSON.ajax(boundariesLayerUrl, {
-    //   style: function (feature) {
-    //     return {
-    //       color: '#000',
-    //       weight: 2,
-    //       fillOpacity: 0.1
-    //     };
-    //   },
-    //   onEachFeature: function (feature, layer) {
-    //     layer.bindPopup(feature.properties.dataset_name || 'Unnamed');
-    //   }
-    // });
-    // overlays['Boundaries'] = boundariesLayer;
-    let boundariesLayer;
-    let lastMatches = [];
-    fetch(boundariesLayerUrl)
-      .then(response => response.json())
-      .then(data => {
-        boundariesLayer = L.geoJSON(data, {
-          style: function (feature) {
-            return {
-              color: '#000',
-              weight: 2,
-              fillOpacity: 0.1
-            };
-          },
-          onEachFeature: function (feature, layer) {
-            const props = feature.properties;
-            const uploadDate = new Date(props.upload_date).toLocaleDateString('en-US', {
-              year: 'numeric', month: 'short', day: 'numeric'
-            });
-            const report_url = props.tcat_quality_report_url_pdf || props.tcat_quality_report_url;
-            let html = `
-            <div class="popup-content">
-            <h5>${props.name}</h5>
-            <p><strong>Uploaded:</strong> ${uploadDate}</p>
-            <p><strong>Version:</strong> ${props.version}</p>
-              <p>
-                <strong>ID:</strong>
-                <span id="tdei-id">${props.tdei_dataset_id}</span>
-                <button
-                class="copy-btn btn-outline-secondary btn"
-                data-id="${props.tdei_dataset_id}"
-                  aria-label="Copy TDEI ID"
-                >
-               <i class="bi bi-clipboard text-white"></i>
-                </button>
-              </p>`;
-            if (report_url) {
-              html += `
-                <p>
-                  <strong>Quality Report:</strong>
-                  <a href="${report_url}" target="_blank" rel="noopener">
-                    View Report
-                  </a>
-                </p>
-                `;
-            } else {
-              html += `
-                <p>
-                  <strong>Quality Report:</strong>
-                    Not Available
-                </p>
-                `;
-            }
-            html += `</div>`;
-            layer.bindPopup(html, { popup: clickPopup });
-          }
-        });
+    const BOUNDARIES_MIN_DATA_ZOOM = 0;
+    const BOUNDARIES_MAX_DATA_ZOOM = 16;
 
-        overlays['Boundaries'] = boundariesLayer;
-        boundariesLayer.addTo(map);
-        layerControl.addOverlay(boundariesLayer, "Boundaries");
-      })
-      .catch(error => console.error('Error loading boundaries:', error));
+    // Add boundaries overlay — rendered via PMTiles for fast loading at all zoom levels
+    const boundariesPmtilesUrl = (location.hostname === 'localhost' || location.hostname === '127.0.0.1')
+      ? 'washington_dataset_boundaries.pmtiles'
+      : 'https://provisodevstorage.blob.core.windows.net/waposmdbbkup/wa-tdei-latest/washington_dataset_boundaries.pmtiles';
+
+    const boundariesIndexUrl = (location.hostname === 'localhost' || location.hostname === '127.0.0.1')
+      ? 'washington_dataset_boundaries_index.json'
+      : 'https://provisodevstorage.blob.core.windows.net/waposmdbbkup/wa-tdei-latest/washington_dataset_boundaries_index.json';
+
+    // Build popup HTML from feature properties (used by both click handler and search)
+    function buildBoundaryPopupHtml(props, latlng) {
+      const uploadDate = props.upload_date
+        ? new Date(props.upload_date).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })
+        : 'N/A';
+      const report_url = props.tcat_quality_report_url_pdf || props.tcat_quality_report_url;
+      let html = `
+        <div class="popup-content">
+        <h5>${props.name || 'Unnamed'}</h5>
+        <p><strong>Uploaded:</strong> ${uploadDate}</p>
+        <p><strong>Version:</strong> ${props.version || 'N/A'}</p>
+        <p>
+          <strong>ID:</strong>
+          <span id="tdei-id">${props.tdei_dataset_id}</span>
+          <button
+            class="copy-btn btn-outline-secondary btn"
+            data-id="${props.tdei_dataset_id}"
+            aria-label="Copy TDEI ID"
+          >
+            <i class="bi bi-clipboard text-white"></i>
+          </button>
+        </p>`;
+      if (report_url) {
+        html += `<p><strong>Quality Report:</strong> <a href="${report_url}" target="_blank" rel="noopener">View Report</a></p>`;
+      } else {
+        html += `<p><strong>Quality Report:</strong> Not Available</p>`;
+      }
+      html += `</div>`;
+      return html;
+    }
+
+    // PMTiles layer for boundaries (visual rendering — visible at all zoom levels)
+    const boundariesLayer = protomapsL.leafletLayer({
+      url: boundariesPmtilesUrl,
+      pane: 'boundariesPane',
+      minZoom: 0,
+      maxZoom: 22,
+      maxDataZoom: BOUNDARIES_MAX_DATA_ZOOM,
+      maxNativeZoom: 22,
+      interactive: true,
+      paintRules: BOUNDARY_PAINT_RULES
+    });
+    boundariesLayer.addTo(map);
+    overlays['Boundaries'] = boundariesLayer;
+    layerControl.addOverlay(boundariesLayer, 'Boundaries');
+
+    function getBoundaryQueryZoom() {
+      return Math.max(
+        BOUNDARIES_MIN_DATA_ZOOM,
+        Math.min(BOUNDARIES_MAX_DATA_ZOOM, Math.floor(map.getZoom()))
+      );
+    }
+
+    // Click on map → query boundaries PMTiles → show popup
+    map.on('click', async function (e) {
+      if (!map.hasLayer(boundariesLayer)) return;
+      try {
+        const featuresMap = await boundariesLayer.queryTileFeaturesDebug(
+          e.latlng.lng,
+          e.latlng.lat,
+          getBoundaryQueryZoom()
+        );
+        const features = Array.from(featuresMap.values()).flat()
+          .filter(item => item.feature && item.feature.props && item.feature.props.name);
+        if (!features.length) return;
+        const props = features[0].feature.props;
+        const html = buildBoundaryPopupHtml(props, e.latlng);
+        L.popup({ autoPan: true })
+          .setLatLng(e.latlng)
+          .setContent(html)
+          .openOn(map);
+      } catch (err) {
+        // ignore errors from click outside tiles
+      }
+    });
+
+    // Lightweight search index 
+    let boundaryIndex = [];   // [{name, ..., bbox:{minLng,maxLng,minLat,maxLat}, center:{lat,lng}}]
+    let lastMatches = [];     // kept for search compatibility
+
+    fetch(boundariesIndexUrl)
+      .then(r => r.json())
+      .then(data => { boundaryIndex = data; })
+      .catch(err => console.error('Error loading boundaries index:', err));
     // L.control.layers(baseLayers, overlays, position).addTo(map);
     // Add Counties layer
     // const countiesLayerUrl = 'https://raw.githubusercontent.com/TaskarCenterAtUW/wa-proviso-posm-bkup/refs/heads/main/washington-full-dataset/state_county_boundaries_with_area_reduced.geojson'
@@ -1803,30 +1856,42 @@
           showErrorToast('Please enter a dataset name');
           return;
         }
-        if (!boundariesLayer) {
+        if (!boundaryIndex.length) {
           showErrorToast('Dataset boundaries not loaded yet');
           return;
         }
         clearSearch();
-        boundariesLayer.eachLayer(layer => {
-          const name = (layer.feature.properties.name || '').toLowerCase();
-          if (name.includes(term)) {
-            layer.setStyle({
-              stroke: true,
-              color: '#81C14B',
-              weight: 3,
-              fill: false
-            });
-            layer.openPopup();
-            lastMatches.push(layer);
-          }
+
+        const matches = boundaryIndex.filter(f => (f.name || '').toLowerCase().includes(term));
+
+        if (!matches.length) {
+          showErrorToast('No matching datasets found');
+          return;
+        }
+
+        // Compute combined bounds from all matches' bboxes
+        let minLng = Infinity, maxLng = -Infinity, minLat = Infinity, maxLat = -Infinity;
+        matches.forEach(f => {
+          if (!f.bbox) return;
+          minLng = Math.min(minLng, f.bbox.minLng);
+          maxLng = Math.max(maxLng, f.bbox.maxLng);
+          minLat = Math.min(minLat, f.bbox.minLat);
+          maxLat = Math.max(maxLat, f.bbox.maxLat);
         });
 
-        if (lastMatches.length) {
-          const group = L.featureGroup(lastMatches);
-          map.fitBounds(group.getBounds(), { maxZoom: 16 });
-        } else {
-          showErrorToast('No matching datasets found');
+        const bounds = [[minLat, minLng], [maxLat, maxLng]];
+        map.fitBounds(bounds, { maxZoom: 16 });
+
+        // Show popup for the first match
+        const first = matches[0];
+        if (first.bbox) {
+          const centerLat = (first.bbox.minLat + first.bbox.maxLat) / 2;
+          const centerLng = (first.bbox.minLng + first.bbox.maxLng) / 2;
+          const html = buildBoundaryPopupHtml(first);
+          L.popup({ autoPan: true })
+            .setLatLng([centerLat, centerLng])
+            .setContent(html)
+            .openOn(map);
         }
       }
 
