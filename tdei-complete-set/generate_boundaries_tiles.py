@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
 """Generate dataset boundary GeoJSON, search index, and PMTiles artifacts."""
+
+
+""" THIS SCRIPT IS DEPRECATED. See the workflow file for details on the new approach using tippecanoe directly in the GitHub Actions workflow."""
 # - the viewer now renders dataset boundaries from PMTiles instead of raw GeoJSON
 # - search/popups still need lightweight dataset metadata and bounds without loading
 #   full geometry into the browser
