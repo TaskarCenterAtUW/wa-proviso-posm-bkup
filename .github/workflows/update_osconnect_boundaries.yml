@@ -1,10 +1,10 @@
-name: Refresh the OSConnect dataset boundaries GeoJSON file
+name: Refresh the OSConnect dataset boundary artifacts
 
 on:
   workflow_dispatch:  # Only Manual trigger
 
 jobs:
-  backup:
+  update_boundaries:
     runs-on: ReportGen
 
     steps:
@@ -24,6 +24,7 @@ jobs:
         uses: actions/setup-python@v4
         with:
             python-version: '3.11'
+
       - name: Install Dependencies
         run: |
             python -m pip install --upgrade pip
@@ -32,9 +33,6 @@ jobs:
       - name: Setup Output Folder name
         run: echo "OUTPUT_FOLDER=wa-tdei-$(date +"%Y-%m-%d")" >> $GITHUB_ENV
     
-      - name: Install jq
-        run: sudo apt-get install -y jq
-
       - name: Login to Azure
         uses: azure/login@v1
         with:
@@ -49,32 +47,65 @@ jobs:
             mkdir -p downloads
             python fetch_all_projects.py -nd
     
+      - name: Install Tippecanoe
+        run: |
+          git clone https://github.com/felt/tippecanoe.git
+          cd tippecanoe
+          git checkout tags/2.75.1
+          make -j
+          sudo make install
+          tippecanoe --version
+      
       - name: Generate Dataset Boundaries GeoJSON
         working-directory: ./tdei-complete-set
         run: |
             jq '{type: "FeatureCollection",features: map({type: "Feature",geometry: .geometry,properties: (del(.geometry) | .custom_metadata as $custom | del(.custom_metadata) | . + $custom)})}' tdei_datasets.json > washington_dataset_boundaries.geojson
+
+      - name: Generate Boundary Index file
+        working-directory: ./tdei-complete-set
+        run: |
+          python generate_boundary_index.py
+        
+      - name: Generate Boundary PMTiles
+        working-directory: ./tdei-complete-set
+        run: |
+          jq -c '.features[]' washington_dataset_boundaries.geojson > washington_dataset_boundaries.ndjson
+          tippecanoe \
+          --force \
+          --read-parallel \
+          --detect-shared-borders \
+          --no-feature-limit \
+          --no-tile-size-limit \
+          -Z 0 -z 16 \
+          -l wa-boundaries \
+          -o washington_dataset_boundaries.pmtiles \
+          washington_dataset_boundaries.ndjson
+          rm -f washington_dataset_boundaries.ndjson
+
       - name: Copy the created files into output folder
         run: |
           mkdir -p output
           cp tdei-complete-set/washington_dataset_boundaries.geojson output/washington_dataset_boundaries.geojson
+          cp tdei-complete-set/washington_dataset_boundaries.pmtiles output/washington_dataset_boundaries.pmtiles
+          cp tdei-complete-set/washington_dataset_boundaries_index.json output/washington_dataset_boundaries_index.json
 
       - name: Check the Output folder
         run: ls -lh output
 
-      - name: Upload the file to Azure Blob Storage (dated folder)
+      - name: Upload the files to Azure Blob Storage (dated folder)
         uses: LanceMcCarthy/Action-AzureBlobUpload@v2
         with:
-          source_folder: output/washington_dataset_boundaries.geojson
+          source_folder: output
           connection_string: ${{ secrets.AZURE_STORAGE_CONNECTION }}
           container_name: 'waposmdbbkup'
           destination_folder: ${{ env.OUTPUT_FOLDER }}
           delete_if_exists: 'true'
           clean_destination_folder: 'false'
 
-      - name: Upload the file to Azure Blob Storage (latest folder)
+      - name: Upload the files to Azure Blob Storage (latest folder)
         uses: LanceMcCarthy/Action-AzureBlobUpload@v2
         with:
-          source_folder: output/washington_dataset_boundaries.geojson
+          source_folder: output
           connection_string: ${{ secrets.AZURE_STORAGE_CONNECTION }}
           container_name: 'waposmdbbkup'
           destination_folder: wa-tdei-latest

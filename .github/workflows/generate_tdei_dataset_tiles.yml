@@ -77,11 +77,34 @@ jobs:
         working-directory: ./tdei-complete-set
         run: find ./downloads -name "*.geojson" -exec jq -c '.features[]' {} +  | tippecanoe -z 18 -Z 8 -o washington_complete.pmtiles --drop-densest-as-needed --extend-zooms-if-still-dropping -l wa-proviso-data
 
+      - name: Generate Boundary Index file
+        working-directory: ./tdei-complete-set
+        run: |
+          python generate_boundary_index.py
+
+      - name: Generate Boundary PMTiles
+        working-directory: ./tdei-complete-set
+        run: |
+          jq -c '.features[]' washington_dataset_boundaries.geojson > washington_dataset_boundaries.ndjson
+          tippecanoe \
+          --force \
+          --read-parallel \
+          --detect-shared-borders \
+          --no-feature-limit \
+          --no-tile-size-limit \
+          -Z 0 -z 16 \
+          -l wa-boundaries \
+          -o washington_dataset_boundaries.pmtiles \
+          washington_dataset_boundaries.ndjson
+          rm -f washington_dataset_boundaries.ndjson
+
       - name: Copy the created files into output folder
         run: |
           mkdir -p output
           cp tdei-complete-set/washington_complete.pmtiles output/washington_complete.pmtiles
           cp tdei-complete-set/washington_dataset_boundaries.geojson output/washington_dataset_boundaries.geojson
+          cp tdei-complete-set/washington_dataset_boundaries.pmtiles output/washington_dataset_boundaries.pmtiles
+          cp tdei-complete-set/washington_dataset_boundaries_index.json output/washington_dataset_boundaries_index.json
           cp tdei-complete-set/downloads/last_updated.txt output/last_updated.txt
 
       - name: Check Backup File
