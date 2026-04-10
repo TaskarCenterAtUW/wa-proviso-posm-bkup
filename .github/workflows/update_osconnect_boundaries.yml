@@ -69,7 +69,18 @@ jobs:
       - name: Generate Boundary PMTiles
         working-directory: ./tdei-complete-set
         run: |
-          tippecanoe -o washington_dataset_boundaries.pmtiles -Z0 -z16 -l wa-boundaries --read-parallel --detect-shared-borders --no-feature-limit --no-tile-size-limit washington_dataset_boundaries.geojson
+          jq -c '.features[]' washington_dataset_boundaries.geojson > washington_dataset_boundaries.ndjson
+          tippecanoe \
+          --force \
+          --read-parallel \
+          --detect-shared-borders \
+          --no-feature-limit \
+          --no-tile-size-limit \
+          -Z 0 -z 16 \
+          -l wa-boundaries \
+          -o washington_dataset_boundaries.pmtiles \
+          washington_dataset_boundaries.ndjson
+          rm -f washington_dataset_boundaries.ndjson
 
       - name: Copy the created files into output folder
         run: |

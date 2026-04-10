@@ -1532,9 +1532,7 @@
       toast.show();
     }
     const useLocalDataPmtiles = new URLSearchParams(window.location.search).get('localData') === '1';
-    const dataPmtilesUrl = (useLocalDataPmtiles && (location.hostname === 'localhost' || location.hostname === '127.0.0.1'))
-      ? 'washington_complete.pmtiles'
-      : 'https://provisodevstorage.blob.core.windows.net/waposmdbbkup/wa-tdei-latest/washington_complete.pmtiles';
+    const dataPmtilesUrl ='https://provisodevstorage.blob.core.windows.net/waposmdbbkup/wa-tdei-latest/washington_complete.pmtiles';
 
     const layer = protomapsL.leafletLayer({
       url: dataPmtilesUrl,
@@ -1625,13 +1623,9 @@
     const BOUNDARIES_MAX_DATA_ZOOM = 16;
 
     // Add boundaries overlay — rendered via PMTiles for fast loading at all zoom levels
-    const boundariesPmtilesUrl = (location.hostname === 'localhost' || location.hostname === '127.0.0.1')
-      ? 'washington_dataset_boundaries.pmtiles'
-      : 'https://provisodevstorage.blob.core.windows.net/waposmdbbkup/wa-tdei-latest/washington_dataset_boundaries.pmtiles';
+    const boundariesPmtilesUrl = 'https://provisodevstorage.blob.core.windows.net/waposmdbbkup/wa-tdei-latest/washington_dataset_boundaries.pmtiles';
 
-    const boundariesIndexUrl = (location.hostname === 'localhost' || location.hostname === '127.0.0.1')
-      ? 'washington_dataset_boundaries_index.json'
-      : 'https://provisodevstorage.blob.core.windows.net/waposmdbbkup/wa-tdei-latest/washington_dataset_boundaries_index.json';
+    const boundariesIndexUrl = 'https://provisodevstorage.blob.core.windows.net/waposmdbbkup/wa-tdei-latest/washington_dataset_boundaries_index.json';
 
     // Build popup HTML from feature properties (used by both click handler and search)
     function buildBoundaryPopupHtml(props, latlng) {
