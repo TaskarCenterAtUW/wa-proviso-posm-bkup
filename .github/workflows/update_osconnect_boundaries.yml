@@ -66,11 +66,22 @@ jobs:
           make -j
           sudo make install
           tippecanoe --version
-
-      - name: Generate Dataset Boundaries GeoJSON and PMTiles
+      
+      - name: Generate Dataset Boundaries GeoJSON
         working-directory: ./tdei-complete-set
         run: |
-          python generate_boundaries_tiles.py
+            jq '{type: "FeatureCollection",features: map({type: "Feature",geometry: .geometry,properties: (del(.geometry) | .custom_metadata as $custom | del(.custom_metadata) | . + $custom)})}' tdei_datasets.json > washington_dataset_boundaries.geojson
+
+      - name: Generate Boundary Index file
+        working-directory: ./tdei-complete-set
+        run: |
+          python generate_boundary_index.py
+        
+      - name: Generate Boundary PMTiles
+        working-directory: ./tdei-complete-set
+        run: |
+          tippecanoe -o washington_dataset_boundaries.pmtiles -Z10 -z16 --drop-densest-as-needed washington_dataset_boundaries.geojson
+
       - name: Copy the created files into output folder
         run: |
           mkdir -p output
