@@ -1254,6 +1254,9 @@
     }
     function clearSearch() {
       lastMatches = [];
+      if (typeof clearBoundarySearchHighlight === 'function') {
+        clearBoundarySearchHighlight();
+      }
       if (typeof map !== 'undefined') {
         map.closePopup();
       }
@@ -1502,10 +1505,47 @@
       }
     }
 
+    class BoundarySearchHighlightPainter {
+      draw(context, geom, z, feature) {
+        if (feature.geomType !== 3) return;
+        context.strokeStyle = '#81C14B';
+        context.lineWidth = 3;
+        context.lineJoin = 'round';
+        context.setLineDash([]);
+        context.globalAlpha = 1;
+        context.beginPath();
+        for (const ring of geom) {
+          if (!ring || ring.length === 0) continue;
+          context.moveTo(ring[0].x, ring[0].y);
+          for (const pt of ring.slice(1)) context.lineTo(pt.x, pt.y);
+          context.closePath();
+        }
+        context.stroke();
+      }
+    }
+
     const BOUNDARY_PAINT_RULES = [
       {
         dataLayer: 'wa-boundaries',
         symbolizer: new BoundaryPainter()
+      }
+    ];
+
+    let highlightedBoundaryIds = new Set();
+    let highlightedBoundaryNames = new Set();
+
+    function isHighlightedBoundary(feature) {
+      const props = feature.props || {};
+      return highlightedBoundaryIds.has(props.tdei_dataset_id) || highlightedBoundaryNames.has(props.name);
+    }
+
+    const BOUNDARY_SEARCH_HIGHLIGHT_RULES = [
+      {
+        dataLayer: 'wa-boundaries',
+        symbolizer: new BoundarySearchHighlightPainter(),
+        filter: function (z, feature) {
+          return feature.geomType === 3 && isHighlightedBoundary(feature);
+        }
       }
     ];
 
@@ -1624,7 +1664,6 @@
 
     // Add boundaries overlay — rendered via PMTiles for fast loading at all zoom levels
     const boundariesPmtilesUrl = 'https://provisodevstorage.blob.core.windows.net/waposmdbbkup/wa-tdei-latest/washington_dataset_boundaries.pmtiles';
-
     const boundariesIndexUrl = 'https://provisodevstorage.blob.core.windows.net/waposmdbbkup/wa-tdei-latest/washington_dataset_boundaries_index.json';
 
     // Build popup HTML from feature properties (used by both click handler and search)
@@ -1672,6 +1711,32 @@
     boundariesLayer.addTo(map);
     overlays['Boundaries'] = boundariesLayer;
     layerControl.addOverlay(boundariesLayer, 'Boundaries');
+
+    map.createPane('searchHighlightPane');
+    map.getPane('searchHighlightPane').style.zIndex = 460;
+    map.getPane('searchHighlightPane').style.pointerEvents = 'none';
+    const searchHighlightLayer = protomapsL.leafletLayer({
+      url: boundariesPmtilesUrl,
+      pane: 'searchHighlightPane',
+      minZoom: 0,
+      maxZoom: 22,
+      maxDataZoom: BOUNDARIES_MAX_DATA_ZOOM,
+      maxNativeZoom: 22,
+      interactive: false,
+      paintRules: BOUNDARY_SEARCH_HIGHLIGHT_RULES
+    }).addTo(map);
+
+    function applyBoundarySearchHighlight(matches) {
+      highlightedBoundaryIds = new Set(matches.map(item => item.tdei_dataset_id).filter(Boolean));
+      highlightedBoundaryNames = new Set(matches.map(item => item.name).filter(Boolean));
+      searchHighlightLayer.redraw();
+    }
+
+    function clearBoundarySearchHighlight() {
+      highlightedBoundaryIds = new Set();
+      highlightedBoundaryNames = new Set();
+      searchHighlightLayer.redraw();
+    }
 
     function getBoundaryQueryZoom() {
       return Math.max(
@@ -1844,7 +1909,7 @@
         }
       });
       // search dataset logic
-      function performSearch() {
+      async function performSearch() {
         const term = document.getElementById('search-input').value.trim().toLowerCase();
         if (!term) {
           showErrorToast('Please enter a dataset name');
@@ -1856,16 +1921,27 @@
         }
         clearSearch();
 
-        const matches = boundaryIndex.filter(f => (f.name || '').toLowerCase().includes(term));
+        const exactMatches = boundaryIndex.filter(f => (f.name || '').toLowerCase() === term);
+        const matches = exactMatches.length
+          ? exactMatches
+          : boundaryIndex.filter(f => (f.name || '').toLowerCase().includes(term));
 
         if (!matches.length) {
           showErrorToast('No matching datasets found');
           return;
         }
 
-        // Compute combined bounds from all matches' bboxes
+        lastMatches = matches;
+        applyBoundarySearchHighlight(matches);
+
+        const boundedMatches = matches.filter(f => f.bbox);
+        if (!boundedMatches.length) {
+          showErrorToast('Matching datasets are missing bounds');
+          return;
+        }
+
         let minLng = Infinity, maxLng = -Infinity, minLat = Infinity, maxLat = -Infinity;
-        matches.forEach(f => {
+        boundedMatches.forEach(f => {
           if (!f.bbox) return;
           minLng = Math.min(minLng, f.bbox.minLng);
           maxLng = Math.max(maxLng, f.bbox.maxLng);
@@ -1876,13 +1952,13 @@
         const bounds = [[minLat, minLng], [maxLat, maxLng]];
         map.fitBounds(bounds, { maxZoom: 16 });
 
-        // Show popup for the first match
-        const first = matches[0];
+        // Show popup for the first preferred match without auto-panning the map again.
+        const first = boundedMatches[0];
         if (first.bbox) {
           const centerLat = (first.bbox.minLat + first.bbox.maxLat) / 2;
           const centerLng = (first.bbox.minLng + first.bbox.maxLng) / 2;
           const html = buildBoundaryPopupHtml(first);
-          L.popup({ autoPan: true })
+          L.popup({ autoPan: false })
             .setLatLng([centerLat, centerLng])
             .setContent(html)
             .openOn(map);
