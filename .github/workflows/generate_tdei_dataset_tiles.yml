@@ -107,7 +107,6 @@ jobs:
       - name: Create .pmtiles using Tippecanoe
         working-directory: ./tdei-complete-set
         run: |
-          sudo apt-get install -y jq
           find ./downloads -name "*.geojson" -exec jq -c '.features[]' {} + | tippecanoe -z 18 -Z 8 -o washington_complete.mbtiles --drop-densest-as-needed --extend-zooms-if-still-dropping -l wa-proviso-data
           pmtiles convert washington_complete.mbtiles washington_complete.pmtiles
           pmtiles verify washington_complete.pmtiles
