@@ -26,17 +26,6 @@ jobs:
         uses: actions/setup-python@v4
         with:
             python-version: '3.11'
-      - name: Install Go
-        uses: actions/setup-go@v5
-        with:
-            go-version: '1.23'
-
-      - name: Install PMTiles CLI
-        run: |
-            go install github.com/protomaps/go-pmtiles@v1.30.1
-            echo "$HOME/go/bin" >> $GITHUB_PATH
-            $HOME/go/bin/pmtiles version
-
       - name: Install Dependencies
         run: |
             python -m pip install --upgrade pip
@@ -83,6 +72,11 @@ jobs:
           make -j
           sudo make install
           tippecanoe --version
+
+      - name: Create .pmtiles using Tippecanoe
+        working-directory: ./tdei-complete-set
+        run: find ./downloads -name "*.geojson" -exec jq -c '.features[]' {} +  | tippecanoe -z 18 -Z 8 -o washington_complete.pmtiles --drop-densest-as-needed --extend-zooms-if-still-dropping -l wa-proviso-data
+
       - name: Generate Boundary Index file
         working-directory: ./tdei-complete-set
         run: |
@@ -93,33 +87,25 @@ jobs:
         run: |
           jq -c '.features[]' washington_dataset_boundaries.geojson > washington_dataset_boundaries.ndjson
           tippecanoe \
-            --force \
-            --read-parallel \
-            --detect-shared-borders \
-            --no-feature-limit \
-            --no-tile-size-limit \
-            -Z 0 -z 16 \
-            -l wa-boundaries \
-            -o washington_dataset_boundaries.pmtiles \
-            washington_dataset_boundaries.ndjson
+          --force \
+          --read-parallel \
+          --detect-shared-borders \
+          --no-feature-limit \
+          --no-tile-size-limit \
+          -Z 0 -z 16 \
+          -l wa-boundaries \
+          -o washington_dataset_boundaries.pmtiles \
+          washington_dataset_boundaries.ndjson
           rm -f washington_dataset_boundaries.ndjson
-
-      - name: Create .pmtiles using Tippecanoe
-        working-directory: ./tdei-complete-set
-        run: |
-          find ./downloads -name "*.geojson" -exec jq -c '.features[]' {} + | tippecanoe -z 18 -Z 8 -o washington_complete.mbtiles --drop-densest-as-needed --extend-zooms-if-still-dropping -l wa-proviso-data
-          pmtiles convert washington_complete.mbtiles washington_complete.pmtiles
-          pmtiles verify washington_complete.pmtiles
-          rm -f washington_complete.mbtiles
 
       - name: Copy the created files into output folder
         run: |
           mkdir -p output
           cp tdei-complete-set/washington_complete.pmtiles output/washington_complete.pmtiles
           cp tdei-complete-set/washington_dataset_boundaries.geojson output/washington_dataset_boundaries.geojson
-          cp tdei-complete-set/downloads/last_updated.txt output/last_updated.txt
           cp tdei-complete-set/washington_dataset_boundaries.pmtiles output/washington_dataset_boundaries.pmtiles
           cp tdei-complete-set/washington_dataset_boundaries_index.json output/washington_dataset_boundaries_index.json
+          cp tdei-complete-set/downloads/last_updated.txt output/last_updated.txt
 
       - name: Check Backup File
         run: ls -lh output
