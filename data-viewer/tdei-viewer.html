@@ -477,7 +477,6 @@
       color: #ffffff;
       border-bottom: none;
       border-radius: 0;
-      padding: 0;
     }
 
     #osc-header .btn-close {
@@ -507,18 +506,16 @@
     .appbar .container {
       display: flex;
       align-items: center;
-      justify-content: space-between;
       width: 100%;
       max-width: none;
-      height: 100%;
-      padding: 0 15px;
+      gap: 1rem;
+      padding: 0;
     }
 
     .appbar-left {
       display: flex;
       align-items: center;
       min-width: 0;
-      height: 100%;
     }
 
     .appbar-brand {
@@ -531,7 +528,6 @@
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      flex-shrink: 0;
     }
 
     .logoImage {
@@ -544,23 +540,12 @@
       display: block;
     }
 
-    .appbar-wordmark {
-      display: none;
-      margin-left: 8px;
-      font-family: var(--secondary-font-family);
-      font-size: 1.25rem;
-      font-weight: 400;
-      line-height: 1;
-      color: #fff;
-      white-space: nowrap;
-    }
-
     .appbar-title {
       display: flex;
-      align-items: center;
-      margin-left: 16px;
+      flex-direction: column;
+      gap: 0.15rem;
+      margin-left: 1rem;
       min-width: 0;
-      height: 100%;
     }
 
     .appbar-subtitle {
@@ -852,7 +837,7 @@
 
     @media (max-width: 768px) {
       #osc-header h1 {
-        font-size: 1.1rem;
+        font-size: 1.35rem;
       }
 
       #osc-main {
@@ -884,11 +869,6 @@
       }
     }
 
-    @media (min-width: 768px) {
-      .appbar-wordmark {
-        display: inline-block;
-      }
-    }
   </style>
   <style>
     body {
