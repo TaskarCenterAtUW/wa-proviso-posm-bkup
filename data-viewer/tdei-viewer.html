@@ -477,6 +477,7 @@
       color: #ffffff;
       border-bottom: none;
       border-radius: 0;
+      padding: 0;
     }
 
     #osc-header .btn-close {
@@ -506,16 +507,18 @@
     .appbar .container {
       display: flex;
       align-items: center;
-      gap: 1rem;
+      justify-content: space-between;
       width: 100%;
       max-width: none;
-      padding: 0;
+      height: 100%;
+      padding: 0 15px;
     }
 
     .appbar-left {
       display: flex;
       align-items: center;
       min-width: 0;
+      height: 100%;
     }
 
     .appbar-brand {
@@ -528,6 +531,7 @@
       display: inline-flex;
       align-items: center;
       justify-content: center;
+      flex-shrink: 0;
     }
 
     .logoImage {
@@ -542,19 +546,21 @@
 
     .appbar-wordmark {
       display: none;
-      margin-left: 0.5rem;
+      margin-left: 8px;
       font-family: var(--secondary-font-family);
       font-size: 1.25rem;
+      font-weight: 400;
       line-height: 1;
       color: #fff;
+      white-space: nowrap;
     }
 
     .appbar-title {
       display: flex;
-      flex-direction: column;
-      gap: 0.15rem;
-      margin-left: 1rem;
+      align-items: center;
+      margin-left: 16px;
       min-width: 0;
+      height: 100%;
     }
 
     .appbar-subtitle {
@@ -846,7 +852,7 @@
 
     @media (max-width: 768px) {
       #osc-header h1 {
-        font-size: 1.35rem;
+        font-size: 1.1rem;
       }
 
       #osc-main {
@@ -906,8 +912,9 @@
             <div class="appbar-left">
               <div class="appbar-brand">
                 <div class="appbar-logo">
-                  <img src="../lib/assets/tdei-logo.png" alt="" aria-hidden="true" class="logoImage" />
+                  <img src="https://portal.tdei.us/static/media/tdei-logo.699be3e7d0d3a228fa88.png" alt="" aria-hidden="true" class="logoImage" />
                 </div>
+                <span class="appbar-wordmark" aria-label="TDEI">TDEI</span>
               </div>
               <div class="appbar-title">
                 <h1 class="modal-title" id="landingModalLabel">OS-CONNECT Viewer</h1>
