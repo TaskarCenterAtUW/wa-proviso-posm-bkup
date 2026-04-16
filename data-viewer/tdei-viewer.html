@@ -512,29 +512,49 @@
       padding: 0;
     }
 
+    .appbar-left {
+      display: flex;
+      align-items: center;
+      min-width: 0;
+    }
+
+    .appbar-brand {
+      display: flex;
+      align-items: center;
+      flex-shrink: 0;
+    }
+
     .appbar-logo {
-      width: 50px;
-      background: #ffffff;
-      padding: 5px 8px;
-      border-radius: 4px;
       display: inline-flex;
       align-items: center;
       justify-content: center;
     }
 
     .logoImage {
-      width: 70px;
+      width: 56px;
+      height: 44px;
       background-color: #fff;
-      padding: 5px;
+      padding: 2px 6px;
       border-radius: 4px;
-      margin: 2px;
-      height: 48px;
+      object-fit: fill;
+      display: block;
+    }
+
+    .appbar-wordmark {
+      display: none;
+      margin-left: 0.5rem;
+      font-family: var(--secondary-font-family);
+      font-size: 1.25rem;
+      line-height: 1;
+      color: #fff;
     }
 
     .appbar-title {
       display: flex;
       flex-direction: column;
       gap: 0.15rem;
+      margin-left: 1rem;
+      min-width: 0;
     }
 
     .appbar-subtitle {
@@ -829,11 +849,6 @@
         font-size: 1.35rem;
       }
 
-      .appbar-logo {
-        width: 44px;
-        padding: 4px 6px;
-      }
-
       #osc-main {
         padding: 2rem 1rem;
       }
@@ -862,6 +877,12 @@
         padding: 0.75rem 1rem;
       }
     }
+
+    @media (min-width: 768px) {
+      .appbar-wordmark {
+        display: inline-block;
+      }
+    }
   </style>
   <style>
     body {
@@ -882,9 +903,17 @@
       <div class="modal-content">
         <header id="osc-header" class="modal-header appbar" role="banner">
           <div class="container">
-            <img src="https://portal.tdei.us/static/media/tdei_logo.1ffbe39dbe9c9d2be23a081ac0fa2cfc.svg"
-              alt="TDEI Logo" class="logoImage" />
-            <h1 class="modal-title" id="landingModalLabel">OS-CONNECT Viewer</h1>
+            <div class="appbar-left">
+              <div class="appbar-brand">
+                <div class="appbar-logo">
+                  <img src="../lib/assets/tdei-logo.png" alt="" aria-hidden="true" class="logoImage" />
+                </div>
+                <span class="appbar-wordmark" aria-label="TDEI">TDEI</span>
+              </div>
+              <div class="appbar-title">
+                <h1 class="modal-title" id="landingModalLabel">OS-CONNECT Viewer</h1>
+              </div>
+            </div>
           </div>
           <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
         </header>
