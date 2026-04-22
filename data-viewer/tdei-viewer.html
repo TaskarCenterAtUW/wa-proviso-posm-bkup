@@ -324,14 +324,43 @@
       display: flex;
       align-items: center;
       gap: 8px;
+      position: relative;
     }
 
     #search-input {
       height: 32px;
-      padding: 0 8px;
+      padding: 0 30px 0 8px;
       border: 1px solid #ccc;
       border-radius: 4px;
       font-size: 14px;
+      width: 220px;
+      transition: border-color 0.2s;
+    }
+
+    #search-input:focus {
+      outline: none;
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 3px rgba(135, 62, 242, 0.12);
+    }
+
+    #search-clear-btn {
+      position: absolute;
+      right: calc(12px + 70px + 4px);
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: #aaa;
+      font-size: 14px;
+      padding: 0 4px;
+      display: none;
+      line-height: 1;
+      z-index: 1;
+    }
+
+    #search-clear-btn:hover {
+      color: #555;
     }
 
     #search-button {
@@ -341,6 +370,124 @@
       border-radius: 4px;
       color: #fff;
       border: none;
+      cursor: pointer;
+      font-size: 13px;
+      white-space: nowrap;
+    }
+
+    #search-button:hover {
+      background: var(--primary-color-dark);
+    }
+
+    /* Autocomplete dropdown */
+    #search-autocomplete {
+      display: none;
+      position: absolute;
+      top: calc(100% + 6px);
+      right: 0;
+      min-width: 340px;
+      max-width: 440px;
+      background: #fff;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      box-shadow: 0 6px 24px rgba(0, 0, 0, 0.14);
+      z-index: 2000;
+      overflow: hidden;
+      font-family: var(--primary-font-family, 'Roboto', sans-serif);
+      flex-direction: column;
+    }
+
+    #search-autocomplete .autocomplete-scroll-body {
+      max-height: 280px;
+      overflow-y: auto;
+      overscroll-behavior: contain;
+    }
+
+    #search-autocomplete .autocomplete-scroll-body::-webkit-scrollbar {
+      width: 5px;
+    }
+
+    #search-autocomplete .autocomplete-scroll-body::-webkit-scrollbar-track {
+      background: #f5f5f5;
+    }
+
+    #search-autocomplete .autocomplete-scroll-body::-webkit-scrollbar-thumb {
+      background: #ccc;
+      border-radius: 3px;
+    }
+
+    #search-autocomplete.open {
+      display: flex;
+    }
+
+    .autocomplete-header {
+      padding: 8px 14px 6px;
+      font-size: 11px;
+      color: #888;
+      letter-spacing: 0.6px;
+      text-transform: uppercase;
+      border-bottom: 1px solid #f0f0f0;
+      font-weight: 600;
+    }
+
+    .autocomplete-item {
+      padding: 10px 14px;
+      cursor: pointer;
+      transition: background 0.15s;
+      border-bottom: 1px solid #f5f5f5;
+    }
+
+    .autocomplete-item:last-child {
+      border-bottom: none;
+    }
+
+    .autocomplete-item:hover,
+    .autocomplete-item.active {
+      background: var(--purple-background-light, #fbf8ff);
+    }
+
+    .autocomplete-item .ac-name {
+      font-size: 14px;
+      font-weight: 600;
+      color: #1f2937;
+      display: block;
+      margin-bottom: 2px;
+    }
+
+    .autocomplete-item .ac-name mark {
+      background: rgba(135, 62, 242, 0.15);
+      color: var(--primary-color);
+      border-radius: 2px;
+      padding: 0 1px;
+    }
+
+    .autocomplete-item .ac-meta {
+      font-size: 11px;
+      color: #888;
+      display: flex;
+      gap: 10px;
+    }
+
+    .autocomplete-item .ac-meta .ac-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+    }
+
+    .autocomplete-no-results {
+      padding: 14px;
+      font-size: 13px;
+      color: #888;
+      text-align: center;
+    }
+
+    .autocomplete-footer {
+      padding: 7px 14px;
+      font-size: 10px;
+      color: #bbb;
+      text-align: right;
+      border-top: 1px solid #f0f0f0;
+      background: #fafafa;
     }
 
     #home-button {
@@ -868,7 +1015,6 @@
         padding: 0.75rem 1rem;
       }
     }
-
   </style>
   <style>
     body {
@@ -892,7 +1038,8 @@
             <div class="appbar-left">
               <div class="appbar-brand">
                 <div class="appbar-logo">
-                  <img src="https://portal.tdei.us/static/media/tdei-logo.699be3e7d0d3a228fa88.png" alt="" aria-hidden="true" class="logoImage" />
+                  <img src="https://portal.tdei.us/static/media/tdei-logo.699be3e7d0d3a228fa88.png" alt=""
+                    aria-hidden="true" class="logoImage" />
                 </div>
               </div>
               <div class="appbar-title">
@@ -1041,8 +1188,12 @@
     <div id="search-wrapper">
       <div class="search-row">
         <div id="search-container">
-          <input type="text" id="search-input" placeholder="Search For Dataset">
+          <input type="text" id="search-input" placeholder="Search For Dataset" autocomplete="off"
+            aria-label="Search for a dataset" aria-autocomplete="list" aria-controls="search-autocomplete">
+          <button id="search-clear-btn" aria-label="Clear search" title="Clear"><i class="bi bi-x"></i></button>
           <button id="search-button">Search</button>
+          <!-- Autocomplete dropdown -->
+          <div id="search-autocomplete" role="listbox" aria-label="Dataset suggestions"></div>
         </div>
         <div class="disclaimer-box">
           <i class="bi bi-exclamation-circle"></i>
@@ -1586,7 +1737,7 @@
       toast.show();
     }
     const useLocalDataPmtiles = new URLSearchParams(window.location.search).get('localData') === '1';
-    const dataPmtilesUrl ='https://provisodevstorage.blob.core.windows.net/waposmdbbkup/wa-tdei-latest/washington_complete.pmtiles';
+    const dataPmtilesUrl = 'https://provisodevstorage.blob.core.windows.net/waposmdbbkup/wa-tdei-latest/washington_complete.pmtiles';
 
     const layer = protomapsL.leafletLayer({
       url: dataPmtilesUrl,
@@ -1922,76 +2073,213 @@
           rightClickMarker = null;
         }
       });
-      // search dataset logic
-      async function performSearch() {
-        const term = document.getElementById('search-input').value.trim().toLowerCase();
+      // ── Autocomplete / search dataset logic ──────────────────────────────────
+      const searchInput = document.getElementById('search-input');
+      const searchClearBtn = document.getElementById('search-clear-btn');
+      const autocompleteEl = document.getElementById('search-autocomplete');
+      let acActiveIndex = -1;   // keyboard-navigation cursor
+      let acCurrentMatches = [];   // results shown in the dropdown
+
+      /** Escape special regex chars in a user-typed string */
+      function escapeRegex(str) {
+        return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      }
+
+      /** Wrap the matched portion of `text` in a <mark> tag */
+      function highlightMatch(text, term) {
+        if (!term) return text;
+        const re = new RegExp('(' + escapeRegex(term) + ')', 'gi');
+        return text.replace(re, '<mark>$1</mark>');
+      }
+
+      /** Build & show the dropdown with `matches` */
+      function renderAutocomplete(matches, term) {
+        acCurrentMatches = matches;
+        acActiveIndex = -1;
+        autocompleteEl.innerHTML = '';
+
+        if (!matches.length) {
+          autocompleteEl.innerHTML =
+            '<div class="autocomplete-no-results">No matching datasets found</div>';
+          autocompleteEl.classList.add('open');
+          return;
+        }
+
+        const header = document.createElement('div');
+        header.className = 'autocomplete-header';
+        header.textContent = matches.length === 1
+          ? '1 dataset found'
+          : `${matches.length} datasets found — click to navigate`;
+        autocompleteEl.appendChild(header);
+
+        // Scrollable body — header & footer stay pinned outside
+        const scrollBody = document.createElement('div');
+        scrollBody.className = 'autocomplete-scroll-body';
+
+        matches.forEach((f, idx) => {
+          const item = document.createElement('div');
+          item.className = 'autocomplete-item';
+          item.setAttribute('role', 'option');
+          item.dataset.idx = idx;
+
+          item.innerHTML = `
+            <span class="ac-name">${highlightMatch(f.name || 'Unnamed', term)}</span>
+            <span class="ac-meta">
+              ${f.version ? `<span class="ac-tag"><i class="bi bi-tag"></i> v${f.version}</span>` : ''}
+              ${f.tdei_dataset_id ? `<span class="ac-tag"><i class="bi bi-hash"></i> ${f.tdei_dataset_id}</span>` : ''}
+            </span>`;
+
+          item.addEventListener('mousedown', function (e) {
+            e.preventDefault();
+            selectAutocompleteItem(idx);
+          });
+
+          scrollBody.appendChild(item);
+        });
+
+        autocompleteEl.appendChild(scrollBody);
+
+        const footer = document.createElement('div');
+        footer.className = 'autocomplete-footer';
+        footer.textContent = 'Select a result to navigate';
+        autocompleteEl.appendChild(footer);
+
+        autocompleteEl.classList.add('open');
+      }
+
+      /** Navigate to and open popup for `matches[idx]` */
+      function selectAutocompleteItem(idx) {
+        const f = acCurrentMatches[idx];
+        if (!f) return;
+
+        // Highlight ALL matches that share the same name (e.g. all "Spokane" datasets)
+        const sameNameMatches = acCurrentMatches.filter(
+          m => (m.name || '').toLowerCase() === (f.name || '').toLowerCase()
+        );
+        lastMatches = sameNameMatches.length > 1 ? sameNameMatches : acCurrentMatches;
+        applyBoundarySearchHighlight(lastMatches);
+
+        // Zoom to the selected dataset
+        if (f.bbox) {
+          const bounds = [[f.bbox.minLat, f.bbox.minLng], [f.bbox.maxLat, f.bbox.maxLng]];
+          map.fitBounds(bounds, { maxZoom: 16 });
+
+          // Open popup
+          const centerLat = (f.bbox.minLat + f.bbox.maxLat) / 2;
+          const centerLng = (f.bbox.minLng + f.bbox.maxLng) / 2;
+          const html = buildBoundaryPopupHtml(f);
+          L.popup({ autoPan: false })
+            .setLatLng([centerLat, centerLng])
+            .setContent(html)
+            .openOn(map);
+        }
+
+        // Fill input & close dropdown
+        searchInput.value = f.name || '';
+        closeAutocomplete();
+      }
+
+      function closeAutocomplete() {
+        autocompleteEl.classList.remove('open');
+        acActiveIndex = -1;
+      }
+
+      /** Run the search against `boundaryIndex` and show dropdown */
+      function performSearch() {
+        const term = searchInput.value.trim().toLowerCase();
         if (!term) {
-          showErrorToast('Please enter a dataset name');
+          closeAutocomplete();
+          clearSearch();
           return;
         }
         if (!boundaryIndex.length) {
           showErrorToast('Dataset boundaries not loaded yet');
           return;
         }
-        clearSearch();
 
+        // Exact-name matches first, then partial
         const exactMatches = boundaryIndex.filter(f => (f.name || '').toLowerCase() === term);
-        const matches = exactMatches.length
-          ? exactMatches
-          : boundaryIndex.filter(f => (f.name || '').toLowerCase().includes(term));
+        const partialMatches = boundaryIndex.filter(f => (f.name || '').toLowerCase().includes(term));
+        const matches = exactMatches.length ? exactMatches : partialMatches;
 
-        if (!matches.length) {
-          showErrorToast('No matching datasets found');
-          return;
-        }
-
+        // Highlight all matches on the map but do NOT pan/zoom
         lastMatches = matches;
-        applyBoundarySearchHighlight(matches);
-
-        const boundedMatches = matches.filter(f => f.bbox);
-        if (!boundedMatches.length) {
-          showErrorToast('Matching datasets are missing bounds');
-          return;
+        if (matches.length) {
+          applyBoundarySearchHighlight(matches);
+        } else {
+          clearBoundarySearchHighlight && clearBoundarySearchHighlight();
         }
 
-        let minLng = Infinity, maxLng = -Infinity, minLat = Infinity, maxLat = -Infinity;
-        boundedMatches.forEach(f => {
-          if (!f.bbox) return;
-          minLng = Math.min(minLng, f.bbox.minLng);
-          maxLng = Math.max(maxLng, f.bbox.maxLng);
-          minLat = Math.min(minLat, f.bbox.minLat);
-          maxLat = Math.max(maxLat, f.bbox.maxLat);
-        });
-
-        const bounds = [[minLat, minLng], [maxLat, maxLng]];
-        map.fitBounds(bounds, { maxZoom: 16 });
-
-        // Show popup for the first preferred match without auto-panning the map again.
-        const first = boundedMatches[0];
-        if (first.bbox) {
-          const centerLat = (first.bbox.minLat + first.bbox.maxLat) / 2;
-          const centerLng = (first.bbox.minLng + first.bbox.maxLng) / 2;
-          const html = buildBoundaryPopupHtml(first);
-          L.popup({ autoPan: false })
-            .setLatLng([centerLat, centerLng])
-            .setContent(html)
-            .openOn(map);
-        }
+        renderAutocomplete(matches, term);
       }
 
-      document.getElementById('search-input').addEventListener('input', function () {
-        if (this.value.trim() === '') {
+      //Input events
+      searchInput.addEventListener('input', function () {
+        const val = this.value.trim();
+        searchClearBtn.style.display = val ? 'block' : 'none';
+        if (!val) {
+          closeAutocomplete();
           clearSearch();
+          return;
+        }
+        performSearch();
+      });
+
+      // Keyboard navigation inside autocomplete
+      searchInput.addEventListener('keydown', function (event) {
+        const items = autocompleteEl.querySelectorAll('.autocomplete-item');
+        if (!autocompleteEl.classList.contains('open')) {
+          if (event.key === 'Enter') { performSearch(); return; }
+          return;
+        }
+        if (event.key === 'ArrowDown') {
+          event.preventDefault();
+          acActiveIndex = Math.min(acActiveIndex + 1, items.length - 1);
+        } else if (event.key === 'ArrowUp') {
+          event.preventDefault();
+          acActiveIndex = Math.max(acActiveIndex - 1, -1);
+        } else if (event.key === 'Enter') {
+          event.preventDefault();
+          if (acActiveIndex >= 0) {
+            selectAutocompleteItem(acActiveIndex);
+          } else {
+            performSearch();
+          }
+          return;
+        } else if (event.key === 'Escape') {
+          closeAutocomplete();
+          return;
+        }
+        // Update active styling
+        items.forEach((el, i) => el.classList.toggle('active', i === acActiveIndex));
+        if (acActiveIndex >= 0 && items[acActiveIndex]) {
+          items[acActiveIndex].scrollIntoView({ block: 'nearest' });
         }
       });
 
-      document.getElementById('search-input').addEventListener('keydown', function (event) {
-        if (event.key === 'Enter') {
-          performSearch();
+      searchInput.addEventListener('blur', function () {
+        // Small delay so mousedown on an item fires first
+        setTimeout(closeAutocomplete, 150);
+      });
+
+      searchInput.addEventListener('focus', function () {
+        if (this.value.trim() && acCurrentMatches.length) {
+          autocompleteEl.classList.add('open');
         }
       });
 
-      document.getElementById('search-button').addEventListener('click', performSearch);
+      searchClearBtn.addEventListener('click', function () {
+        searchInput.value = '';
+        searchClearBtn.style.display = 'none';
+        closeAutocomplete();
+        clearSearch();
+        searchInput.focus();
+      });
+
+      document.getElementById('search-button').addEventListener('click', function () {
+        performSearch();
+        searchInput.focus();
+      });
 
       // Report issue logic
       document.getElementById('reportIssue').addEventListener('click', function () {
