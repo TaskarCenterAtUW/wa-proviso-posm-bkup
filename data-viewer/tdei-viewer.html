@@ -1455,7 +1455,7 @@
         return '#88CCEE';
       }
       else if (isFootpath(props)) {
-        return '#CC6677';
+        return '#117733';
       }
       else if (isTrafficIsland(props)) {
         return '#882255';
@@ -1480,7 +1480,7 @@
     function getKerbColor(feature) {
       const props = feature.props || {};
       if (props['kerb'] === 'lowered') {
-        return '#117733';
+        return '#CC6677';
       }
       if (props['kerb'] === 'raised') {
         return '#AA4499';
@@ -1553,9 +1553,9 @@
         case 'Crossing Unmarked':
           return '#44AA99';
         case 'Footway':
-          return '#CC6677';
-        case 'Kerb Lowered':
           return '#117733';
+        case 'Kerb Lowered':
+          return '#CC6677';
         case 'Kerb Flushed':
           return '#332288';
         case 'Kerb Raised':
