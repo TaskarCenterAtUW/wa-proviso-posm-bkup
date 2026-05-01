@@ -20,8 +20,8 @@ OUTPUT_PMTILES = "washington_complete.pmtiles"
 LAYER_NAME = "wa-proviso-data"
 BOUNDARIES_INDEX_JSON = "washington_dataset_boundaries_index.json"
 BOUNDARIES_PMTILES = "washington_dataset_boundaries.pmtiles"
-TDEI_USERNAME = "nareshd@gaussiansolutions.com"
-TDEI_PASSWORD = "a$hwa7hamA"
+TDEI_USERNAME = "<>"
+TDEI_PASSWORD = "<>"
 
 
 def run_cmd(command: list[str], cwd: Path, env: dict[str, str] | None = None) -> None:
