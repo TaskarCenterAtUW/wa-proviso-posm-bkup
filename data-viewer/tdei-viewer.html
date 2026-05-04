@@ -340,7 +340,7 @@
     #search-input:focus {
       outline: none;
       border-color: var(--primary-color);
-      box-shadow: 0 0 0 3px rgba(135, 62, 242, 0.12);
+      box-shadow: 0 0 0 3px rgba(50, 0, 110, 0.12);
     }
 
     #search-clear-btn {
@@ -455,7 +455,7 @@
     }
 
     .autocomplete-item .ac-name mark {
-      background: rgba(135, 62, 242, 0.15);
+      background: rgba(50, 0, 110, 0.15);
       color: var(--primary-color);
       border-radius: 2px;
       padding: 0 1px;
@@ -595,14 +595,16 @@
     :root {
       --primary-font-family: "Open Sans", sans-serif;
       --secondary-font-family: "Montserrat", sans-serif;
-      --primary-color: #873EF2;
-      --primary-color-dark: #7a32e4;
-      --secondary-color: #83879b;
+      --brand-primary: #32006e;
+      --brand-accent: #4b2e83;
+      --primary-color: var(--brand-primary);
+      --primary-color-dark: var(--brand-primary);
+      --secondary-color: #5f647a;
       --tdei-blue: #586AB5;
       --tdei-green: #479FA1;
-      --purple-background-light: #fbf8ff;
-      --purple-background-dark: #e7e2f3;
-      --purple-background-medium: #f5f0ff;
+      --purple-background-light: #f4f0fb;
+      --purple-background-dark: #ddd2ee;
+      --purple-background-medium: #ebe4f6;
       --white: #ffffff;
     }
 
@@ -711,7 +713,7 @@
       padding: 1rem 1.5rem;
       background: var(--purple-background-light);
       border-radius: 8px;
-      border: 1px solid rgba(135, 62, 242, 0.2);
+      border: 1px solid rgba(50, 0, 110, 0.2);
       color: #2f3661;
       transition: all 0.3s ease;
     }
@@ -754,7 +756,7 @@
       background-color: var(--primary-color);
       color: #ffffff;
       border-color: var(--primary-color);
-      box-shadow: 0 2px 6px rgba(135, 62, 242, 0.2);
+      box-shadow: 0 2px 6px rgba(50, 0, 110, 0.2);
     }
 
     .osc-btn.primary:hover {
@@ -762,7 +764,7 @@
       border-color: var(--primary-color-dark);
       color: #ffffff;
       transform: translateY(-1px);
-      box-shadow: 0 4px 10px rgba(135, 62, 242, 0.3);
+      box-shadow: 0 4px 10px rgba(50, 0, 110, 0.3);
     }
 
     .osc-btn.secondary {
@@ -814,7 +816,7 @@
     }
 
     #osc-main section:hover {
-      box-shadow: 0 6px 24px rgba(135, 62, 242, 0.15);
+      box-shadow: 0 6px 24px rgba(50, 0, 110, 0.15);
       transform: translateY(-2px);
     }
 
@@ -877,7 +879,7 @@
       padding: 1.5rem;
       margin-top: 2rem;
       border-radius: 12px;
-      box-shadow: 0 3px 12px rgba(135, 62, 242, 0.1);
+      box-shadow: 0 3px 12px rgba(50, 0, 110, 0.1);
     }
 
     .osc-btn:focus-visible,
@@ -955,7 +957,7 @@
       color: #2f3661;
       margin-top: 0.5rem;
       padding-top: 0.5rem;
-      border-top: 1px solid rgba(135, 62, 242, 0.15);
+      border-top: 1px solid rgba(50, 0, 110, 0.15);
     }
 
     #landing-footer .footer-update small {
