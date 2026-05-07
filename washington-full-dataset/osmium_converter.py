@@ -2,10 +2,12 @@ from osm_osw_reformatter import Formatter
 import asyncio
 import osmium
 from shapely.geometry import LineString, Point
+from shapely.ops import transform
+import pyproj
 import json
 from geojson import Feature, FeatureCollection
 from osm_osw_reformatter import Response
-
+import math
 import os
 def start_converstion():
     working_dir = '../output/county-datasets/washington'
@@ -22,6 +24,10 @@ class OSWHandler(osmium.SimpleHandler):
         # self.output_file = output_file
         self.nodes = {}
         self.ways = []
+        self.projection = pyproj.Transformer.from_crs("EPSG:4326", "EPSG:3857", always_xy=True).transform
+        self.ignore_ways_list = [1794930, 1975040, 4690348, 4838332, 1104614, 1104255, 4078588, 4690516, 4551366, 1798242, 4590212, 1107062, 1452112, 
+                                 4689840, 4920819, 2076235, 3318158, 2246423, 2901057, 1105988, 3546280, 3618328, 4836931, 1585830, 4690208, 4909532, 4700821, 22459, 
+                                 1136343, 23224, 4778223, 4698567, 21241, 1782454, 4307372, 1104763, 1870944]
         
 
     def node(self, n):
@@ -40,6 +46,16 @@ class OSWHandler(osmium.SimpleHandler):
         if len(way_nodes) < 2:
             print(f'Way {w.id} has less than 2 nodes, skipping.')
             return
+        if len(way_nodes) == 2:
+            way_id = w.id
+            if way_id in self.ignore_ways_list:
+                print(f'Way {w.id} is in the ignore list, skipping.')
+                return
+            p1 = self.nodes.get(str(way_nodes[0].ref))
+            p2 = self.nodes.get(str(way_nodes[1].ref))
+            if p1 and p2 and p1['geometry'].x == p2['geometry'].x and p1['geometry'].y == p2['geometry'].y:
+                print(f'Way {w.id} has two nodes with same geometry, skipping.')
+                return
         for n in way_nodes:
             geometry = self.nodes.get(str(n.ref))
             if geometry:
@@ -56,7 +72,16 @@ class OSWHandler(osmium.SimpleHandler):
             'u_id': u_id,
             'v_id': v_id
         }
-        self.ways.append(way_data)
+        length_meters = transform(self.projection, way_geometry).length
+        if length_meters > 0:
+            way_data['tags']['length'] = round(length_meters, 2)
+            if len(way_points) == 2:
+                # Check if both points have same geometry, if so, skip the way
+                if way_points[0].x == way_points[1].x and way_points[0].y == way_points[1].y:
+                    print(f'Way {w.id} has two nodes with same geometry, skipping.')
+                    return
+            # Add only if length is greater than 0 to avoid issues with zero-length ways
+            self.ways.append(way_data)
         
     def show_results(self):
         print(f'Processed {len(self.nodes)} nodes and {len(self.ways)} ways.')
@@ -77,6 +102,8 @@ class OSWHandler(osmium.SimpleHandler):
             for key, value in node['tags'].items():
                 properties[key] = value
             properties['_id'] = str(node['id'])
+            properties = self.remove_unknown_kerbs(properties)
+            properties = self.remove_unknown_node_tags(properties)
             node_feature = Feature(geometry=node['geometry'], properties=properties)
             nodes_feature_collection.features.append(node_feature)
         with open(nodes_file, 'w') as f:
@@ -102,20 +129,60 @@ class OSWHandler(osmium.SimpleHandler):
             ways_feature_collection['$schema'] = "https://sidewalks.washington.edu/opensidewalks/0.2/schema.json"
             ways_feature_collection_json = json.dumps(ways_feature_collection)
             f.write(ways_feature_collection_json)
-    def transform_tags(self,tags):
+    
+    def transform_tags(self,tags:dict):
+        tag_keys = list(tags.keys())
         if tags.get('crossing'):
             crossing_type = tags['crossing']
             tags['crossing:markings'] = self.crossing_to_crossing_markings(crossing_type)
             # remove the crossing tag
             del tags['crossing']
-        if tags.get('width'):
+        if 'width' in tag_keys:
             # convert to float with two decimal places
             try:
-                tags['width'] = float(tags['width'])
-                tags['width'] = round(tags['width'], 2)
+                width_float = float(tags['width'])
+                if math.isnan(width_float) :
+                    tags['width'] = 0.0
+                else:
+                    tags['width'] = float(tags['width'])
+                    tags['width'] = round(tags['width'], 2)
             except ValueError:
+                print(f"Invalid width value: {tags['width']}. Setting width to 0.0")
                 tags['width'] = 0.0
-        return tags
+        if tags.get('surface'):
+            try:
+                surface = tags['surface']
+                if surface in ['ground','metal']:
+                    tags['surface'] = 'unpaved'
+            except ValueError:
+                print(f"Invalid surface value: {tags['surface']}. Removing surface tag")
+                del tags['surface']
+        if tags.get('step_count'):
+            try:
+                step_count = int(tags['step_count'])
+                if step_count < 0 or math.isnan(step_count):
+                    tags['step_count'] = 0
+                else:
+                    tags['step_count'] = step_count
+            except ValueError:
+                print(f"Invalid step_count value: {tags['step_count']}. Setting step_count to 0")
+                tags['step_count'] = 0
+
+        if tags.get('surface'):
+            try:
+                normal_surfaces = ["asphalt","concrete","dirt","grass","grass_paver","gravel","paved","paving_stones","unpaved"]
+                surface = tags['surface']
+                if surface not in normal_surfaces:
+                    del tags['surface']
+            except ValueError:
+                print(f"Invalid surface value: {tags['surface']}. Removing surface tag")
+                del tags['surface']
+        if tags.get('footway') and tags['footway'] == 'path':
+            del tags['footway']
+
+        # Length removal
+        clean_data = {k: v for k, v in tags.items() if v is not None}
+        return clean_data
 
     def crossing_to_crossing_markings(self, crossing_type):
         if crossing_type == 'marked':
@@ -124,9 +191,28 @@ class OSWHandler(osmium.SimpleHandler):
             return 'no'
         else:
             return 'no' 
+
+    def remove_unknown_node_tags(self, tags):
+        normal_keys = ['barrier','kerb','tactile_paving','_id']
+        tags_to_remove = []
+        for key, value in tags.items():
+            is_ext = key.startswith('ext:')
+            if key not in normal_keys and not is_ext:
+                tags_to_remove.append(key)
+        for tag_key in tags_to_remove:
+            del tags[tag_key]
+        return tags    
+
+    def remove_unknown_kerbs(self, tags):
+        if tags.get('kerb'):
+            kerb_value = tags['kerb']
+            if kerb_value not in ['raised', 'lowered', 'flush']:
+                del tags['kerb']
+        return tags
     def remove_unnecessary_tags(self,tags):
         unnecessary_way_tags = ['layer','tunnel', 'bridge', 'tactile_paving', 'wheelchair', 'crossing:island',
                               'barrier', 'kerb', 'covered', 'bicycle','crossing:signals']
+        # unnecessary_way_tags.append('length') # Length to be removed for calculation later.
         tags_to_remove = []
         for key, value in tags.items():
             if key in unnecessary_way_tags:
@@ -168,14 +254,15 @@ class OsmiumOSWConverter:
         resp = Response(status=True, generated_files=files)
         return resp
 
-        
+
 def main():
     handler = OSWHandler()
-    input_file = '../output/benton.osm.pbf'
+    input_file = '../output/king.osm.pbf' # '../output/washington_complete.pbf'
     handler.apply_file(input_file)
     handler.show_results()
-    handler.export_results('../output/county-datasets/benton', dataset_name='benton')
+    handler.export_results('../output/county-datasets/king', dataset_name='king')
 
 if __name__ == '__main__':
     main()
+    # print(f'Printing float of null: {float("null")}')
     # start_converstion()

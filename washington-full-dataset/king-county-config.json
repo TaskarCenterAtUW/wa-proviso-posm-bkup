@@ -1,0 +1,13 @@
+{
+    "directory": "./",
+    "extracts": [
+        {
+            "output": "../output/king.osm.pbf",
+            "description": "Extract of dow-King",
+            "polygon": {
+                "file_name": "counties/dow-King.geojson",
+                "type": "geojson"
+            }
+        }
+    ]
+}
