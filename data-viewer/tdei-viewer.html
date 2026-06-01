@@ -1384,11 +1384,11 @@
     }).addTo(map);
 
 
-    var hexagonWMS = L.tileLayer.wms('https://waprovisoimg.centralindia.cloudapp.azure.com/streaming/wms', {
-      layers: 'HxGN_Imagery',
+    var hexagonWMS = L.tileLayer.wms('https://waprovisoimg.centralindia.cloudapp.azure.com/arcgis/services/ImageServices/Statewide_2023_1ft_4band_wsps_83h_img/ImageServer/WMSServer', {
+      layers: 'Statewide_2023_1ft_4band_wsps_83h_img',
       format: 'image/png',
       transparent: true,
-      attribution: ' Hexagon WMS',
+      attribution: ' WA Tech',
       crs: L.CRS.EPSG4326,
       maxZoom: 22
     });
