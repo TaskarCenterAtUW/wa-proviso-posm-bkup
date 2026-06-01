@@ -1384,7 +1384,7 @@
     }).addTo(map);
 
 
-    var hexagonWMS = L.tileLayer.wms('https://waprovisoimg.centralindia.cloudapp.azure.com/arcgis/services/ImageServices/Statewide_2023_1ft_4band_wsps_83h_img/ImageServer/WMSServer', {
+    var waTechImagery = L.tileLayer.wms('https://waprovisoimg.centralindia.cloudapp.azure.com/arcgis/services/ImageServices/Statewide_2023_1ft_4band_wsps_83h_img/ImageServer/WMSServer', {
       layers: 'Statewide_2023_1ft_4band_wsps_83h_img',
       format: 'image/png',
       transparent: true,
@@ -1441,7 +1441,7 @@
 
     const baseLayers = {
       'Raster': CartoDB_Positron,
-      "Imagery": hexagonWMS
+      "Imagery": waTechImagery
     };
     const position = {
       position: 'topleft',
