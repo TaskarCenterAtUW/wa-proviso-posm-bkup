@@ -1200,8 +1200,7 @@
         <div class="disclaimer-box">
           <i class="bi bi-exclamation-circle"></i>
           <span class="disclaimer-text">
-            <strong>Known Issue:</strong> Due to a shift in imagery, you may see the mapping edges not align with
-            underlying infrastructure.
+            <strong>Notice:</strong> Images may take a moment to load. We appreciate your patience.
           </span>
         </div>
 
@@ -1384,11 +1383,11 @@
     }).addTo(map);
 
 
-    var hexagonWMS = L.tileLayer.wms('https://waprovisoimg.centralindia.cloudapp.azure.com/streaming/wms', {
-      layers: 'HxGN_Imagery',
+    var waTechImagery = L.tileLayer.wms('https://waprovisoimg.centralindia.cloudapp.azure.com/arcgis/services/ImageServices/Statewide_2023_1ft_4band_wsps_83h_img/ImageServer/WMSServer', {
+      layers: 'Statewide_2023_1ft_4band_wsps_83h_img',
       format: 'image/png',
       transparent: true,
-      attribution: ' Hexagon WMS',
+      attribution: ' WA Tech',
       crs: L.CRS.EPSG4326,
       maxZoom: 22
     });
@@ -1441,7 +1440,7 @@
 
     const baseLayers = {
       'Raster': CartoDB_Positron,
-      "Imagery": hexagonWMS
+      "Imagery": waTechImagery
     };
     const position = {
       position: 'topleft',
