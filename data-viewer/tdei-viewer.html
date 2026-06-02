@@ -1797,6 +1797,16 @@
       }
     });
     map.on('popupopen', (e) => {
+      const reportLink = e.popup._container.querySelector('.quality-report-link');
+      if (reportLink) {
+        reportLink.addEventListener('click', () => {
+          gtag('event', 'quality_report_click', {
+            'report_id': reportLink.dataset.reportId,
+            'report_url': reportLink.href
+          });
+        });
+      }
+
       const btn = e.popup._container.querySelector('.copy-btn');
       if (!btn) return;
       const original = btn.innerHTML;
@@ -1855,7 +1865,7 @@
           </button>
         </p>`;
       if (report_url) {
-        html += `<p><strong>Quality Report:</strong> <a href="${report_url}" target="_blank" rel="noopener">View Report</a></p>`;
+        html += `<p><strong>Quality Report:</strong> <a class="quality-report-link" href="${report_url}" target="_blank" rel="noopener" data-report-id="${props.tdei_dataset_id}">View Report</a></p>`;
       } else {
         html += `<p><strong>Quality Report:</strong> Not Available</p>`;
       }
