@@ -1841,6 +1841,7 @@
     // Add boundaries overlay — rendered via PMTiles for fast loading at all zoom levels
     const boundariesPmtilesUrl = 'https://provisodevstorage.blob.core.windows.net/waposmdbbkup/wa-tdei-latest/washington_dataset_boundaries.pmtiles';
     const boundariesIndexUrl = 'https://provisodevstorage.blob.core.windows.net/waposmdbbkup/wa-tdei-latest/washington_dataset_boundaries_index.json';
+    const tdeiSharedDatasetUrl = 'https://portal.tdei.us/share-dataset/osw';
 
     // Build popup HTML from feature properties (used by both click handler and search)
     function buildBoundaryPopupHtml(props, latlng) {
@@ -1848,6 +1849,8 @@
         ? new Date(props.upload_date).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })
         : 'N/A';
       const report_url = props.tcat_quality_report_url_pdf || props.tcat_quality_report_url;
+      const datasetId = props.tdei_dataset_id;
+      const datasetDownloadUrl = `${tdeiSharedDatasetUrl}/${encodeURIComponent(datasetId)}`;
       let html = `
         <div class="popup-content">
         <h5>${props.name || 'Unnamed'}</h5>
@@ -1855,10 +1858,17 @@
         <p><strong>Version:</strong> ${props.version || 'N/A'}</p>
         <p>
           <strong>ID:</strong>
-          <span id="tdei-id">${props.tdei_dataset_id}</span>
+          <a
+            id="tdei-id"
+            href="${datasetDownloadUrl}"
+            target="_blank"
+            rel="noopener"
+            aria-label="Download TDEI dataset ${datasetId}"
+            title="Download this dataset"
+          >${datasetId}</a>
           <button
             class="copy-btn btn-outline-secondary btn"
-            data-id="${props.tdei_dataset_id}"
+            data-id="${datasetId}"
             aria-label="Copy TDEI ID"
           >
             <i class="bi bi-clipboard text-white"></i>
