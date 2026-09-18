@@ -1843,19 +1843,47 @@
     const boundariesIndexUrl = 'https://provisodevstorage.blob.core.windows.net/waposmdbbkup/wa-tdei-latest/washington_dataset_boundaries_index.json';
     const tdeiSharedDatasetUrl = 'https://portal.tdei.us/share-dataset/osw';
 
+    // Helper to sanitize HTML text and attributes
+    function escapeHtml(value) {
+      if (value == null) return '';
+      return String(value)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
+    // Validate that a URL is an absolute http or https link
+    function isValidHttpUrl(urlString) {
+      if (!urlString || typeof urlString !== 'string') return false;
+      try {
+        const parsed = new URL(urlString.trim());
+        return parsed.protocol === 'http:' || parsed.protocol === 'https:';
+      } catch (e) {
+        return false;
+      }
+    }
+
     // Build popup HTML from feature properties (used by both click handler and search)
     function buildBoundaryPopupHtml(props, latlng) {
+      props = props || {};
+      const name = escapeHtml(props.name || 'Unnamed');
+      const version = escapeHtml(props.version || 'N/A');
       const uploadDate = props.upload_date
-        ? new Date(props.upload_date).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })
+        ? escapeHtml(new Date(props.upload_date).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }))
         : 'N/A';
-      const report_url = props.tcat_quality_report_url_pdf || props.tcat_quality_report_url;
-      const datasetId = props.tdei_dataset_id;
-      const datasetDownloadUrl = `${tdeiSharedDatasetUrl}/${encodeURIComponent(datasetId)}`;
+      const datasetId = escapeHtml(props.tdei_dataset_id ? String(props.tdei_dataset_id) : '');
+      const datasetDownloadUrl = escapeHtml(`${tdeiSharedDatasetUrl}/${encodeURIComponent(props.tdei_dataset_id || '')}`);
+
+      const reportUrl = props.tcat_quality_report_url_pdf || props.tcat_quality_report_url;
+      const hasValidReportUrl = isValidHttpUrl(reportUrl);
+
       let html = `
         <div class="popup-content">
-        <h5>${props.name || 'Unnamed'}</h5>
+        <h5>${name}</h5>
         <p><strong>Uploaded:</strong> ${uploadDate}</p>
-        <p><strong>Version:</strong> ${props.version || 'N/A'}</p>
+        <p><strong>Version:</strong> ${version}</p>
         <p>
           <strong>ID:</strong>
           <a
@@ -1874,8 +1902,9 @@
             <i class="bi bi-clipboard text-white"></i>
           </button>
         </p>`;
-      if (report_url) {
-        html += `<p><strong>Quality Report:</strong> <a class="quality-report-link" href="${report_url}" target="_blank" rel="noopener" data-report-id="${props.tdei_dataset_id}">View Report</a></p>`;
+      if (hasValidReportUrl) {
+        const escapedReportUrl = escapeHtml(reportUrl.trim());
+        html += `<p><strong>Quality Report:</strong> <a class="quality-report-link" href="${escapedReportUrl}" target="_blank" rel="noopener" data-report-id="${datasetId}">View Report</a></p>`;
       } else {
         html += `<p><strong>Quality Report:</strong> Not Available</p>`;
       }
@@ -2108,9 +2137,10 @@
 
       /** Wrap the matched portion of `text` in a <mark> tag */
       function highlightMatch(text, term) {
-        if (!term) return text;
-        const re = new RegExp('(' + escapeRegex(term) + ')', 'gi');
-        return text.replace(re, '<mark>$1</mark>');
+        const escapedText = escapeHtml(text);
+        if (!term) return escapedText;
+        const pattern = new RegExp('(' + escapeRegex(escapeHtml(term)) + ')', 'gi');
+        return escapedText.replace(pattern, '<mark>$1</mark>');
       }
 
       /** Build & show the dropdown with `matches` */
@@ -2146,8 +2176,8 @@
           item.innerHTML = `
             <span class="ac-name">${highlightMatch(f.name || 'Unnamed', term)}</span>
             <span class="ac-meta">
-              ${f.version ? `<span class="ac-tag"><i class="bi bi-tag"></i> v${f.version}</span>` : ''}
-              ${f.tdei_dataset_id ? `<span class="ac-tag"><i class="bi bi-hash"></i> ${f.tdei_dataset_id}</span>` : ''}
+              ${f.version ? `<span class="ac-tag"><i class="bi bi-tag"></i> v${escapeHtml(f.version)}</span>` : ''}
+              ${f.tdei_dataset_id ? `<span class="ac-tag"><i class="bi bi-hash"></i> ${escapeHtml(f.tdei_dataset_id)}</span>` : ''}
             </span>`;
 
           item.addEventListener('mousedown', function (e) {
