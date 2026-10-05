@@ -95,7 +95,7 @@
     }
 
     .leaflet-top.leaflet-left {
-      margin-top: 56px;
+      margin-top: 100px;
     }
 
     .leaflet-control-layers label {
@@ -509,11 +509,17 @@
       transform: scale(1.05);
     }
 
-    #left-info-button {
+    #left-map-controls {
       position: absolute;
       top: 10px;
       left: 10px;
       z-index: 1000;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    #left-map-controls button {
       width: 36px;
       height: 36px;
       display: flex;
@@ -528,9 +534,27 @@
       box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
     }
 
-    #left-info-button:hover {
+    #left-map-controls button:hover {
       background: var(--primary-color-dark);
       transform: scale(1.05);
+    }
+
+    #location-toggle-button[aria-pressed="false"] {
+      background: #6c757d;
+    }
+
+    #location-toggle-button[aria-pressed="false"]:hover {
+      background: #565e64;
+    }
+
+    #location-toggle-button.is-loading i {
+      animation: location-spin 1s linear infinite;
+    }
+
+    @keyframes location-spin {
+      to {
+        transform: rotate(360deg);
+      }
     }
 
     .disclaimer-box {
@@ -1177,11 +1201,21 @@
   </div>
 
   <!-- Map Viewer Section -->
-  <!-- Left-side hamburger/info button -->
-  <button type="button" id="left-info-button" title="View information" onclick="showLanding()"
-    aria-label="Open information panel">
-    <i class="bi bi-list"></i>
-  </button>
+  <!-- Left-side information and location controls -->
+  <div id="left-map-controls">
+    <button type="button" id="left-info-button" title="View information" onclick="showLanding()"
+      aria-label="Open information panel">
+      <i class="bi bi-list" aria-hidden="true"></i>
+    </button>
+    <button type="button" id="location-toggle-button"
+      title="To change location preferences, use your browser settings."
+      data-bs-toggle="tooltip" data-bs-placement="right"
+      data-bs-title="To change location preferences, use your browser settings."
+      aria-label="Show my location" aria-pressed="false" aria-busy="false">
+      <i class="bi bi-geo-alt" aria-hidden="true"></i>
+    </button>
+    <span id="location-status" class="visually-hidden" aria-live="polite"></span>
+  </div>
   <div class="container2">
     <div class="mapContainer">
       <div id='map'></div>
@@ -1283,7 +1317,8 @@
   <script type="text/javascript">
     // Initialize and show the landing modal on page load
     document.addEventListener('DOMContentLoaded', function () {
-      const landingModal = new bootstrap.Modal(document.getElementById('landing-modal'));
+      const landingModalElement = document.getElementById('landing-modal');
+      const landingModal = new bootstrap.Modal(landingModalElement);
       landingModal.show();
     });
 
@@ -1332,6 +1367,175 @@
     // Initialize map view
     const map = L.map('map', { zoomSnap: 1 }).setView([initial.lat, initial.lng], initial.z);
 
+    // Location is off by default and is requested only
+    // after an explicit user action, unless the browser has already granted
+    // geolocation permission. Coordinates are never persisted.
+    const locationToggleButton = document.getElementById('location-toggle-button');
+    const locationStatus = document.getElementById('location-status');
+    let locationEnabled = false;
+    let locationRequestInProgress = false;
+    let hasUsedGeolocation = false;
+    let locationRequestId = 0;
+    let userLocationMarker = null;
+
+    function setLocationStatus(message) {
+      locationStatus.textContent = message;
+    }
+
+    function updateLocationToggle() {
+      const icon = locationToggleButton.querySelector('i');
+      locationToggleButton.setAttribute('aria-pressed', String(locationEnabled));
+      locationToggleButton.setAttribute('aria-busy', String(locationRequestInProgress));
+      locationToggleButton.classList.toggle('is-loading', locationRequestInProgress);
+
+      if (locationRequestInProgress) {
+        icon.className = 'bi bi-arrow-repeat';
+        locationToggleButton.setAttribute('aria-label', 'Locating you');
+      } else if (locationEnabled) {
+        icon.className = 'bi bi-geo-alt-fill';
+        locationToggleButton.setAttribute('aria-label', 'Disable my location');
+      } else {
+        icon.className = 'bi bi-geo-alt';
+        locationToggleButton.setAttribute('aria-label', 'Show my location');
+      }
+    }
+
+    function disableLocation() {
+      locationEnabled = false;
+      locationRequestInProgress = false;
+      locationRequestId += 1;
+      if (userLocationMarker) {
+        map.removeLayer(userLocationMarker);
+        userLocationMarker = null;
+      }
+      setLocationStatus('Location disabled.');
+      updateLocationToggle();
+    }
+
+    function handleLocationSuccess(position, requestId) {
+      if (!locationEnabled || requestId !== locationRequestId) return;
+
+      locationRequestInProgress = false;
+      hasUsedGeolocation = true;
+      const latLng = [position.coords.latitude, position.coords.longitude];
+
+      if (userLocationMarker) {
+        userLocationMarker.setLatLng(latLng);
+      } else {
+        userLocationMarker = L.circleMarker(latLng, {
+          radius: 8,
+          color: '#ffffff',
+          weight: 3,
+          fillColor: '#4285f4',
+          fillOpacity: 1,
+          interactive: false
+        }).addTo(map);
+      }
+
+      map.setView(latLng, 17);
+      setLocationStatus('Your current location is shown on the map.');
+      updateLocationToggle();
+    }
+
+    function handleLocationError(error, requestId) {
+      if (requestId !== locationRequestId) return;
+
+      locationRequestInProgress = false;
+      locationEnabled = false;
+      updateLocationToggle();
+
+      let message = 'Your location could not be determined. Enable location to try again.';
+      if (error.code === error.PERMISSION_DENIED) {
+        message = 'Location access was denied. Enable location permission in your browser to use this feature.';
+      } else if (error.code === error.POSITION_UNAVAILABLE) {
+        message = 'Your location is currently unavailable. Enable location to try again.';
+      } else if (error.code === error.TIMEOUT) {
+        message = 'The location request timed out. Enable location to try again.';
+      }
+
+      setLocationStatus(message);
+      showErrorToast(message);
+    }
+
+    function requestUserLocation() {
+      if (!locationEnabled || locationRequestInProgress) return;
+
+      if (!navigator.geolocation) {
+        locationEnabled = false;
+        updateLocationToggle();
+        const message = 'Location is not supported by this browser.';
+        setLocationStatus(message);
+        showErrorToast(message);
+        return;
+      }
+
+      locationRequestInProgress = true;
+      const requestId = ++locationRequestId;
+      setLocationStatus('Finding your current location.');
+      updateLocationToggle();
+
+      navigator.geolocation.getCurrentPosition(
+        position => handleLocationSuccess(position, requestId),
+        error => handleLocationError(error, requestId),
+        { enableHighAccuracy: true, timeout: 10000, maximumAge: 30000 }
+      );
+    }
+
+    locationToggleButton.addEventListener('click', function () {
+      if (locationEnabled) {
+        disableLocation();
+      } else {
+        locationEnabled = true;
+        updateLocationToggle();
+        requestUserLocation();
+      }
+    });
+
+    updateLocationToggle();
+    bootstrap.Tooltip.getOrCreateInstance(locationToggleButton);
+
+    // Keep the viewer aligned with the browser's geolocation permission.
+    async function initializeLocationFromBrowserPermission() {
+      if (!navigator.permissions || !navigator.permissions.query) return;
+
+      try {
+        const permissionStatus = await navigator.permissions.query({ name: 'geolocation' });
+
+        function syncLocationWithPermission() {
+          if (permissionStatus.state === 'granted') {
+            if (!locationEnabled) {
+              locationEnabled = true;
+              updateLocationToggle();
+              requestUserLocation();
+            }
+            return;
+          }
+
+          if (locationEnabled || userLocationMarker) {
+            disableLocation();
+          }
+
+          if (permissionStatus.state === 'denied') {
+            setLocationStatus('Location access is blocked in your browser settings.');
+          } else {
+            setLocationStatus('Select Show my location to share your location.');
+          }
+        }
+
+        syncLocationWithPermission();
+        if (typeof permissionStatus.addEventListener === 'function') {
+          permissionStatus.addEventListener('change', syncLocationWithPermission);
+        } else {
+          permissionStatus.onchange = syncLocationWithPermission;
+        }
+      } catch (e) {
+       // Handle any errors that may occur while querying permissions
+        console.error('Error querying geolocation permission:', e);
+      }
+    }
+
+    initializeLocationFromBrowserPermission();
+
     // Tracking functionality for long visits (GA4)
     let visitTimer;
     const DURATION_THRESHOLD = 5000; // 5 seconds in milliseconds
@@ -1348,6 +1552,7 @@
       if (visitTimer) {
         clearTimeout(visitTimer);
       }
+      if (hasUsedGeolocation) return;
       const currentHash = window.location.hash;
       if (currentHash) {
         visitTimer = setTimeout(() => {
