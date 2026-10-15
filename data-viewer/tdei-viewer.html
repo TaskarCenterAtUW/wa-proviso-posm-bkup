@@ -2668,6 +2668,13 @@
       </div>
     </div>
   </div>
+  <!-- OS Connect chat widget: one-tag drop-in (auto-mounts). -->
+  <!-- data-budget-message customises the banner shown when the backend's daily LLM
+       budget is exhausted and responses degrade to retrieval-only. -->
+  <script src="https://osconnectwidgetprod.z13.web.core.windows.net/v1.0.0/widget.js" data-api-url="https://osconnect-query-prod.greenmeadow-337b8f14.eastus.azurecontainerapps.io" data-mock="false"
+    data-budget-message="Daily limit reached — showing the most relevant docs. Please try again later."></script>
+  <!-- OS Connect chat widget: map actions the chat can call (tool calling) + chat-panel layout. -->
+  <script src="https://osconnectwidgetprod.z13.web.core.windows.net/v1.0.0/host-integrations.js"></script>
 </body>
 
 </html>
