@@ -2668,6 +2668,17 @@
       </div>
     </div>
   </div>
+  <!-- OS Connect chat widget: one-tag drop-in (auto-mounts). -->
+  <!-- data-budget-message customises the banner shown when the backend's daily LLM
+       budget is exhausted and responses degrade to retrieval-only. -->
+  <script src="https://osconnectwidgetprod.z13.web.core.windows.net/v1.0.1/widget.js"
+    integrity="sha384-97BydVMGqZ3L2QyvsJhTQBGdqSFVPJss7Og1HbCzA0eI43kdW0ns2vDBzPYN8HH3"
+    crossorigin="anonymous" data-api-url="https://osconnect-query-prod.greenmeadow-337b8f14.eastus.azurecontainerapps.io" data-mock="false"
+    data-budget-message="Daily limit reached — showing the most relevant docs. Please try again later."></script>
+  <!-- OS Connect chat widget: map actions the chat can call (tool calling) + chat-panel layout. -->
+  <script src="https://osconnectwidgetprod.z13.web.core.windows.net/v1.0.1/host-integrations.js"
+    integrity="sha384-cru76fVswctNiIsKdi/6ogH2zwxWloFUgEjMJn3yJz+r76svIlbINZb9S7i0XaL4"
+    crossorigin="anonymous"></script>
 </body>
 
 </html>
