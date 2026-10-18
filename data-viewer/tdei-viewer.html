@@ -539,6 +539,37 @@
       transform: scale(1.05);
     }
 
+    /* The search panel spans the top of the map on narrow screens; start it
+       right of the left controls and let the search input shrink to fit. */
+    @media (max-width: 768px) {
+      #left-map-controls {
+        top: 14px;
+      }
+
+      #search-wrapper {
+        left: 54px;
+      }
+
+      .search-row {
+        flex-wrap: wrap;
+      }
+
+      .disclaimer-box {
+        flex: 1 1 100%;
+      }
+
+      #search-container {
+        flex: 1 1 100%;
+        min-width: 0;
+      }
+
+      #search-input {
+        flex: 1 1 auto;
+        width: 0;
+        min-width: 0;
+      }
+    }
+
     #location-toggle-button[aria-pressed="false"] {
       background: #6c757d;
     }
