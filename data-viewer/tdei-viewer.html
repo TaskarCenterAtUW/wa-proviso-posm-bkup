@@ -1359,6 +1359,15 @@
       landingModal.show();
     }
 
+    // Close the landing modal when the 'os-connect:open' event is triggered
+    document.addEventListener('os-connect:open', function () {
+      const landingModalElement = document.getElementById('landing-modal');
+      const landingModal = bootstrap.Modal.getInstance(landingModalElement);
+      if (landingModal) {
+        landingModal.hide();
+      }
+    });
+
     // Parse #map=ZOOM/LAT/LNG from the URL and return { z, lat, lng }
     // Returns null if the hash is missing or invalid
     function parseMapHash() {
