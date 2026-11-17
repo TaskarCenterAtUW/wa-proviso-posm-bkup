@@ -23,7 +23,18 @@ def main():
         print(f"Boundary file {boundary_file} does not exist.")
         return
     boundary_gdf = gpd.read_file(boundary_file)
-    boundary_gdf_clipped = boundary_gdf[['name','tdei_dataset_id','geometry','upload_date','version','tcat_quality_report_url_pdf']]
+    required_columns = ['name', 'tdei_dataset_id', 'geometry', 'upload_date', 'version']
+    report_url_columns = [
+        'tcat_quality_report_url_html',
+        'tcat_quality_report_url_pdf',
+        'tcat_quality_report_url',
+    ]
+    available_report_url_columns = [
+        column for column in report_url_columns if column in boundary_gdf.columns
+    ]
+    boundary_gdf_clipped = boundary_gdf[
+        required_columns + available_report_url_columns
+    ].copy()
     boundary_gdf_clipped['upload_date'] = pd.to_datetime(boundary_gdf_clipped['upload_date']).dt.strftime('%Y-%m-%dT%H:%M:%S%z') #2026-02-03T14:13:45.183Z
     geojson_data = boundary_gdf_clipped.to_json(show_bbox=True)
     geojson_json_data = json.loads(geojson_data)

@@ -2121,7 +2121,9 @@
       const datasetId = escapeHtml(props.tdei_dataset_id ? String(props.tdei_dataset_id) : '');
       const datasetDownloadUrl = escapeHtml(`${tdeiSharedDatasetUrl}/${encodeURIComponent(props.tdei_dataset_id || '')}`);
 
-      const reportUrl = props.tcat_quality_report_url_pdf || props.tcat_quality_report_url;
+      const reportUrl = props.tcat_quality_report_url_html
+        || props.tcat_quality_report_url_pdf
+        || props.tcat_quality_report_url;
       const hasValidReportUrl = isValidHttpUrl(reportUrl);
 
       let html = `
